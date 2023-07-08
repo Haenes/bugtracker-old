@@ -1,0 +1,584 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>BugTracker</title>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+	<link rel="stylesheet" href="{% static 'style.css' %}">
+
+	<script>
+		function allowDrop(ev) {
+			ev.preventDefault();
+		}
+
+		function drag(ev) {
+			ev.dataTransfer.setData("text", ev.target.id);
+		}
+
+		function drop(ev) {
+			ev.preventDefault();
+			var data = ev.dataTransfer.getData("text");
+			ev.target.appendChild(document.getElementById(data));
+		}
+	</script>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<!-- LEFT SIDE OF NAVBAR -->
+	<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="{% url 'projects' %}">BugTracker</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+				aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarText">
+				<ul class="navbar-nav nav-underline me-auto mb-lg-0">
+					<!-- <ul class="navbar-nav me-auto mb-lg-0"> -->
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							Projects
+						</a>
+						<ul class="dropdown-menu text-small">
+							<li><a class="dropdown-item" href="#">Starred</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<!-- <li><a class="dropdown-item" href="projects.html">View all projects</a></li> -->
+							<li><a class="dropdown-item" href="{% url 'projects' %}">View all projects</a></li>
+
+<!-- TRIGER PROJECT MODAL -->
+							<li><a class="dropdown-item" data-bs-toggle="modal"
+									data-bs-target="#staticBackdropProjectNav" href="#">Create project</a></li>
+						</ul>
+					</li>
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+							aria-expanded="false">
+							Filters
+						</a>
+						<ul class="dropdown-menu text-small">
+							<li><a class="dropdown-item" href="#">Recent</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a class="dropdown-item" href="#">View all filters</a></li>
+							<li><a class="dropdown-item" href="#">Advanced issue search</a></li>
+						</ul>
+					</li>
+
+<!-- TRIGER ISSUE MODAL -->
+					<!-- <li class="nav-item me-auto mb-lg-0"> -->
+					<ul class="navbar-nav me-auto mt-1 mb-4 mb-lg-0">
+						<li class="nav-item">
+							<button type="button" class="btn btn-outline-primary rounded-3" data-bs-toggle="modal"
+								data-bs-target="#staticBackdrop">
+								Create
+							</button>
+						</li>
+					</ul>
+				</ul>
+
+<!-- ISSUE MODAL -->
+				<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1"
+					aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+						<div class="modal-content">
+
+							<div class="modal-header">
+								<h1 class="modal-title fs-5 text-secondary" id="staticBackdropLabel">Create issue</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+
+							<div class="modal-body">
+
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-md-6">
+											<p class="text-secondary m-0 text-start">Project*</p>
+											<select class="form-select form-select-sm bg-body-tertiary" 
+												aria-label="form-select-sm projectName" required>
+												{% for project in projects_list %}
+													<option value="{{project.id}}">
+														{{ project.name }}
+													</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+
+									<div class="row mt-4">
+										<div class="col-md-6">
+											<p class="text-secondary m-0 text-start">TIssue type*</p>
+											<select class="form-select form-select-sm bg-body-tertiary" 
+												aria-label="form-select-sm projectName" required>
+												{% for issue_type in issue_types_list %}
+												<option value="{{ issue_type.id }}">
+													{{ issue_type.name }}
+												</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+
+									<div class="row mt-4">
+										<div class="col-md-6">
+											<p class="text-secondary m-0 text-start">Issue priority*</p>
+											<select class="form-select form-select-sm bg-body-tertiary" aria-label="form-select-sm projectName" required>
+												{% for issue_priority in issue_priority_list %}
+												<option value="{{ issue_type.id }}">
+													{{ issue_priority.name }}
+												</option>
+												{% endfor %}
+											</select>
+										</div>
+									</div>
+
+									<hr class="border-1 mt-4">
+
+									<div class="row">
+										<div class="col-md-12">
+											<p class="text-secondary m-0 text-start">Summary*</p>
+											<input type="text" class="form-control bg-body-tertiary"
+												aria-label="Sizing example input"
+												aria-describedby="inputGroup-sizing-default" required>
+										</div>
+									</div>
+
+									<div class="row mt-4">
+										<div class="col-md-12">
+											<p class="text-secondary m-0 text-start">Description</p>
+											<div class="form-outline mb-3">
+												<textarea class="form-control w-100 bg-body-tertiary"
+													id="textAreaExample5" rows="5"></textarea>
+											</div>
+
+										</div>
+									</div>
+
+									<div class="row mt-2">
+										<div class="col-md-6">
+											<p class="text-secondary m-0 text-start">Due date</p>
+											<form>
+												<div class="form-group">
+													<input type="date" class="form-control bg-body-tertiary">
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="modal-footer">
+								<a href="board.html"><button type="button" class="btn btn-primary">Create</button></a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+<!-- RIGTH SIDE OF NAVBAR -->
+				<form class="col-12 col-lg-3 me-3" role="search">
+					<input type="search" class="form-control" placeholder="Search" aria-label="Search">
+				</form>
+
+				<div class="d-flex justify-content-center">
+					<ul class="navbar-expand p-0 mb-0 mb-lg-0">
+
+						<ul class="navbar-nav">
+
+							<li class="nav-item dropdown  m-1 me-3">
+								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
+									data-bs-placement="bottom" title="Help" aria-expanded="false">
+									<i class="fs-5 bi bi-question-circle icon-color"></i>
+								</a>
+								<ul class="dropdown-menu text-small shadow"
+									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
+									data-popper-placement="bottom-end">
+									<li><a class="dropdown-item" href="#">Raise a bug</a></li>
+									<li><a class="dropdown-item" href="#">Give feedback</a></li>
+								</ul>
+							</li>
+
+							<li class="nav-item dropdown m-1 me-3">
+								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
+									data-bs-placement="bottom" title="Settings" aria-expanded="false">
+									<i class="fs-5 bi bi-gear-wide icon-color"></i>
+								</a>
+								<ul class="dropdown-menu text-small shadow"
+									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
+									data-popper-placement="bottom-end">
+									<li><a class="dropdown-item" href="#">System</a></li>
+									<li><a class="dropdown-item" href="#">Projects</a></li>
+									<li><a class="dropdown-item" href="#">Issues</a></li>
+								</ul>
+							</li>
+
+							<li class="nav-item dropdown m-1">
+								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
+									data-bs-placement="bottom" title="User" aria-expanded="false">
+									<i class="fs-5 bi bi-person-circle icon-color"></i>
+								</a>
+								<ul class="dropdown-menu text-small shadow"
+									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
+									data-popper-placement="bottom-end">
+									<li><a class="dropdown-item" href="{% url 'accounts' user_id %}">Account
+											settings</a></li>
+									<li>
+										<hr class="dropdown-divider">
+									</li>
+									<li><a class="dropdown-item" href="{% url 'login'%}">Sign out</a></li>
+								</ul>
+							</li>
+
+						</ul>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+
+<!-- SIDEBAR -->
+	<div class="container-fluid">
+		<div class="row flex-nowrap">
+			<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-body-tertiary border-end">
+				<div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+
+					<ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
+						id="menu">
+						<li class="nav-item">
+							<a href="{% url 'boards' project.id %}" class="nav-link px-0 align-middle text-secondary">
+								<i class="fs-4 bi bi-kanban icon-color"></i>
+								<span class="ms-1 d-none d-sm-inline">Board</span>
+							</a>
+						</li>
+
+						<li>
+							<a href="{% url 'project-settings' project.id %}"
+								class="nav-link px-0 align-middle text-secondary">
+								<i class="fs-4 bi bi-gear-wide icon-color"></i>
+								<span class="ms-1 d-none d-sm-inline">Project setting</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+
+<!-- MAIN CONTENT -->
+			<div class="col py-3 mx-1" style="text-align: justify;">
+
+<!-- BREADCRUMB -->
+				<nav aria-label="Breadcrumb">
+					<ol class="breadcrumb">
+
+						<li class="breadcrumb-item">
+							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+								link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'projects'%}">
+								Projects
+							</a>
+						</li>
+
+						<li class="breadcrumb-item active">
+							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+			                    link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'boards' project_id%}">
+								{{ project.name }}
+							</a>
+						</li>
+
+					</ol>
+				</nav>
+
+
+				<div class="row mt-2">
+
+					<div class="container mb-2">
+						<div class="row justify-content-between text-start">
+							<div class="col-sm-4">
+								<h4 class="h4 fw-normal">{{project.name}} board</h4>
+							</div>
+							<div class="col-sm-4 text-end">
+
+							{% if project.starred %}
+								<button type="button" class="btn p-0" data-bs-toggle="tooltip" 
+									data-bs-placement="bottom" title="Starred project">
+									<i class="fs-5 bi bi-star-fill" style="color: gold;"></i></button>
+							{% else %}
+								<button type="button" class="btn p-0" data-bs-toggle="tooltip" 
+									data-bs-placement="bottom" title="Starred project">
+									<i class="fs-5 bi bi-star icon-color"></i></button>
+							{% endif %}
+
+							</div>
+						</div>
+					</div>
+
+
+<!-- ISSUE CARDS -->
+<!-- TO DO -->
+					<div class="col-sm-4">
+
+						<div class="card bg-body-tertiary">
+							<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+								{% if todo_issues == 0 %}
+									<h6 class="card-title">TO DO ISSUES</h6>
+								{% elif todo_issues|divisibleby:2 %}
+									<h6 class="card-title">TO DO {{ todo_issues }} ISSUES</h6>
+								{% else %}
+									<h6 class="card-title">TO DO {{ todo_issues }} ISSUE</h6>
+								{% endif %}
+
+								<div class="dropdown">
+									<button type="button" class="btn p-0 mb-2 fw-medium text-secondary border-0" data-bs-toggle="dropdown"
+										aria-expanded="false" data-bs-auto-close="outside">
+										<i class="fs-6 bi bi-plus-lg icon-color"></i> Create issue
+									</button>
+
+									<div class="container-fluid">
+										<form class="dropdown-menu p-4 bg-body-tertiary">
+											<div class="row mb-3">
+												<input type="text"
+													class="form-control border-0 shadow-none placeholder-color  bg-body-tertiary"
+													placeholder="What needs to be done?">
+											</div>
+
+											<div class="row mb-3">
+												<select class="form-select border-0 shadow-none  bg-body-tertiary"
+													aria-label="Default select example">
+													<option selected>Issue type</option>
+													<option value="1">*Type 1*</option>
+													<option value="2">*Type 2*</option>
+													<option value="3">*Type 3*</option>
+												</select>
+											</div>
+
+											<button type="submit" class="btn btn-secondary">Create</button>
+										</form>
+									</div>
+								</div>
+
+								{% for issue in issues_list %}
+									{% if issue.status_id == 1 %}
+										<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.issue_num}}">
+											<div class="card-body">
+												{{ issue.title }}
+											</div>
+
+											<div class="card-footer border-0 bg-transparent">
+												<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
+													data-bs-target="#staticBackdropBoardIssue">{{ project.key }}-{{ issue.issue_num }}
+												</button>
+											</div>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+
+	<!-- IN PROGRESS -->
+					<div class="col-sm-4">
+					
+						<div class="card bg-body-tertiary">
+							<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+								{% if in_progress_issues == 0 %}
+								<h6 class="card-title">IN PROGRESS ISSUES</h6>
+								{% elif in_progress_issues|divisibleby:2 %}
+								<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUES</h6>
+								{% else %}
+								<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUE</h6>
+								{% endif %}
+
+								{% for issue in issues_list %}
+									{% if issue.status_id == 2 %}
+										<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.issue_num}}">
+											<div class="card-body">
+												{{ issue.title }}
+											</div>
+							
+											<div class="card-footer border-0 bg-transparent">
+												<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
+													data-bs-target="#staticBackdropBoardIssue">{{ project.key }}-{{ issue.issue_num}}
+												</button>
+											</div>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+
+	<!-- DONE -->
+					<div class="col-sm-4">
+						<div class="card bg-body-tertiary">
+							<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+								{% if done_issues == 0 %}
+									<h6 class="card-title">DONE</h6>
+								{% elif done_issues|divisibleby:2 %}
+									<h6 class="card-title">DONE {{ done_issues }} ISSUES</h6>
+								{% else %}
+									<h6 class="card-title">DONE {{ done_issues }} ISSUE</h6>
+								{% endif %}
+
+								{% for issue in issues_list %}
+									{% if issue.status_id == 3 %}			
+										<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.issue_num}}">
+											<div class="card-body">
+												{{ issue.title }}
+											</div>
+							
+											<div class="card-footer border-0 bg-transparent">
+												<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
+													data-bs-target="#staticBackdropBoardIssue">{{ project.key }}-{{ issue.issue_num}}
+												</button>
+											</div>
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+<!-- PROJECT MODAL (LINE 58) -->
+	<div class="modal fade" id="staticBackdropProjectNav" data-bs-backdrop="static" tabindex="-1"
+		aria-labelledby="staticBackdropProjectNav" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog  modal-dialog-centered">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h1 class="modal-title fs-5 text-secondary" id="staticBackdropProjectNav">Create project</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="modal-body">
+
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Name*</p>
+								<input type="text" class="form-control bg-body-tertiary"
+									aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+									required>
+							</div>
+						</div>
+
+						<div class="row mt-4">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Key*</p>
+								<input type="text" class="form-control bg-body-tertiary"
+									aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
+									required>
+							</div>
+						</div>
+
+						<div class="row mt-4">
+							<div class="col-md-12 mb-2">
+								<p class="text-secondary m-0 text-start">Type*</p>
+								<select class="form-select form-select-sm bg-body-tertiary"
+									aria-label="form-select-sm projectName" required>
+									<option value="1">Type1</option>
+									<option value="2">Type2</option>
+									<option value="3">Type3</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<a href="projects.html"><button type="button" class="btn btn-primary">Create</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- BOARD ISSUE MODAL (LINE 384) -->
+	<div class="modal fade" id="staticBackdropBoardIssue" data-bs-backdrop="static" tabindex="-1"
+		aria-labelledby="staticBackdropBoardIssue" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered  modal-lg">
+			<div class="modal-content">
+
+				<!-- !!! FIX  {{ issue.issue_num }} -->
+				<div class="modal-header border-0">
+					<p class="m-0">{{ project.key }}-{{ issue.issue_num }}</p>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="modal-body">
+					<div class="container">
+						<div class="row justify-content-between text-start">
+							<div class="col mt-2 top-0 start-0">
+								<h5>*Issue title*</h5>
+							</div>
+
+							<div class="col-3">
+								<select class="form-select text-bg-primary">
+									<option selected>*CurCategory*</option>
+									<option value="1">To Do</option>
+									<option value="2">In Progress</option>
+									<option value="3">Done</option>
+								</select>
+							</div>
+							<div class="col-2"><button type="button" class="btn btn-danger ">Delete</button></div>
+
+						</div>
+
+						<div class="row justify-content-between text-start mt-3">
+							<div class="col-6">
+								<div class="form-outline mb-3">
+									<textarea class="form-control w-100 bg-body-tertiary" id="textAreaExample5" rows="5"
+										placeholder="*Current description* IF NO: *Add a description*"></textarea>
+								</div>
+
+							</div>
+
+							<div class="col-5">
+								<div class="d-flex flex-column ">
+									<div class="p-2">Priority: *Priority*</div>
+									<div class="p-2">Created: *Created time (M D, Y, time)*</div>
+									<div class="p-2">Updated: *Updated time*</div>
+									<hr>
+									<div class="ms-2 mt-0">
+										<a href="#" class="nav-link px-0 text-end text-secondary">
+											<i class="fs-5 bi bi-gear-wide icon-color"></i>
+											<span class="ms-1 d-none d-sm-inline">Configure</span>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

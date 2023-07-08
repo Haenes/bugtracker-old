@@ -1,0 +1,51 @@
+/* Color of icons in all appearance, except starred projects*/
+.icon-color { color: grey; }
+
+
+/* BOARD.HTML */
+.text-small { font-size: 85%; }
+
+.placeholder-color::placeholder { color: black; }
+
+
+/* PROJECTS.HTML */
+.star-table {
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+
+/* LOGIN.HTML, RESET-PASSWORD.HTML, REGISTER.HTML */
+.center { margin-top: 8%; }
+
+
+/* LOGIN.HTML */
+.form-signin {
+	max-width: 330px;
+	padding: 1rem;
+}
+
+.form-signin .form-floating:focus-within { z-index: 2; }
+
+.form-signin input[type="email"] {
+	margin-bottom: -1pxpx;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+	margin-bottom: 10px;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+
+/* REGISTER.HTML */
+.custom-popover {
+	--bs-popover-max-width: 225px;
+	--bs-popover-border-color: var(--bs-primary);
+	--bs-popover-header-bg: var(--bs-primary);
+	--bs-popover-header-color: var(--bs-white);
+	--bs-popover-body-padding-x: 1rem;
+	--bs-popover-body-padding-y: .5rem;
+} 
