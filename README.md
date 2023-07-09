@@ -13,7 +13,8 @@ Right now this project is still being developed.
 
 <b>Need to do</b>:
   1) Fill out all HTML forms and Bootstrap modals via Django forms;
-  2) Add ability to register and login;
+  2) Add ability to register and login + authentication;
   3) Change db to SQL (after complete a fully working app);
-  4) Fix current bugs and future ones (if they are, AND THEY WILL).
+  4) Code refactoring (especially for templates HTML...)
+  5) Fix current bugs and future ones (if they are, AND THEY WILL).
      
