@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 from .models import Project, Project_type, Issue_priority, Issue_status, Issue_type, Issue
-from .forms import UserForm
+from .forms import UserForm, ProjectDetailsForm
 
 
 projects_list = Project.objects.order_by("-starred")
@@ -85,13 +86,40 @@ def boards(request, project_id):
 
 def project_settings(request, project_id):
     project = Project.objects.get(id=project_id)
-    context = {'project': project,
-               'project_id': project.id,
-               'user_id': user.id,
-               'projects_list': projects_list,
-               'issue_types_list': issue_types_list,
-               'issue_priority_list': issue_priority_list,
-               }
+
+    if request.method == 'POST':
+        project_form = ProjectDetailsForm(request.POST or None, instance=project)
+
+        if project_form.is_valid():
+            project_form.save()
+
+        context = {
+            'project': project,
+            'project_id': project.id,
+            'user_id': user.id,
+            'projects_list': projects_list,
+            'issue_types_list': issue_types_list,
+            'issue_priority_list': issue_priority_list,
+            'project_form': project_form,
+        }
+        
+    else:
+        project_form = ProjectDetailsForm(
+            initial = {
+                "name": project.name, 
+                "key": project.key
+            }
+        )
+
+        context = {
+            'project': project,
+            'project_id': project.id,
+            'user_id': user.id,
+            'projects_list': projects_list,
+            'issue_types_list': issue_types_list,
+            'issue_priority_list': issue_priority_list,
+            'project_form': project_form,
+        }
 
     return render(request, "project-settings.html", context)
 
@@ -101,43 +129,40 @@ def accounts(request, user_id):
     project = Project.objects.get(name='BugTracker')
   
     if request.method == 'POST':
-        user_form = UserForm(request.POST)
+        user_form = UserForm(request.POST or None, instance=user)
 
         if user_form.is_valid():
             user_form.save()
 
         context = {
-        'user': user,
-        'user_id': user.id,
-        'project':project,
-        'projects_list': projects_list,
-        'issue_types_list': issue_types_list,
-        'issue_priority_list': issue_priority_list,
-        'user_form': user_form,
+            'user': user,
+            'user_id': user.id,
+            'project':project,
+            'projects_list': projects_list,
+            'issue_types_list': issue_types_list,
+            'issue_priority_list': issue_priority_list,
+            'user_form': user_form,
         }
 
     else:
-        user_form = UserForm(initial={"username": user.username, "first_name": user.first_name, "last_name": user.last_name, "email": user.email})
+        user_form = UserForm(
+            initial = {
+                "username": user.username, 
+                "first_name": user.first_name, 
+                "last_name": user.last_name, 
+                "email": user.email
+            }
+        )
 
         context = {
-        'user': user,
-        'user_id': user.id,
-        'project':project,
-        'projects_list': projects_list,
-        'issue_types_list': issue_types_list,
-        'issue_priority_list': issue_priority_list,
-        'user_form': user_form,
+            'user': user,
+            'user_id': user.id,
+            'project':project,
+            'projects_list': projects_list,
+            'issue_types_list': issue_types_list,
+            'issue_priority_list': issue_priority_list,
+            'user_form': user_form,
         }
-
-    # context = {
-    #     'user': user,
-    #     'user_id': user.id,
-    #     'project':project,
-    #     'projects_list': projects_list,
-    #     'issue_types_list': issue_types_list,
-    #     'issue_priority_list': issue_priority_list,
-    #     'user_form': user_form,
-    #     }
 
     return render(request, "accounts.html", context)
 
