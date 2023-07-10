@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from .models import Project, Project_type, Issue_priority, Issue_status, Issue_type, Issue
-from .forms import UserForm, ProjectDetailsForm
+from .forms import UserForm, ProjectDetailsForm, RegisterForm
 
 
 projects_list = Project.objects.order_by("-starred")
@@ -28,13 +28,6 @@ def projects(request):
 
 def boards(request, project_id):  
     all_issues = Issue.objects.order_by('status_id')
-    # issues_num = 0
-    # issue_list = []
-
-    # for issue in all_issues:
-    #     if issue.project_id == project_id:
-    #         issues_num += 1
-    #         issue_list.append(issue)
 
     todo_issues = 0
     in_progress_issues = 0
@@ -51,22 +44,9 @@ def boards(request, project_id):
                 done_issues += 1           
             issue_list.append(issue)
     
-
     project = Project.objects.get(id=project_id)
     project_id = project.id
     user = User.objects.get(id=1)
-    # issue_list = Issue.objects.all() 
-    # issues = Issues.objects.get(project_id=project_id)
-    # context = {
-    #     'project': project,
-    #     'user_id': user.id,
-    #     'project_id': project_id,
-    #     'projects_list': projects_list,
-    #     'issues_list': issue_list,
-    #     'issue_types_list': issue_types_list,
-    #     'issue_priority_list': issue_priority_list,
-    #     'issues_num': issues_num,
-    # }
 
     context = {
         'project': project,
@@ -150,7 +130,7 @@ def accounts(request, user_id):
                 "username": user.username, 
                 "first_name": user.first_name, 
                 "last_name": user.last_name, 
-                "email": user.email
+                "email": user.email,
             }
         )
 
@@ -172,8 +152,20 @@ def login(request):
 
 
 def register(request):
-    return render(request, "register.html")
+    if request.method == 'POST':
+        register_form = RegisterForm(request.POST)
+
+        if register_form.is_valid():
+            register_form.save()
+
+            return redirect("projects")
+
+    else:
+        register_form = RegisterForm()
+
+    return render(request, "register.html", {"register_form": register_form})
 
 
 def password_reset(request):
     return render(request, "password-reset.html")
+ 

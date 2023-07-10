@@ -61,7 +61,6 @@
 
 
 <!-- TRIGER ISSUE MODAL -->
-
 					<ul class="navbar-nav me-auto mt-1 mb-4 mb-lg-0">
 						<li class="nav-item">
 							<button type="button" class="btn btn-outline-primary rounded-3" data-bs-toggle="modal"
@@ -106,8 +105,6 @@
 									<li><a class="dropdown-item" href="#">Issues</a></li>
 								</ul>
 							</li>
-
-							<!-- class="nav-link dropdown-toggle" добавляет галочку (TAG a)-->
 
 							<li class="nav-item dropdown m-1">
 								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
@@ -187,7 +184,7 @@
 					</ol>
 				</nav>
 
-
+<!-- PROJECT DETAILS -->
 				<div class="row mt-2">
 					<div class="container ms-3 mb-2">
 						<div class="row justify-content-between text-start">
@@ -217,65 +214,66 @@
 							</div>
 						</form>
 					</div>
+				</div>
 
 
-<!-- PROJECT MODAL (LINE 41) -->
-					<div class="modal fade" id="staticBackdropProjectNav" data-bs-backdrop="static" tabindex="-1"
-						aria-labelledby="staticBackdropProjectNav" aria-hidden="true" data-backdrop="static">
-						<div class="modal-dialog  modal-dialog-centered">
-							<div class="modal-content">
+<!-- PROJECT MODAL (LINE 43) -->
+	<div class="modal fade" id="staticBackdropProjectNav" data-bs-backdrop="static" tabindex="-1"
+		aria-labelledby="staticBackdropProjectNav" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog  modal-dialog-centered">
+			<div class="modal-content">
 
-								<div class="modal-header">
-									<h1 class="modal-title fs-5 text-secondary" id="staticBackdropProjectNav">Create project</h1>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
+				<div class="modal-header">
+					<h1 class="modal-title fs-5 text-secondary" id="staticBackdropProjectNav">Create project</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
 
-								<div class="modal-body">
+				<div class="modal-body">
 
-									<div class="container-fluid">
-										<div class="row">
-											<div class="col-md-6">
-												<p class="text-secondary m-0 text-start">Name*</p>
-												<input type="text" class="form-control bg-body-tertiary"
-													aria-label="Sizing example input" 
-													aria-describedby="inputGroup-sizing-default" required>
-											</div>
-										</div>
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Name*</p>
+								<input type="text" class="form-control bg-body-tertiary"
+									aria-label="Sizing example input" 
+									aria-describedby="inputGroup-sizing-default" required>
+							</div>
+						</div>
 
-										<div class="row mt-4">
-											<div class="col-md-6">
-												<p class="text-secondary m-0 text-start">Key*</p>
-												<input type="text" class="form-control bg-body-tertiary"
-													aria-label="Sizing example input"
-													aria-describedby="inputGroup-sizing-default" required>
-											</div>
-										</div>
+						<div class="row mt-4">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Key*</p>
+								<input type="text" class="form-control bg-body-tertiary"
+									aria-label="Sizing example input"
+									aria-describedby="inputGroup-sizing-default" required>
+							</div>
+						</div>
 
-										<div class="row mt-4">
-											<div class="col-md-12 mb-2">
-												<p class="text-secondary m-0 text-start">Type*</p>
-												<select class="form-select form-select-sm bg-body-tertiary"
-													aria-label="form-select-sm projectName" required>
-													<option value="1">Type1</option>
-													<option value="2">Type2</option>
-													<option value="3">Type3</option>
-												</select>
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div class="modal-footer">
-									<a href="{% url 'projects' %}">
-										<button type="button" class="btn btn-primary">Create</button>
-									</a>
-								</div>
+						<div class="row mt-4">
+							<div class="col-md-12 mb-2">
+								<p class="text-secondary m-0 text-start">Type*</p>
+								<select class="form-select form-select-sm bg-body-tertiary"
+									aria-label="form-select-sm projectName" required>
+									<option value="1">Type1</option>
+									<option value="2">Type2</option>
+									<option value="3">Type3</option>
+								</select>
 							</div>
 						</div>
 					</div>
+				</div>
+
+				<div class="modal-footer">
+					<a href="{% url 'projects' %}">
+						<button type="button" class="btn btn-primary">Create</button>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
 
 					
-<!-- ISSUE MODAL -->
+<!-- ISSUE MODAL (LINE 63) -->
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1"
 		aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
