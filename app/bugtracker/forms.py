@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm, TextInput, EmailInput, PasswordInput
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login, authenticate
 
 from bugtracker.models import Project
 
@@ -19,12 +19,56 @@ def validate_string(string):
 class RegisterForm(forms.Form):
 
 
-    first_name = forms.CharField(label="First name", min_length = 2, max_length=255, widget=TextInput(attrs={"required": True, "class": "form-control mb-2"}))
-    last_name = forms.CharField(label="Last name", min_length = 2, max_length=255, widget=TextInput(attrs={"required": True, "class": "form-control mb-2"}))
-    username = forms.CharField(label="Username", min_length = 4, max_length=255, widget=TextInput(attrs={"required": True, "class": "form-control mb-2"}))
-    email = forms.EmailField(label="Email", max_length=255, widget=TextInput(attrs={"required": True, "class": "form-control mb-2"}))
-    password1 = forms.CharField(label="Password", max_length=32, widget=PasswordInput(attrs={"required": True, "class": "form-control mb-2"}))
-    password2 = forms.CharField(label="Password confirmation", max_length=32, widget=PasswordInput(attrs={"required": True, "class": "form-control mb-2"}))
+    first_name = forms.CharField(
+        label="First name", 
+        min_length=2, 
+        max_length=255, 
+        widget=TextInput(
+            attrs={
+            "required": True, 
+            "class": "form-control mb-2"}))
+
+    last_name = forms.CharField(
+        label="Last name", 
+        min_length = 2, 
+        max_length=255, 
+        widget=TextInput(
+            attrs={
+                "required": True, 
+                "class": "form-control mb-2"}))
+
+    username = forms.CharField(
+        label="Username", 
+        min_length = 4, 
+        max_length=150, 
+        widget=TextInput(
+            attrs={
+                "required": True, 
+                "class": "form-control mb-2"}))
+
+    email = forms.EmailField(
+        label="Email", 
+        max_length=255, 
+        widget=TextInput(
+            attrs={
+                "required": True, 
+                "class": "form-control mb-2"}))
+
+    password1 = forms.CharField(
+        label="Password", 
+        max_length=32, 
+        widget=PasswordInput(
+            attrs={
+                "required": True, 
+                "class": "form-control mb-2"}))
+
+    password2 = forms.CharField(
+        label="Password confirmation", 
+        max_length=32, 
+        widget=PasswordInput(
+            attrs={
+                "required": True, 
+                "class": "form-control mb-2"}))
 
 
     def clean_first_name(self):
@@ -53,6 +97,8 @@ class RegisterForm(forms.Form):
 
         return username
 
+# TODO: VALIDATE IF USERNAME/ EMAIL ALREADY EXISTS. IF SO: RAISE VALIDATION ERROR
+ 
     
     def clean_password1(self):
         """ 
@@ -82,19 +128,45 @@ class RegisterForm(forms.Form):
 
     def save(self, commit=True): 
         cd = self.cleaned_data
+
         data = {
             "first_name": cd["first_name"],
             "last_name": cd["last_name"]
         }
+
         user = User.objects.create_user(
             username=cd["username"],
             email=cd["email"],
             password=cd["password1"],
             **data
         )
+
         return user 
 
         
+class LoginForm(forms.Form):
+        
+
+    username = forms.CharField(
+        min_length=4, 
+        max_length=150, 
+        widget=TextInput(
+            attrs={
+                "class": "form-control", 
+                "id": "floatingUsername", 
+                "placeholder": "Username", 
+                "autofocus": True}))
+    
+    password = forms.CharField(
+        min_length=8, 
+        max_length=32, 
+        widget=PasswordInput(
+            attrs={
+                "class": "form-control", 
+                "id": "floatingPassword", 
+                "placeholder": "Password"}))
+
+
 class UserForm(ModelForm):
 
       
