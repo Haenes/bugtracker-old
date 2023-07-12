@@ -94,11 +94,20 @@ class RegisterForm(forms.Form):
 
         if not validate_string(username):
             raise ValidationError("Username must have only letters")
+        elif User.objects.filter(username=username):
+            raise ValidationError("That username already exists")
 
         return username
+    
 
-# TODO: VALIDATE IF USERNAME/ EMAIL ALREADY EXISTS. IF SO: RAISE VALIDATION ERROR
- 
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+
+        if User.objects.filter(email=email):
+            raise ValidationError("That email already exists")
+
+        return email
+
     
     def clean_password1(self):
         """ 
@@ -167,6 +176,7 @@ class LoginForm(forms.Form):
                 "placeholder": "Password"}))
 
 
+# TODO: ADD USERNAME VALIDATION
 class UserForm(ModelForm):
 
       
@@ -200,8 +210,11 @@ class UserForm(ModelForm):
 
         if not validate_string(last_name):
             raise ValidationError("Name must have only letters")
+        
+        return last_name
 
 
+# TODO: CHANGE MIN_LENGHT OF FIELDS IN PROJECT MODEL. AFTER THAT - DELETE LEN CHECKS IN THE FORM
 class ProjectDetailsForm(ModelForm):
 
 

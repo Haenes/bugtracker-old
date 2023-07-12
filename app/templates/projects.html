@@ -15,8 +15,8 @@
 
 <body>
 
-	<!-- NAVBAR -->
-	<!-- LEFT SIDE -->
+<!-- NAVBAR -->
+<!-- LEFT SIDE -->
 	<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
 		<div class="container-fluid">
 
@@ -36,15 +36,15 @@
 						</a>
 						<ul class="dropdown-menu text-small">
 							<li><a class="dropdown-item" href="#">Starred</a></li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
+							<li><hr class="dropdown-divider"></li>
 							<li><a class="dropdown-item" href="{% url 'projects' %}">View all projects</a></li>
 
-							<!-- TRIGER PROJECT MODAL -->
+<!-- TRIGER PROJECT MODAL -->
 							<li><a class="dropdown-item" data-bs-toggle="modal"
 									data-bs-target="#staticBackdropProjectNav" href="#">
-									Create project</a></li>
+									Create project
+								</a>
+							</li>
 						</ul>
 					</li>
 
@@ -55,16 +55,14 @@
 						</a>
 						<ul class="dropdown-menu text-small">
 							<li><a class="dropdown-item" href="#">Recent</a></li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
+							<li><hr class="dropdown-divider"></li>
 							<li><a class="dropdown-item" href="#">View all filters</a></li>
 							<li><a class="dropdown-item" href="#">Advanced issue search</a></li>
 						</ul>
 					</li>
 
 
-					<!-- TRIGER ISSUE MODAL-->
+<!-- TRIGER ISSUE MODAL-->
 					<ul class="navbar-nav me-auto mt-1 mb-4 mb-lg-0">
 						<li class="nav-item">
 							<button type="button" class="btn btn-outline-primary rounded-3" data-bs-toggle="modal"
@@ -75,111 +73,7 @@
 					</ul>
 				</ul>
 
-
-				<!-- ISSUE MODAL -->
-				<div class="modal fade" id="staticBackdropIssue" data-bs-backdrop="static" tabindex="-1"
-					aria-labelledby="staticBackdropIssue" aria-hidden="true">
-					<div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
-						<div class="modal-content">
-
-							<div class="modal-header">
-								<h1 class="modal-title fs-5 text-secondary" id="staticBackdropIssue">Create issue</h1>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
-							</div>
-
-							<div class="modal-body">
-
-								<div class="container-fluid">
-									<div class="row">
-										<div class="col-md-6">
-											<p class="text-secondary m-0 text-start">Project*</p>
-											<select class="form-select form-select-sm bg-body-tertiary" 
-												aria-label="form-select-sm projectName" required>
-												{% for project in projects_list %}
-													<option value="{{project.id}}">
-														{{ project.name }}
-													</option>
-												{% endfor %}
-											</select>
-										</div>
-									</div>
-
-									<div class="row mt-4">
-										<div class="col-md-6">
-											<p class="text-secondary m-0 text-start">Issue type*</p>
-											<select class="form-select form-select-sm bg-body-tertiary" 
-												aria-label="form-select-sm projectName" required>
-												{% for issue_type in issue_types_list %}
-													<option value="{{ issue_type.id }}">
-														{{ issue_type.name }}
-													</option>
-												{% endfor %}
-											</select>
-										</div>
-									</div>
-
-									<div class="row mt-4">
-										<div class="col-md-6">
-											<p class="text-secondary m-0 text-start">Issue priority*</p>
-											<select class="form-select form-select-sm bg-body-tertiary" aria-label="form-select-sm projectName" required>
-												{% for issue_priority in issue_priority_list %}
-												<option value="{{ issue_type.id }}">
-													{{ issue_priority.name }}
-												</option>
-												{% endfor %}
-											</select>
-										</div>
-									</div>
-
-									<hr class="border-1 mt-4">
-
-									<div class="row">
-										<div class="col-md-12">
-											<p class="text-secondary m-0 text-start">Summary*</p>
-											<input type="text" class="form-control bg-body-tertiary"
-												aria-label="Sizing example input"
-												aria-describedby="inputGroup-sizing-default" required>
-										</div>
-									</div>
-
-									<div class="row mt-4">
-										<div class="col-md-12">
-											<p class="text-secondary m-0 text-start">Description</p>
-											<div class="form-outline mb-3">
-												<textarea class="form-control w-100 bg-body-tertiary"
-													id="textAreaExample5" rows="5"></textarea>
-											</div>
-
-										</div>
-									</div>
-
-									<div class="row mt-2">
-										<div class="col-md-6">
-											<p class="text-secondary m-0 text-start">Due date</p>
-											<form>
-												<div class="form-group">
-													<input type="date" class="form-control bg-body-tertiary">
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							<div class="modal-footer">
-<!-- !!! -->
-								<!-- <a href=""><button type="button"
-										class="btn btn-primary">Create</button></a> -->
-										<!-- : {% url'boards']
-											projects_list.name %} -->
-							</div>
-						</div>
-					</div>
-				</div>
-
-
-				<!-- RIGTH SIDE -->
+<!-- RIGTH SIDE -->
 				<form class="col-12 col-lg-3 me-3" role="search">
 					<input type="search" class="form-control" placeholder="Search" aria-label="Search">
 				</form>
@@ -209,6 +103,7 @@
 								<ul class="dropdown-menu text-small shadow"
 									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
 									data-popper-placement="bottom-end">
+
 									<li><a class="dropdown-item" href="#">System</a></li>
 									<li><a class="dropdown-item" href="#">Projects</a></li>
 									<li><a class="dropdown-item" href="#">Issues</a></li>
@@ -223,11 +118,12 @@
 								<ul class="dropdown-menu text-small shadow"
 									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
 									data-popper-placement="bottom-end">
-									<li><a class="dropdown-item" href="{% url 'accounts' user_id %}">Account
-											settings</a></li>
-									<li>
-										<hr class="dropdown-divider">
+
+									<li><a class="dropdown-item" href="{% url 'accounts' user_id %}">
+										Account settings
+										</a>
 									</li>
+									<li><hr class="dropdown-divider"></li>
 									<li><a class="dropdown-item" href="{% url 'login' %}">Sign out</a></li>
 								</ul>
 							</li>
@@ -240,87 +136,21 @@
 	</nav>
 
 
-	<!-- MAIN -->
+<!-- MAIN -->
 	<div class="container-fluid">
 		<div>
-			<!-- <div class="col-3"> -->
 			<div class="ms-auto mt-3">
 				<h4>Projects</h4>
 			</div>
 
 
-			<!-- TRIGER PROJECT MODAL -->
+<!-- TRIGER PROJECT MODAL -->
 			<button type="button" class="btn btn-outline-primary rounded-3 mt-2" data-bs-toggle="modal"
 				data-bs-target="#staticBackdropProject">
 				Create new project
 			</button>
 
-			<!-- PROJECT MODAL -->
-			<div class="modal fade" id="staticBackdropProject" data-bs-backdrop="static" tabindex="-1"
-				aria-labelledby="staticBackdropProject" aria-hidden="true" data-backdrop="static">
-				<div class="modal-dialog  modal-dialog-centered">
-					<div class="modal-content">
-
-						<div class="modal-header">
-							<h1 class="modal-title fs-5 text-secondary" id="staticBackdropProject">Create project</h1>
-							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-
-						<div class="modal-body">
-
-							<div class="container-fluid">
-								<div class="row">
-									<div class="col-md-6">
-										<p class="text-secondary m-0 text-start">Name*</p>
-										<input type="text" class="form-control bg-body-tertiary"
-											aria-label="Sizing example input"
-											aria-describedby="inputGroup-sizing-default" required>
-									</div>
-								</div>
-
-								<div class="row mt-4">
-									<div class="col-md-6">
-										<p class="text-secondary m-0 text-start">Key*</p>
-										<input type="text" class="form-control bg-body-tertiary"
-											aria-label="Sizing example input"
-											aria-describedby="inputGroup-sizing-default" required>
-									</div>
-								</div>
-
-								<!-- <div class="row mt-4">
-									<div class="col-md-12 mb-2">
-										<p class="text-secondary m-0 text-start">Type*</p>
-										<select class="form-select form-select-sm bg-body-tertiary"
-											aria-label="form-select-sm projectName" required>
-											<option value="1">Type1</option>
-											<option value="2">Type2</option>
-											<option value="3">Type3</option>
-										</select>
-									</div>
-								</div> -->
-
-								<div class="row mt-4">
-									<div class="col-md-12 mb-2">
-										<p class="text-secondary m-0 text-start">Type*</p>
-										<select class="form-select form-select-sm bg-body-tertiary" aria-label="form-select-sm projectName" required>
-											{% for project_type in project_types_list %}
-											<option value="{{project_type.id}}">{{ project_type.name }}</option>
-											{% endfor %}
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="modal-footer">
-							<a href="{% url 'projects' %}"><button type="button"
-									class="btn btn-primary">Create</button></a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- TABLE -->
+<!-- TABLE -->
 			<div class="table-responsive mt-3 text-center w-auto">
 				<table class="table">
 					<thead>
@@ -377,7 +207,7 @@
 	</div>
 
 
-	<!-- PROJECT MODAL (LINE 42) -->
+<!-- PROJECT MODAL (LINE 42) -->
 	<div class="modal fade" id="staticBackdropProjectNav" data-bs-backdrop="static" tabindex="-1"
 		aria-labelledby="staticBackdropProjectNav" aria-hidden="true" data-backdrop="static">
 		<div class="modal-dialog  modal-dialog-centered">
@@ -409,18 +239,6 @@
 							</div>
 						</div>
 
-						<!-- <div class="row mt-4">
-							<div class="col-md-12 mb-2">
-								<p class="text-secondary m-0 text-start">Type*</p>
-								<select class="form-select form-select-sm bg-body-tertiary"
-									aria-label="form-select-sm projectName" required>
-									<option value="1">Type1</option>
-									<option value="2">Type2</option>
-									<option value="3">Type3</option>
-								</select>
-							</div>
-						</div> -->
-
 						<div class="row mt-4">
 							<div class="col-md-12 mb-2">
 								<p class="text-secondary m-0 text-start">Type*</p>
@@ -435,6 +253,158 @@
 					</div>
 				</div>
 
+				<div class="modal-footer">
+					<a href="{% url 'projects' %}"><button type="button" class="btn btn-primary">Create</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- ISSUE MODAL (LINE 65) -->
+	<div class="modal fade" id="staticBackdropIssue" data-bs-backdrop="static" tabindex="-1"
+		aria-labelledby="staticBackdropIssue" aria-hidden="true">
+		<div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+	
+				<div class="modal-header">
+					<h1 class="modal-title fs-5 text-secondary" id="staticBackdropIssue">Create issue</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+	
+				<div class="modal-body">
+	
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Project*</p>
+								<select class="form-select form-select-sm bg-body-tertiary"
+									aria-label="form-select-sm projectName" required>
+									{% for project in projects_list %}
+									<option value="{{project.id}}">
+										{{ project.name }}
+									</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+	
+						<div class="row mt-4">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Issue type*</p>
+								<select class="form-select form-select-sm bg-body-tertiary"
+									aria-label="form-select-sm projectName" required>
+									{% for issue_type in issue_types_list %}
+									<option value="{{ issue_type.id }}">
+										{{ issue_type.name }}
+									</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+	
+						<div class="row mt-4">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Issue priority*</p>
+								<select class="form-select form-select-sm bg-body-tertiary"
+									aria-label="form-select-sm projectName" required>
+									{% for issue_priority in issue_priority_list %}
+									<option value="{{ issue_type.id }}">
+										{{ issue_priority.name }}
+									</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+	
+						<hr class="border-1 mt-4">
+	
+						<div class="row">
+							<div class="col-md-12">
+								<p class="text-secondary m-0 text-start">Summary*</p>
+								<input type="text" class="form-control bg-body-tertiary" aria-label="Sizing example input"
+									aria-describedby="inputGroup-sizing-default" required>
+							</div>
+						</div>
+	
+						<div class="row mt-4">
+							<div class="col-md-12">
+								<p class="text-secondary m-0 text-start">Description</p>
+								<div class="form-outline mb-3">
+									<textarea class="form-control w-100 bg-body-tertiary" id="textAreaExample5"
+										rows="5"></textarea>
+								</div>
+	
+							</div>
+						</div>
+	
+						<div class="row mt-2">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Due date</p>
+								<form>
+									<div class="form-group">
+										<input type="date" class="form-control bg-body-tertiary">
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+	
+				<div class="modal-footer">
+					<!-- !!! -->
+					<!-- <a href=""><button type="button"
+											class="btn btn-primary">Create</button></a> -->
+					<!-- : {% url'boards']
+												projects_list.name %} -->
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- PROJECT MODAL (LINE 147) -->
+	<div class="modal fade" id="staticBackdropProject" data-bs-backdrop="static" tabindex="-1"
+		aria-labelledby="staticBackdropProject" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog  modal-dialog-centered">
+			<div class="modal-content">
+	
+				<div class="modal-header">
+					<h1 class="modal-title fs-5 text-secondary" id="staticBackdropProject">Create project</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+	
+				<div class="modal-body">
+	
+					<div class="container-fluid">
+						<div class="row">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Name*</p>
+								<input type="text" class="form-control bg-body-tertiary" aria-label="Sizing example input"
+									aria-describedby="inputGroup-sizing-default" required>
+							</div>
+						</div>
+	
+						<div class="row mt-4">
+							<div class="col-md-6">
+								<p class="text-secondary m-0 text-start">Key*</p>
+								<input type="text" class="form-control bg-body-tertiary" aria-label="Sizing example input"
+									aria-describedby="inputGroup-sizing-default" required>
+							</div>
+						</div>
+	
+						<div class="row mt-4">
+							<div class="col-md-12 mb-2">
+								<p class="text-secondary m-0 text-start">Type*</p>
+								<select class="form-select form-select-sm bg-body-tertiary"
+									aria-label="form-select-sm projectName" required>
+									{% for project_type in project_types_list %}
+									<option value="{{project_type.id}}">{{ project_type.name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+					</div>
+				</div>
+	
 				<div class="modal-footer">
 					<a href="{% url 'projects' %}"><button type="button" class="btn btn-primary">Create</button></a>
 				</div>
