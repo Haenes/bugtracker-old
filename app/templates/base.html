@@ -94,7 +94,7 @@
 										<li>
 											<hr class="dropdown-divider">
 										</li>
-										<li><a class="dropdown-item" href="{% url 'login' %}">Sign out</a></li>
+										<li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
 									</ul>
 								</li>
 
@@ -104,6 +104,8 @@
 				</div>
 			</div>
 		</nav>
+		{% block sidebar %}
+		{% endblock %}
 
 		{% block main %}
 		{% endblock %}

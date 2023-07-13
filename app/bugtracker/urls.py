@@ -8,6 +8,7 @@ urlpatterns = [
     path("boards/<int:project_id>/project-settings/", views.project_settings, name="project-settings"),
     path("accounts/<int:user_id>/", views.accounts, name="accounts"),
     path("login/", views.login_view, name="login"),
+    path("logout/", views.logout_view, name="logout"),
     path("register/", views.register, name="register"),
     path("password-reset/", views.password_reset, name="password-reset"),
 ]

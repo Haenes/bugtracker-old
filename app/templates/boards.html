@@ -22,56 +22,7 @@
 {% endblock %}
 
 {% block main %}
-
-<!-- SIDEBAR -->
-	<div class="container-fluid">
-		<div class="row flex-nowrap">
-			<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-body-tertiary border-end">
-				<div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-
-					<ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start"
-						id="menu">
-						<li class="nav-item">
-							<a href="{% url 'boards' project.id %}" class="nav-link px-0 align-middle text-secondary">
-								<i class="fs-4 bi bi-kanban icon-color"></i>
-								<span class="ms-1 d-none d-sm-inline">Board</span>
-							</a>
-						</li>
-
-						<li>
-							<a href="{% url 'project-settings' project.id %}"
-								class="nav-link px-0 align-middle text-secondary">
-								<i class="fs-4 bi bi-gear-wide icon-color"></i>
-								<span class="ms-1 d-none d-sm-inline">Project setting</span>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-
-<!-- MAIN CONTENT -->
-			<div class="col py-3 mx-1" style="text-align: justify;">
-
-<!-- BREADCRUMB -->
-				<nav aria-label="Breadcrumb">
-					<ol class="breadcrumb">
-
-						<li class="breadcrumb-item">
-							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
-								link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'projects'%}">
-								Projects
-							</a>
-						</li>
-
-						<li class="breadcrumb-item active">
-							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
-			                    link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'boards' project_id%}">
-								{{ project.name }}
-							</a>
-						</li>
-
-					</ol>
-				</nav>
+	{% include 'sidebar.html' %}
 
 <!-- FAVORITE PROJECT STAR -->
 				<div class="row mt-2">
@@ -150,7 +101,7 @@
 
 											<div class="card-footer border-0 bg-transparent">
 												<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
-													data-bs-target="#staticBackdropBoardIssue">{{ project.key }}-{{ issue.id }}
+													data-bs-target="#staticBackdropBoard{{issue.id}}">{{ project.key }}-{{ issue.id }}
 												</button>
 											</div>
 										</div>
@@ -176,14 +127,14 @@
 
 								{% for issue in issues_list %}
 									{% if issue.status == "In progress" %}
-										<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.issue.id}}">
+										<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
 											<div class="card-body">
 												{{ issue.title }}
 											</div>
 							
 											<div class="card-footer border-0 bg-transparent">
 												<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
-													data-bs-target="#staticBackdropBoardIssue">{{ project.key }}-{{ issue.id}}
+													data-bs-target="#staticBackdropBoard{{issue.id}}">{{ project.key }}-{{ issue.id}}
 												</button>
 											</div>
 										</div>
@@ -215,7 +166,7 @@
 							
 											<div class="card-footer border-0 bg-transparent">
 												<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
-													data-bs-target="#staticBackdropBoardIssue">{{ project.key }}-{{ issue.id}}
+													data-bs-target="#staticBackdropBoard{{issue.id}}">{{ project.key }}-{{ issue.id}}
 												</button>
 											</div>
 										</div>
@@ -286,9 +237,10 @@
 	</div>
 
 <!-- BOARD CREATE ISSUE MODAL -->
-	<div class="modal fade" id="staticBackdropBoardIssue" data-bs-backdrop="static" tabindex="-1"
+{% for issue in issues_list %}
+	<div class="modal fade" id="staticBackdropBoard{{issue.id}}" data-bs-backdrop="static" tabindex="-1"
 		aria-labelledby="staticBackdropBoardIssue" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered  modal-lg">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
 			<div class="modal-content">
 
 				<div class="modal-header border-0">
@@ -300,12 +252,12 @@
 					<div class="container">
 						<div class="row justify-content-between text-start">
 							<div class="col mt-2 top-0 start-0">
-								<h5>*Issue title*</h5>
+								<h5>{{ issue.title }}</h5>
 							</div>
 
 							<div class="col-3">
 								<select class="form-select text-bg-primary">
-									<option selected>*CurCategory*</option>
+									<option selected>{{ issue.status}}</option>
 									<option value="1">To Do</option>
 									<option value="2">In Progress</option>
 									<option value="3">Done</option>
@@ -318,17 +270,22 @@
 						<div class="row justify-content-between text-start mt-3">
 							<div class="col-6">
 								<div class="form-outline mb-3">
+									{% if issue.description %}
 									<textarea class="form-control w-100 bg-body-tertiary" id="textAreaExample5" rows="5"
-										placeholder="*Current description* IF NO: *Add a description*"></textarea>
+										placeholder="{{ issue.description }}"></textarea>
+									{% else %}
+									<textarea class="form-control w-100 bg-body-tertiary" id="textAreaExample5" rows="5"
+										placeholder="Add description"></textarea>
+									{% endif %}
 								</div>
 
 							</div>
 
 							<div class="col-5">
 								<div class="d-flex flex-column ">
-									<div class="p-2">Priority: *Priority*</div>
-									<div class="p-2">Created: *Created time (M D, Y, time)*</div>
-									<div class="p-2">Updated: *Updated time*</div>
+									<div class="p-2">Priority: {{ issue.priority }}</div>
+									<div class="p-2">Created: {{ issue.created }}</div>
+									<div class="p-2">Updated: {{ issue.updated}}</div>
 									<hr>
 									<div class="ms-2 mt-0">
 										<a href="#" class="nav-link px-0 text-end text-secondary">
@@ -346,5 +303,6 @@
 			</div>
 		</div>
 	</div>
+{% endfor %}
 
 {% endblock %}

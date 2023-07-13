@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 
 from .models import Project, Project_type, Issue_priority, Issue_type, Issue
@@ -16,6 +17,7 @@ issue_priority_list = Issue_priority.objects.all()
 user = User.objects.get(id=1)
 
 
+@login_required(login_url="/login/")
 def projects(request):
     context = {
         'projects_list': projects_list,
@@ -61,6 +63,7 @@ def projects(request):
     return render(request, "projects.html", context)
 
 
+@login_required(login_url="/login/")
 def boards(request, project_id):  
 
     project = Project.objects.get(id=project_id)
@@ -98,6 +101,7 @@ def boards(request, project_id):
     return render(request, "boards.html", context)
 
 
+@login_required(login_url="/login/")
 def project_settings(request, project_id):
     project = Project.objects.get(id=project_id)
 
@@ -131,6 +135,7 @@ def project_settings(request, project_id):
     return render(request, "project-settings.html", context)
 
 
+@login_required(login_url="/login/")
 def accounts(request, user_id):
     user = User.objects.get(id=user_id)
     project = Project.objects.get(name='BugTracker')
@@ -165,6 +170,7 @@ def accounts(request, user_id):
         context['user_form'] = user_form
 
     return render(request, "accounts.html", context)
+
 
 
 def login_view(request):
@@ -203,6 +209,11 @@ def register(request):
         register_form = RegisterForm()
 
     return render(request, "register.html", {"register_form": register_form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("login")
 
 
 def password_reset(request):

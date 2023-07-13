@@ -1,0 +1,50 @@
+{% block sidebar %}
+<!-- SIDEBAR -->
+	<div class="container-fluid">
+		<div class="row flex-nowrap">
+			<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-body-tertiary border-end">
+				<div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+
+					<ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+						<li class="nav-item">
+							<a href="{% url 'boards' project.id %}" class="nav-link px-0 align-middle text-secondary">
+								<i class="fs-4 bi bi-kanban icon-color"></i>
+								<span class="ms-1 d-none d-sm-inline">Board</span>
+							</a>
+						</li>
+
+						<li>
+							<a href="{% url 'project-settings' project.id %}"
+								class="nav-link px-0 align-middle text-secondary">
+								<i class="fs-4 bi bi-gear-wide icon-color"></i>
+								<span class="ms-1 d-none d-sm-inline">Project setting</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+<!-- MAIN PART -->
+			<div class="col py-3 mx-1" style="text-align: justify;">
+
+<!-- BREADCRUMB -->
+				<nav aria-label="Breadcrumb">
+					<ol class="breadcrumb">
+
+						<li class="breadcrumb-item">
+							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+									link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'projects'%}">
+								Projects
+							</a>
+						</li>
+
+						<li class="breadcrumb-item active">
+							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+									link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'boards' project_id%}">
+								{{ project.name }}
+							</a>
+						</li>
+
+					</ol>
+				</nav>
+{% endblock %}
