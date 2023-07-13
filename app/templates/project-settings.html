@@ -1,133 +1,9 @@
+{% extends 'base.html' %}
 {% load static %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %} Project settings {% endblock%}
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>BugTracker</title>
-
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-	<link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-
-<body>
-
-<!-- NAVBAR -->
-<!-- LEFT SIDE OF NAVBAR -->
-	<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
-		<div class="container-fluid">
-			<a class="navbar-brand" href="{% url 'projects' %}">BugTracker</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-				aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-
-			<div class="collapse navbar-collapse" id="navbarText">
-				<ul class="navbar-nav nav-underline me-auto mb-lg-0">
-					<!-- <ul class="navbar-nav me-auto mb-lg-0"> -->
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-							aria-expanded="false">
-							Projects
-						</a>
-						<ul class="dropdown-menu text-small">
-							<li><a class="dropdown-item" href="#">Starred</a></li>
-							<li>
-								<hr class="dropdown-divider">
-							</li>
-							<li><a class="dropdown-item" href="{% url 'projects' %}">View all projects</a></li>
-
-<!-- TRIGER PROJECT MODAL -->
-							<li><a class="dropdown-item" data-bs-toggle="modal"
-									data-bs-target="#staticBackdropProjectNav" href="#">Create project</a></li>
-						</ul>
-					</li>
-
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-							aria-expanded="false">
-							Filters
-						</a>
-						<ul class="dropdown-menu text-small">
-							<li><a class="dropdown-item" href="#">Recent</a></li>
-							<li><hr class="dropdown-divider"></li>
-							<li><a class="dropdown-item" href="#">View all filters</a></li>
-							<li><a class="dropdown-item" href="#">Advanced issue search</a></li>
-						</ul>
-					</li>
-
-
-<!-- TRIGER ISSUE MODAL -->
-					<ul class="navbar-nav me-auto mt-1 mb-4 mb-lg-0">
-						<li class="nav-item">
-							<button type="button" class="btn btn-outline-primary rounded-3" data-bs-toggle="modal"
-								data-bs-target="#staticBackdrop">Create</button>
-						</li>
-					</ul>
-				</ul>
-
-<!-- RIGTH SIDE OF NAVBAR -->
-				<form class="col-12 col-lg-3 me-3" role="search">
-					<input type="search" class="form-control" placeholder="Search" aria-label="Search">
-				</form>
-
-				<div class="d-flex justify-content-center">
-					<ul class="navbar-expand p-0 mb-0 mb-lg-0">
-
-						<ul class="navbar-nav">
-
-							<li class="nav-item dropdown  m-1 me-3">
-								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
-									data-bs-placement="bottom" title="Help" aria-expanded="false">
-									<i class="fs-5 bi bi-question-circle icon-color"></i>
-								</a>
-								<ul class="dropdown-menu text-small shadow"
-									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
-									data-popper-placement="bottom-end">
-									<li><a class="dropdown-item" href="#">Raise a bug</a></li>
-									<li><a class="dropdown-item" href="#">Give feedback</a></li>
-								</ul>
-							</li>
-
-							<li class="nav-item dropdown m-1 me-3">
-								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
-									data-bs-placement="bottom" title="Settings" aria-expanded="false">
-									<i class="fs-5 bi bi-gear-wide icon-color"></i>
-								</a>
-								<ul class="dropdown-menu text-small shadow"
-									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
-									data-popper-placement="bottom-end">
-									<li><a class="dropdown-item" href="#">System</a></li>
-									<li><a class="dropdown-item" href="#">Projects</a></li>
-									<li><a class="dropdown-item" href="#">Issues</a></li>
-								</ul>
-							</li>
-
-							<li class="nav-item dropdown m-1">
-								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
-									data-bs-placement="bottom" title="User" aria-expanded="false">
-									<i class="fs-5 bi bi-person-circle icon-color"></i>
-								</a>
-								<ul class="dropdown-menu text-small shadow"
-									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
-									data-popper-placement="bottom-end">
-									<li><a class="dropdown-item" href="{% url 'accounts' user_id %}">Account settings</a></li>
-									<li><hr class="dropdown-divider"></li>
-									<li><a class="dropdown-item" href="{% url 'login' %}">Sign out</a></li>
-								</ul>
-							</li>
-
-						</ul>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</nav>
-
-
+{% block main %}
 <!-- SIDEBAR -->
 	<div class="container-fluid">
 		<div class="row flex-nowrap">
@@ -152,7 +28,6 @@
 					</ul>
 				</div>
 			</div>
-
 
 <!-- MAIN CONTENT -->
 			<div class="col py-3 mx-1" style="text-align: justify;">
@@ -215,65 +90,8 @@
 						</form>
 					</div>
 				</div>
-
-
-<!-- PROJECT MODAL (LINE 43) -->
-	<div class="modal fade" id="staticBackdropProjectNav" data-bs-backdrop="static" tabindex="-1"
-		aria-labelledby="staticBackdropProjectNav" aria-hidden="true" data-backdrop="static">
-		<div class="modal-dialog  modal-dialog-centered">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<h1 class="modal-title fs-5 text-secondary" id="staticBackdropProjectNav">Create project</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-
-				<div class="modal-body">
-
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-md-6">
-								<p class="text-secondary m-0 text-start">Name*</p>
-								<input type="text" class="form-control bg-body-tertiary"
-									aria-label="Sizing example input" 
-									aria-describedby="inputGroup-sizing-default" required>
-							</div>
-						</div>
-
-						<div class="row mt-4">
-							<div class="col-md-6">
-								<p class="text-secondary m-0 text-start">Key*</p>
-								<input type="text" class="form-control bg-body-tertiary"
-									aria-label="Sizing example input"
-									aria-describedby="inputGroup-sizing-default" required>
-							</div>
-						</div>
-
-						<div class="row mt-4">
-							<div class="col-md-12 mb-2">
-								<p class="text-secondary m-0 text-start">Type*</p>
-								<select class="form-select form-select-sm bg-body-tertiary"
-									aria-label="form-select-sm projectName" required>
-									<option value="1">Type1</option>
-									<option value="2">Type2</option>
-									<option value="3">Type3</option>
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="modal-footer">
-					<a href="{% url 'projects' %}">
-						<button type="button" class="btn btn-primary">Create</button>
-					</a>
-				</div>
-			</div>
-		</div>
-	</div>
-
 					
-<!-- ISSUE MODAL (LINE 63) -->
+<!-- CREATE ISSUE MODAL -->
 	<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" tabindex="-1"
 		aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -372,8 +190,4 @@
 		</div>
 	</div>
 
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+{% endblock %}

@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib import messages
 
 from .models import Project, Project_type, Issue_priority, Issue_type, Issue
-from .forms import UserForm, ProjectDetailsForm, RegisterForm, LoginForm
+from .forms import UserForm, ProjectDetailsForm, RegisterForm, LoginForm, ProjectModalForm, IssueModalForm
 
 
 projects_list = Project.objects.order_by("-starred")
@@ -25,11 +25,47 @@ def projects(request):
         'issue_priority_list': issue_priority_list,
     }
 
+    if request.method == 'POST':
+        project_modal_form = ProjectModalForm(request.POST or None)
+        issue_modal_form = IssueModalForm(request.POST or None)
+
+
+        if project_modal_form.is_valid():
+            project_modal_form.save()
+            context['projects_list'] = Project.objects.order_by("-starred")
+
+        if issue_modal_form.is_valid():
+            cd = issue_modal_form.cleaned_data
+
+            Issue.objects.create(
+                project=cd["project"],
+                title=cd["title"],
+                description=cd["description"],
+                type=cd["type"],
+                priority=cd["priority"],
+                status="To do",
+                author_id=user.id,
+                duedate=cd["duedate"]
+            )
+        
+        context['project_modal_form'] = project_modal_form
+        context['issue_modal_form'] = issue_modal_form
+
+    else:
+        project_modal_form = ProjectModalForm()
+        issue_modal_form = IssueModalForm()
+
+        context['project_modal_form'] = project_modal_form
+        context['issue_modal_form'] = issue_modal_form
+
     return render(request, "projects.html", context)
 
 
 def boards(request, project_id):  
-    all_issues = Issue.objects.order_by('status_id')
+
+    project = Project.objects.get(id=project_id)
+    all_issues = Issue.objects.order_by('status')
+    user = User.objects.get(id=1)
 
     todo_issues = 0
     in_progress_issues = 0
@@ -37,23 +73,19 @@ def boards(request, project_id):
     issue_list = []
 
     for issue in all_issues:
-        if issue.project_id == project_id:
-            if issue.status_id == 1:
+        if issue.project_id == project.id:
+            if issue.status == "To do":
                 todo_issues += 1
-            elif issue.status_id == 2:
+            elif issue.status == "In progress":
                 in_progress_issues += 1
             else:
                 done_issues += 1           
             issue_list.append(issue)
-    
-    project = Project.objects.get(id=project_id)
-    project_id = project.id
-    user = User.objects.get(id=1)
 
     context = {
         'project': project,
         'user_id': user.id,
-        'project_id': project_id,
+        'project_id': project.id,
         'projects_list': projects_list,
         'issues_list': issue_list,
         'issue_types_list': issue_types_list,
@@ -85,9 +117,7 @@ def project_settings(request, project_id):
             project_form.save()
         
         context['project_form'] = project_form
-
-
-        
+      
     else:
         project_form = ProjectDetailsForm(
             initial = {

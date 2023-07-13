@@ -37,12 +37,20 @@ class Project_type(models.Model):
 
 
 class Project(models.Model):
+
+
+    PROJECT_TYPE = [
+        ("Fullstack software", "Fullstack software"),
+        ("Front-end software", "Front-end software"),
+        ("Back-end software", "Back-end software"),
+    ]
+
     name = models.CharField(max_length=255, unique=True)
     description = models.CharField(max_length=255, default='')
-    key = models.CharField(max_length=10, default=name, unique=True)
-    type = models.ForeignKey(Project_type, on_delete=models.PROTECT)
+    key = models.CharField(max_length=10, unique=True)
+    type = models.CharField(max_length=18, choices=PROJECT_TYPE)
     starred = models.BooleanField(verbose_name="favorite project", default=False)
-    created = models.DateTimeField(timezone.now())
+    created = models.DateTimeField(default=timezone.now)
 
     
     def __str__(self):
@@ -50,20 +58,40 @@ class Project(models.Model):
 
 
 class Issue(models.Model):
+
+
+    ISSUE_TYPE = [
+        ("Bug", "Bug"),
+        ("Feature", "Feature"),
+    ]
+
+    ISSUE_PRIORITY = [
+        ("Lowest", "Lowest"),
+        ("Low", "Low"),
+        ("Medium", "Medium"),
+        ("High", "High"),
+        ("Highest", "Highest"),
+    ]
+
+    ISSUE_STATUS = [
+        ("To do", "To do"),
+        ("In progress", "In progress"),
+        ("Done", "Done"),
+    ]
+
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    issue_num = models.PositiveIntegerField(unique=True)
     # key_issue = models.ForeignKey(projects, on_delete=models.CASCADE, unique=True,)
     title = models.CharField(max_length=255)
-    description = models.TextField(default='')
-    type = models.ForeignKey(Issue_type, on_delete=models.PROTECT)
-    priority = models.ForeignKey(Issue_priority, on_delete=models.PROTECT)
-    status = models.ForeignKey(Issue_status, on_delete=models.PROTECT)
+    description = models.TextField(blank=True, default='')
+    type = models.CharField(max_length=8, choices=ISSUE_TYPE)
+    priority = models.CharField(max_length=8, choices=ISSUE_PRIORITY)
+    status = models.CharField(max_length=11, choices=ISSUE_STATUS)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    duedate = models.DateTimeField()
-    closed  = models.DateTimeField(default=None)
-    timespent = models.PositiveIntegerField(default=0)
+    duedate = models.DateTimeField(blank=True, null=True)
+    closed  = models.DateTimeField(blank=True, null=True)
+    timespent = models.PositiveIntegerField(blank=True, default=0)
 
     def __str__(self):
         return self.title

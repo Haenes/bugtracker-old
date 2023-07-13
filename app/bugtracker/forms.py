@@ -1,10 +1,10 @@
 from django import forms
-from django.forms import ModelForm, TextInput, EmailInput, PasswordInput
+from django.forms import ModelForm, TextInput, Textarea, EmailInput, PasswordInput, Select, DateInput, CheckboxInput
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
+from django.utils import timezone
 
-from bugtracker.models import Project
+from bugtracker.models import Project, Issue
 
 import re
 
@@ -30,7 +30,7 @@ class RegisterForm(forms.Form):
 
     last_name = forms.CharField(
         label="Last name", 
-        min_length = 2, 
+        min_length=2, 
         max_length=255, 
         widget=TextInput(
             attrs={
@@ -39,7 +39,7 @@ class RegisterForm(forms.Form):
 
     username = forms.CharField(
         label="Username", 
-        min_length = 4, 
+        min_length=4, 
         max_length=150, 
         widget=TextInput(
             attrs={
@@ -244,3 +244,48 @@ class ProjectDetailsForm(ModelForm):
             raise ValidationError("Key must have only letters")
         
         return key
+
+
+class ProjectModalForm(ModelForm):
+
+
+    class Meta:
+        model = Project
+        fields = ["name", "key", "type", "starred"]
+
+        widgets = {
+            "name": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
+            "key": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
+            "type": Select(attrs={"class": "form-control bg-body-tertiary"}),
+            "starred": CheckboxInput(attrs={"name": "Favorite",}),
+        }
+
+    def save(self): 
+        cd = self.cleaned_data
+
+        project = Project.objects.create(
+            name=cd["name"],
+            key=cd["key"],
+            type=cd["type"],
+            starred=cd["starred"]
+        )
+
+        return project 
+
+
+class IssueModalForm(ModelForm):
+
+
+    class Meta:
+        model = Issue
+        fields = ["project", "type", "priority", "title", "description", "duedate", "author"]
+
+        widgets = {
+            "project": Select(attrs={"class": "form-control bg-body-tertiary"}),
+            "type": Select(attrs={"class": "form-control bg-body-tertiary"}),
+            "priority": Select(attrs={"class": "form-control bg-body-tertiary"}),
+            "title": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
+            "description": Textarea(attrs={"class": "form-control bg-body-tertiary", "rows": "5"}),
+            "duedate": DateInput(attrs={"type": "date", "placeholder": "mm-dd-yyyy", "class": "form-control bg-body-tertiary"}),
+            "author": TextInput(attrs={"author": forms.HiddenInput(),"class": "form-control bg-body-tertiary"}),
+        }
