@@ -5,7 +5,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 
 from .models import Project, Project_type, Issue_priority, Issue_type, Issue
-from .forms import UserForm, ProjectDetailsForm, RegisterForm, LoginForm, ProjectModalForm, IssueModalForm
+from .forms import UserForm, ProjectDetailsForm, RegisterForm, LoginForm, ProjectModalForm, IssueModalForm, IssueDetailsForm
 
 
 projects_list = Project.objects.order_by("-starred")
@@ -98,7 +98,68 @@ def boards(request, project_id):
         'done_issues': done_issues,
     }
 
+    if request.method == 'POST':
+        issue_modal_form = IssueModalForm(request.POST or None)
+
+        if issue_modal_form.is_valid():
+            cd = issue_modal_form.cleaned_data
+
+            Issue.objects.create(
+                project=cd["project"],
+                title=cd["title"],
+                description=cd["description"],
+                type=cd["type"],
+                priority=cd["priority"],
+                status="To do",
+                author_id=user.id,
+                duedate=cd["duedate"]
+            )
+        
+        context['issue_modal_form'] = issue_modal_form
+
+    else:
+        issue_modal_form = IssueModalForm()   
+
+        context['issue_modal_form'] = issue_modal_form
+
     return render(request, "boards.html", context)
+
+
+@login_required(login_url="/login/")
+def issue_details(request, project_id, issue_id):
+    print(issue_id)
+    project = Project.objects.get(id=project_id)
+    issue = Issue.objects.get(id=issue_id)
+
+    context = {
+        'user_id': user.id,
+        'project': project,
+    }
+
+    if request.method == 'POST':
+        issue_details_form = IssueDetailsForm(request.POST or None, instance=issue)
+
+        if issue_details_form.is_valid():
+            issue_details_form.save()
+
+        context['issue_details_form'] = issue_details_form
+
+    else:
+        issue_details_form = IssueDetailsForm(
+            initial = {
+                "project": project.id,
+                "status": issue.status,
+                "type": issue.type,
+                "priority": issue.priority,
+                "title": issue.title,
+                "description": issue.description,
+                "duedate": issue.duedate,
+                "author": issue.author,
+            }
+        )
+        context['issue_details_form'] = issue_details_form
+
+    return render(request, "issue-details.html", context)
 
 
 @login_required(login_url="/login/")

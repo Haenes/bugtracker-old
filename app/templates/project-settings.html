@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
+
 {% load static %}
 
-{% block title %} Project settings {% endblock%}
+{% block title %} Project settings {% endblock %}
+
+
+	<!-- <li class="breadcrumb-item">
+		<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+			link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'project-settings' project_id %}">
+		</a>
+	</li> -->
+
 
 {% block main %}
 	{% include 'sidebar.html' %}
-
+	
 <!-- PROJECT DETAILS -->
 	<div class="row mt-2">
 		<div class="container ms-3 mb-2">
@@ -17,7 +26,7 @@
 		</div>
 
 		<div class="ms-3">
-			<form action="{% url 'project-settings' project_id %}" method="post">
+			<form method="post">
 				{% csrf_token %}
 				<div class="col-2">
 					{{ project_form.as_p }}

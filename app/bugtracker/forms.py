@@ -257,8 +257,9 @@ class ProjectModalForm(ModelForm):
             "name": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "key": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "type": Select(attrs={"class": "form-control bg-body-tertiary"}),
-            "starred": CheckboxInput(attrs={"name": "Favorite",}),
+            "starred": CheckboxInput(attrs={"name": "Favorite", "style": "width:20px; height:20px"}),
         }
+
 
     def save(self): 
         cd = self.cleaned_data
@@ -286,6 +287,25 @@ class IssueModalForm(ModelForm):
             "priority": Select(attrs={"class": "form-control bg-body-tertiary"}),
             "title": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "description": Textarea(attrs={"class": "form-control bg-body-tertiary", "rows": "5"}),
+            "duedate": DateInput(attrs={"type": "date", "placeholder": "mm-dd-yyyy", "class": "form-control bg-body-tertiary"}),
+            "author": TextInput(attrs={"author": forms.HiddenInput(),"class": "form-control bg-body-tertiary"}),
+        }
+
+
+class IssueDetailsForm(ModelForm):
+
+
+    class Meta:
+        model = Issue
+        fields = ["project", "status", "type", "priority", "title", "description", "duedate", "author"]
+
+        widgets = {
+            "project": Select(attrs={"class": "form-select bg-body-tertiary"}),
+            "status": Select(attrs={"class": "form-select bg-body-tertiary"}),
+            "type": Select(attrs={"class": "form-select bg-body-tertiary"}),
+            "priority": Select(attrs={"class": "form-select bg-body-tertiary"}),
+            "title": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
+            "description": Textarea(attrs={"class": "form-control bg-body-tertiary", "rows": "7"}),
             "duedate": DateInput(attrs={"type": "date", "placeholder": "mm-dd-yyyy", "class": "form-control bg-body-tertiary"}),
             "author": TextInput(attrs={"author": forms.HiddenInput(),"class": "form-control bg-body-tertiary"}),
         }

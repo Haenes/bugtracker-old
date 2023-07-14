@@ -236,73 +236,63 @@
 		</div>
 	</div>
 
-<!-- BOARD CREATE ISSUE MODAL -->
-{% for issue in issues_list %}
-	<div class="modal fade" id="staticBackdropBoard{{issue.id}}" data-bs-backdrop="static" tabindex="-1"
-		aria-labelledby="staticBackdropBoardIssue" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-lg">
-			<div class="modal-content">
+<!-- BOARD ISSUE MODAL -->
+	{% for issue in issues_list %}
+		<div class="modal fade" id="staticBackdropBoard{{issue.id}}" data-bs-backdrop="static" tabindex="-1"
+			aria-labelledby="staticBackdropBoardIssue" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-lg">
+				<div class="modal-content">
 
-				<div class="modal-header border-0">
-					<p class="m-0">{{ project.key }}-{{ issue.id }}</p>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
+					<div class="modal-header">
+						<h6 class="modal-title fw-normal">{{ project.key }}-{{ issue.id }}</h6>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
 
-				<div class="modal-body">
-					<div class="container">
-						<div class="row justify-content-between text-start">
-							<div class="col mt-2 top-0 start-0">
-								<h5>{{ issue.title }}</h5>
+					<div class="modal-body">
+						<div class="container">
+							<div class="row justify-content-between text-start">
+								<div class="col mt-2 top-0 start-0">
+									<h5 class="fw-normal">{{ issue.title }}</h5>
+								</div>
 							</div>
 
-							<div class="col-3">
-								<select class="form-select text-bg-primary">
-									<option selected>{{ issue.status}}</option>
-									<option value="1">To Do</option>
-									<option value="2">In Progress</option>
-									<option value="3">Done</option>
-								</select>
-							</div>
-							<div class="col-2"><button type="button" class="btn btn-danger ">Delete</button></div>
+							<div class="row justify-content-between text-start mt-3">
+								<div class="col-6">
+									<div class="form-outline mb-3">
+										{% if issue.description %}
+										<textarea class="form-control w-100 bg-body-tertiary" id="textArea" rows="8"
+											placeholder="{{ issue.description }}" disabled></textarea>
+										{% else %}
+										{% endif %}
+									</div>
 
-						</div>
-
-						<div class="row justify-content-between text-start mt-3">
-							<div class="col-6">
-								<div class="form-outline mb-3">
-									{% if issue.description %}
-									<textarea class="form-control w-100 bg-body-tertiary" id="textAreaExample5" rows="5"
-										placeholder="{{ issue.description }}"></textarea>
-									{% else %}
-									<textarea class="form-control w-100 bg-body-tertiary" id="textAreaExample5" rows="5"
-										placeholder="Add description"></textarea>
-									{% endif %}
 								</div>
 
-							</div>
-
-							<div class="col-5">
-								<div class="d-flex flex-column ">
-									<div class="p-2">Priority: {{ issue.priority }}</div>
-									<div class="p-2">Created: {{ issue.created }}</div>
-									<div class="p-2">Updated: {{ issue.updated}}</div>
-									<hr>
-									<div class="ms-2 mt-0">
-										<a href="#" class="nav-link px-0 text-end text-secondary">
-											<i class="fs-5 bi bi-gear-wide icon-color"></i>
-											<span class="ms-1 d-none d-sm-inline">Configure</span>
-										</a>
+								<div class="col-5">
+									<div class="d-flex flex-column">
+										<div class="p-2 fw-normal">Status:   {{ issue.status }}</div>
+										<div class="p-2 fw-normal">Priority: {{ issue.priority }}</div>
+										<div class="p-2 fw-normal">Type:     {{ issue.type }}</div>
+										<div class="p-2 fw-normal">Created:  {{ issue.created }}</div>
+										<div class="p-2 fw-normal">Updated:  {{ issue.updated }}</div>	
+										<hr>
+										<div class="align-self-end">
+											<a href="{% url 'issue-details' project.id issue.id %}" class="nav-link px-0 text-end text-secondary">
+												<i class="fs-5 bi bi-gear-wide icon-color"></i>
+												<span class="ms-1 d-none d-sm-inline">Configure</span>
+											</a>
+										</div>
 									</div>
 								</div>
 							</div>
+
 						</div>
-
 					</div>
-				</div>
 
+				</div>
 			</div>
 		</div>
-	</div>
-{% endfor %}
+
+	{% endfor %}
 
 {% endblock %}

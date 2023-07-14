@@ -1,4 +1,5 @@
 {% block sidebar %}
+
 <!-- SIDEBAR -->
 	<div class="container-fluid">
 		<div class="row flex-nowrap">
@@ -33,14 +34,14 @@
 
 						<li class="breadcrumb-item">
 							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
-									link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'projects'%}">
+								link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'projects' %}">
 								Projects
 							</a>
 						</li>
 
-						<li class="breadcrumb-item active">
+						<li class="breadcrumb-item">
 							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
-									link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'boards' project_id%}">
+								link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'boards' project.id %}">
 								{{ project.name }}
 							</a>
 						</li>

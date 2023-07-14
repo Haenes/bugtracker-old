@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} Issue details {% endblock %}
+
+{% block main %}
+	{% include 'sidebar.html' %}
+
+<!-- ISSUE DETAILS -->
+	<div class="row mt-2">
+		<div class="container ms-3 mb-2">
+			<div class="row justify-content-start text-start">
+				<h4 class="h4 fw-normal">Details</h4>
+			</div>
+		</div>
+
+		<div class="container mb-2">
+			<div class="ms-3">
+				<form method="post">
+					{% csrf_token %}
+
+					{% for field in issue_details_form %}
+
+						{% if field.name == 'title' or field.name == 'description' %}
+							<div class=" col-4 mb-3">
+								<p class=" m-0 text-start">{{ field.name|title }}</p>
+								{{ field }}
+							</div>
+
+						{% else %}
+							<div class="col-2 mb-3">
+								<p class=" m-0 text-start">{{ field.name|title }}</p>
+								{{ field }}
+							</div>
+
+						{% endif %}
+					{% endfor %}
+
+					<div class="col-4 mt-3">
+						<a href="#"
+							class="link-danger link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover"
+							data-bs-toggle="modal" data-bs-target="#staticBackdropDelete">
+							Delete issue
+						</a>
+					</div>
+
+					<div class="mt-3">
+						<button class="btn btn-primary" type="submit">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
