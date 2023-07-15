@@ -11,10 +11,11 @@ Right now this project is still being developed.
   2) Temporary SQLite database with Django Models and URLconf;
   3) All HTML (except all forms + modals from Bootstrap) is filled with information from database.
 
-<b>Need to do</b>:
-  1) Fill out all HTML forms and Bootstrap modals via Django forms;
-  2) Add ability to register and login + authentication;
-  3) Change db to SQL (after complete a fully working app);
-  4) Code refactoring (especially for templates HTML...)
-  5) Fix current bugs and future ones (if they are, AND THEY WILL).
-     
+<b>Nearest to-do list</b>:
+  1) Add validation for the remaining forms and modals;
+  2) Make "Author" and "Project" fields invisible to the user in the Issue details form and Issue create modal;
+  3) Get rid of a bunch of unnecessary imports and do;
+  4) Make the app finally dynamic (right now some data is taken in advance from db for convenience);
+
+<b>Bugs and errors detected</b>:
+  1) Projects are not tied to a specific user (who created it) - need to add Foreign key to Project model;
