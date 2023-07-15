@@ -27,10 +27,19 @@
 
 		<div class="ms-3">
 			<form method="post">
-				{% csrf_token %}
-				<div class="col-2">
-					{{ project_form.as_p }}
-				</div>
+				{% csrf_token %}					
+					{% for field in project_form %}
+						<div class="col-2 mb-3">
+							<p class=" m-0 text-start">{{ field.name|title }}</p>
+							{{ field }}
+						</div>
+
+						{% if field.errors %}
+							{% for error in field.errors %}
+								<ol class="mt-2 text-danger fw-medium p-0">{{ error }}</ol>
+							{% endfor %}
+						{% endif %}
+					{% endfor %}
 
 				<div class="col-4 mt-3">
 					<a href="#" 

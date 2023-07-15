@@ -6,14 +6,25 @@
 {% block main %}
 	<div class="ms-3 mt-3">
 		<h4 class="h4 mb-3 fw-normal">Account Details</h4>
-		<form action="{% url 'accounts' user_id %}" method="post">
+		<form method="post">
 			{% csrf_token %}
 			<div class="col-3">
-				{{ user_form.as_p }}
+				{% for field in user_form %}
+					<div class="col-8 mb-3">
+						{{ field.label }}				
+						{{ field }}
+					</div>
+				
+					{% if field.errors %}
+						{% for error in field.errors %}
+							<ol class="mt-2 text-danger fw-medium p-0">{{ error }}</ol>
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
 			</div> 
 
 <!-- CHANGE PASSWORD MODAL TRIGER -->
-			<div>
+			<div class="mt-3">
 				<a href="#"
 					class="link-primary link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover"
 					data-bs-toggle="modal" data-bs-target="#staticBackdropChangePassword">
@@ -23,9 +34,11 @@
 
 <!-- DELETE ACCOUNT MODAL TRIGER -->
 			<div class="mt-3">
-				<a href="#" class="link-danger link-offset-2-hover link-underline-opacity-0 
-					link-underline-opacity-100-hover" data-bs-toggle="modal" data-bs-target="#staticBackdropDelete">
-					Delete account</a>
+				<a href="#" 
+					class="link-danger link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover" 
+					data-bs-toggle="modal" data-bs-target="#staticBackdropDelete">
+					Delete account
+				</a>
 			</div>
 
 			<div class="mt-3">
@@ -36,104 +49,9 @@
 
 
 <!-- CREATE ISSUE MODAL -->
-	<div class="modal fade" id="staticBackdropIssue" data-bs-backdrop="static" tabindex="-1"
-		aria-labelledby="staticBackdropIssue" aria-hidden="true">
-		<div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
-			<div class="modal-content">
 
-				<div class="modal-header">
-					<h1 class="modal-title fs-5 text-secondary" id="staticBackdropIssue">Create issue</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-
-				<div class="modal-body">
-
-					<div class="container-fluid">
-						<div class="row">
-							<div class="col-md-6">
-								<p class="text-secondary m-0 text-start">Project*</p>
-								<select class="form-select form-select-sm bg-body-tertiary"
-									aria-label="form-select-sm projectName" required>
-									{% for project in projects_list %}
-									<option value="{{project.id}}">
-										{{ project.name }}
-									</option>
-									{% endfor %}
-								</select>
-							</div>
-						</div>
-
-						<div class="row mt-4">
-							<div class="col-md-6">
-								<p class="text-secondary m-0 text-start">Issue type*</p>
-								<select class="form-select form-select-sm bg-body-tertiary"
-									aria-label="form-select-sm projectName" required>
-									{% for issue_type in issue_types_list %}
-									<option value="{{ issue_type.id }}">
-										{{ issue_type.name }}
-									</option>
-									{% endfor %}
-								</select>
-							</div>
-						</div>
-
-						<div class="row mt-4">
-							<div class="col-md-6">
-								<p class="text-secondary m-0 text-start">Issue priority*</p>
-								<select class="form-select form-select-sm bg-body-tertiary"
-									aria-label="form-select-sm projectName" required>
-									{% for issue_priority in issue_priority_list %}
-									<option value="{{ issue_type.id }}">
-										{{ issue_priority.name }}
-									</option>
-									{% endfor %}
-								</select>
-							</div>
-						</div>
-
-						<hr class="border-1 mt-4">
-
-						<div class="row">
-							<div class="col-md-12">
-								<p class="text-secondary m-0 text-start">Summary*</p>
-								<input type="text" class="form-control bg-body-tertiary" aria-label="Sizing example input"
-									aria-describedby="inputGroup-sizing-default" required>
-							</div>
-						</div>
-
-						<div class="row mt-4">
-							<div class="col-md-12">
-								<p class="text-secondary m-0 text-start">Description</p>
-								<div class="form-outline mb-3">
-									<textarea class="form-control w-100 bg-body-tertiary" id="textAreaExample5"
-										rows="5"></textarea>
-								</div>
-
-							</div>
-						</div>
-
-						<div class="row mt-2">
-							<div class="col-md-6">
-								<p class="text-secondary m-0 text-start">Due date</p>
-								<form>
-									<div class="form-group">
-										<input type="date" class="form-control bg-body-tertiary">
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="modal-footer">
-					<a href="{% url 'boards' project.id %}"><button type="button"
-							class="btn btn-primary">Create</button></a>
-				</div>
-			</div>
-		</div>
-	</div>
 	
-<!-- CHANGE PASSWORD MODAL (LINE 15)-->
+<!-- CHANGE PASSWORD MODAL (LINE 26)-->
 	<div class="modal fade" id="staticBackdropChangePassword" data-bs-backdrop="static" data-bs-keyboard="true"
 		tabindex="-1" aria-labelledby="staticBackdropChangePassword" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
@@ -148,7 +66,7 @@
 						<label for="validationPassword" class="form-label text-secondary m-0">Old
 							password</label>
 						<div>
-							<input type="password" id="inputPassword6" class="form-control bg-body-tertiary" required>
+							<input type="password" id="inputPassword1" class="form-control bg-body-tertiary" required>
 						</div>
 						<div class="invalid-feedback">Please enter a valid password.</div>
 					</div>
@@ -157,7 +75,7 @@
 						<label for="validationPassword" class="form-label text-secondary m-0">New
 							password</label>
 						<div>
-							<input type="password" id="inputPassword6" class="form-control bg-body-tertiary"
+							<input type="password" id="inputPassword2" class="form-control bg-body-tertiary"
 								data-bs-toggle="popover" data-bs-placement="right" data-bs-custom-class="custom-popover"
 								data-bs-content="Your password must be 8 - 32 characters long, contain letters, numbers and special character."
 								required>
@@ -175,7 +93,7 @@
 		</div>
 	</div>
 
-<!-- ACCOUNT DELETE MODAL (LINE 24)-->
+<!-- ACCOUNT DELETE MODAL (LINE 35)-->
 	<div class="modal fade" id="staticBackdropDelete" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
 		aria-labelledby="staticBackdropDelete" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">

@@ -1,7 +1,10 @@
 from django.db import models
+from django.core.validators import MinLengthValidator
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+# Make email field in User modal unique (for UserForm)
+User._meta.get_field('email')._unique = True
 
 
 class Issue_type(models.Model):
@@ -45,14 +48,13 @@ class Project(models.Model):
         ("Back-end software", "Back-end software"),
     ]
 
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255, unique=True, validators=[MinLengthValidator(3, "Name field must contain at least 3 letters")])
     description = models.CharField(max_length=255, default='')
-    key = models.CharField(max_length=10, unique=True)
+    key = models.CharField(max_length=10, unique=True, validators=[MinLengthValidator(3, "Key field must contain at least 3 letters")])
     type = models.CharField(max_length=18, choices=PROJECT_TYPE)
     starred = models.BooleanField(verbose_name="favorite project", default=False)
     created = models.DateTimeField(default=timezone.now)
-
-    
+   
     def __str__(self):
         return self.name
 

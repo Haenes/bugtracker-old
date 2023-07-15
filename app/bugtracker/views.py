@@ -23,8 +23,6 @@ def projects(request):
         'projects_list': projects_list,
         'project_types_list': project_types_list,
         'user_id': user.id,
-        'issue_types_list': issue_types_list,
-        'issue_priority_list': issue_priority_list,
     }
 
     if request.method == 'POST':
@@ -88,11 +86,8 @@ def boards(request, project_id):
     context = {
         'project': project,
         'user_id': user.id,
-        'project_id': project.id,
-        'projects_list': projects_list,
+        'project_id': project.id,        
         'issues_list': issue_list,
-        'issue_types_list': issue_types_list,
-        'issue_priority_list': issue_priority_list,
         'todo_issues': todo_issues,
         'in_progress_issues': in_progress_issues,
         'done_issues': done_issues,
@@ -178,7 +173,7 @@ def project_settings(request, project_id):
     if request.method == 'POST':
         project_form = ProjectDetailsForm(request.POST or None, instance=project)
 
-        if project_form.is_valid():
+        if project_form.is_valid():         
             project_form.save()
         
         context['project_form'] = project_form
@@ -221,9 +216,9 @@ def accounts(request, user_id):
     else:
         user_form = UserForm(
             initial = {
-                "username": user.username, 
                 "first_name": user.first_name, 
                 "last_name": user.last_name, 
+                "username": user.username,
                 "email": user.email,
             }
         )
@@ -231,7 +226,6 @@ def accounts(request, user_id):
         context['user_form'] = user_form
 
     return render(request, "accounts.html", context)
-
 
 
 def login_view(request):

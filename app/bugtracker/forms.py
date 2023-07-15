@@ -90,7 +90,7 @@ class RegisterForm(forms.Form):
     
 
     def clean_username(self):
-        username = self.cleaned_data["username"]
+        username = self.cleaned_data["username"].lower()
 
         if not validate_string(username):
             raise ValidationError("Username must have only letters")
@@ -120,6 +120,7 @@ class RegisterForm(forms.Form):
         
         password1 = self.cleaned_data["password1"]
         pattern = re.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
+
         if not pattern.match(password1):
             raise ValidationError("The password doesn't match the conditions")
 
@@ -176,7 +177,6 @@ class LoginForm(forms.Form):
                 "placeholder": "Password"}))
 
 
-# TODO: ADD USERNAME VALIDATION
 class UserForm(ModelForm):
 
       
@@ -186,35 +186,34 @@ class UserForm(ModelForm):
 
         widgets = {
             "first_name": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
-            "last_name": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
+            "last_name": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}), 
             "username": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
             "email": EmailInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
         }
 
-        help_texts = {
-            "username": (""),
-        }
-
 
     def clean_first_name(self):
-        first_name = self.cleaned_data["first_name"].capitalize()
+        first_name = self.cleaned_data["first_name"]
 
-        if not validate_string(first_name):
+        if len(first_name) < 2:
+            raise ValidationError("First name must contain at least 2 letters")       
+        elif not validate_string(first_name):
             raise ValidationError("Name must have only letters")
 
         return first_name
     
 
     def clean_last_name(self):
-        last_name = self.cleaned_data["last_name"].capitalize()
+        last_name = self.cleaned_data["last_name"]
 
-        if not validate_string(last_name):
+        if len(last_name) < 2:
+            raise ValidationError("Last name must contain at least 2 letters") 
+        elif not validate_string(last_name):
             raise ValidationError("Name must have only letters")
         
         return last_name
 
 
-# TODO: CHANGE MIN_LENGHT OF FIELDS IN PROJECT MODEL. AFTER THAT - DELETE LEN CHECKS IN THE FORM
 class ProjectDetailsForm(ModelForm):
 
 
@@ -230,17 +229,17 @@ class ProjectDetailsForm(ModelForm):
 
     def clean_name(self):
         name = self.cleaned_data["name"]
-        if len(name) < 3:
-            raise ValidationError("Project name length must be more than 3 characters") 
+
+        if not validate_string(name):
+            raise ValidationError("Project name must have only letters")
 
         return name
     
 
     def clean_key(self):
-        key = self.cleaned_data["key"].upper()
-        if len(key) < 3:
-            raise ValidationError("Project key length must be more than 3 letters")
-        elif not validate_string(key):
+        key = self.cleaned_data["key"]
+
+        if not validate_string(key):
             raise ValidationError("Key must have only letters")
         
         return key
@@ -265,8 +264,8 @@ class ProjectModalForm(ModelForm):
         cd = self.cleaned_data
 
         project = Project.objects.create(
-            name=cd["name"],
-            key=cd["key"],
+            name=cd["name"].capitalize(),
+            key=cd["key"].upper(),
             type=cd["type"],
             starred=cd["starred"]
         )
