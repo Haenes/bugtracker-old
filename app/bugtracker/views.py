@@ -22,7 +22,6 @@ def projects(request):
 
     context = {
         'projects_list': projects_list,
-        'project_types_list': project_types_list,
         'user_id': user.id,
     }
 
@@ -198,7 +197,6 @@ def accounts(request, user_id):
     context = {
         'user': user,
         'user_id': user.id,
-        'project':project,
     }
   
     if request.method == 'POST':
