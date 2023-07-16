@@ -21,188 +21,199 @@
 	</script>
 {% endblock %}
 
+{% block issue_modal %}
+	<ul class="navbar-nav nav-underline me-auto mb-lg-0">
+		<ul class="navbar-nav me-auto mt-1 mb-4 mb-lg-0">
+			<li class="nav-item">
+				<button type="button" class="btn btn-outline-primary rounded-3" data-bs-toggle="modal"
+					data-bs-target="#staticBackdropIssue">
+					Create Issue
+				</button>
+			</li>
+		</ul>
+	</ul>
+{% endblock %}
+
 {% block main %}
 	{% include 'sidebar.html' %}
 
 <!-- BREADCRUMB -->
-		{% block breadcrumb %}
-		    <nav aria-label="Breadcrumb">
-				<ol class="breadcrumb">
+	{% block breadcrumb %}
+		<nav aria-label="Breadcrumb">
+			<ol class="breadcrumb">
 
-					<li class="breadcrumb-item">
-						<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
-							link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'projects' %}">
-							Projects
-						</a>
-					</li>
+				<li class="breadcrumb-item">
+					<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+						link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'projects' %}">
+						Projects
+					</a>
+				</li>
 
-					<li class="breadcrumb-item">
-						<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
-							link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'boards' project.id %}">
-							{{ project.name }}
-						</a>
-					</li>
+				<li class="breadcrumb-item">
+					<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+						link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'boards' project.id %}">
+						{{ project.name }}
+					</a>
+				</li>
 
-				</ol>
-				</nav> 
-		{% endblock %}
+			</ol>
+		</nav> 
+	{% endblock %}
 
 <!-- FAVORITE PROJECT STAR -->
-				<div class="row mt-2">
+		<div class="row mt-2">
 
-					<div class="container mb-2">
-						<div class="row justify-content-between text-start">
-							<div class="col-sm-4">
-								<h4 class="h4 fw-normal">{{project.name}} board</h4>
-							</div>
-							<div class="col-sm-4 text-end">
-
-							{% if project.starred %}
-								<button type="button" class="btn p-0" data-bs-toggle="tooltip" 
-									data-bs-placement="bottom" title="Starred project">
-									<i class="fs-5 bi bi-star-fill" style="color: gold;"></i></button>
-							{% else %}
-								<button type="button" class="btn p-0" data-bs-toggle="tooltip" 
-									data-bs-placement="bottom" title="Starred project">
-									<i class="fs-5 bi bi-star icon-color"></i></button>
-							{% endif %}
-
-							</div>
-						</div>
+			<div class="container mb-2">
+				<div class="row justify-content-between text-start">
+					<div class="col-sm-4">
+						<h4 class="h4 fw-normal">{{project.name}} board</h4>
 					</div>
+					<div class="col-sm-4 text-end">
+
+						{% if project.starred %}
+							<button type="button" class="btn p-0" data-bs-toggle="tooltip" 
+								data-bs-placement="bottom" title="Starred project">
+								<i class="fs-5 bi bi-star-fill" style="color: gold;"></i>
+							</button>
+						{% else %}
+							<button type="button" class="btn p-0" data-bs-toggle="tooltip" 
+								data-bs-placement="bottom" title="Starred project">
+								<i class="fs-5 bi bi-star icon-color"></i>
+							</button>
+						{% endif %}
+
+					</div>
+				</div>
+			</div>
 
 <!-- ISSUE CARDS -->
 <!-- TO DO -->
-					<div class="col-sm-4">
+			<div class="col-sm-4">
 
-						<div class="card bg-body-tertiary">
-							<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
+				<div class="card bg-body-tertiary">
+					<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
 
-								{% if todo_issues == 0 %}
-									<h6 class="card-title">TO DO ISSUES</h6>
-								{% elif todo_issues|divisibleby:2 %}
-									<h6 class="card-title">TO DO {{ todo_issues }} ISSUES</h6>
-								{% else %}
-									<h6 class="card-title">TO DO {{ todo_issues }} ISSUE</h6>
-								{% endif %}
+						{% if todo_issues == 0 %}
+							<h6 class="card-title">TO DO ISSUES</h6>
+						{% elif todo_issues|divisibleby:2 %}
+							<h6 class="card-title">TO DO {{ todo_issues }} ISSUES</h6>
+						{% else %}
+							<h6 class="card-title">TO DO {{ todo_issues }} ISSUE</h6>
+						{% endif %}
 
-								<div class="dropdown">
-									<button type="button" class="btn p-0 mb-2 fw-medium text-secondary border-0" data-bs-toggle="dropdown"
-										aria-expanded="false" data-bs-auto-close="outside">
-										<i class="fs-6 bi bi-plus-lg icon-color"></i> Create issue
-									</button>
+						<div class="dropdown">
+							<button type="button" class="btn p-0 mb-2 fw-medium text-secondary border-0" data-bs-toggle="dropdown"
+								aria-expanded="false" data-bs-auto-close="outside">
+								<i class="fs-6 bi bi-plus-lg icon-color"></i> Create issue
+							</button>
 
-									<div class="container-fluid">
-										<form class="dropdown-menu p-4 bg-body-tertiary">
-											<div class="row mb-3">
-												<input type="text"
-													class="form-control border-0 shadow-none placeholder-color  bg-body-tertiary"
-													placeholder="What needs to be done?">
-											</div>
+							<div class="container-fluid">
+								<form class="dropdown-menu p-4 bg-body-tertiary">
+									<div class="row mb-3">
+										<input type="text"
+											class="form-control border-0 shadow-none placeholder-color  bg-body-tertiary"
+											placeholder="What needs to be done?">
+									</div>
 
-											<div class="row mb-3">
-												<select class="form-select border-0 shadow-none  bg-body-tertiary"
-													aria-label="Default select example">
-													<option selected>Issue type</option>
-													<option value="1">*Type 1*</option>
-													<option value="2">*Type 2*</option>
-													<option value="3">*Type 3*</option>
-												</select>
-											</div>
+									<div class="row mb-3">
+										<select class="form-select border-0 shadow-none  bg-body-tertiary"
+											aria-label="Default select example">
+											<option selected>Issue type</option>
+											<option value="1">*Type 1*</option>
+											<option value="2">*Type 2*</option>
+											<option value="3">*Type 3*</option>
+										</select>
+									</div>
 
-											<button type="submit" class="btn btn-secondary">Create</button>
-										</form>
+									<button type="submit" class="btn btn-secondary">Create</button>
+								</form>
+							</div>
+						</div>
+
+						{% for issue in issues_list %}
+							{% if issue.status == "To do" %}
+								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
+									<div class="card-body">
+										{{ issue.title }}
+									</div>
+
+									<div class="card-footer border-0 bg-transparent">
+										<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
+											data-bs-target="#staticBackdropBoard{{issue.id}}">{{ project.key }}-{{ issue.id }}
+										</button>
 									</div>
 								</div>
-
-								{% for issue in issues_list %}
-									{% if issue.status == "To do" %}
-										<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
-											<div class="card-body">
-												{{ issue.title }}
-											</div>
-
-											<div class="card-footer border-0 bg-transparent">
-												<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
-													data-bs-target="#staticBackdropBoard{{issue.id}}">{{ project.key }}-{{ issue.id }}
-												</button>
-											</div>
-										</div>
-									{% endif %}
-								{% endfor %}
-							</div>
-						</div>
+							{% endif %}
+						{% endfor %}
 					</div>
+				</div>
+			</div>
 
 <!-- IN PROGRESS -->
-					<div class="col-sm-4">
+			<div class="col-sm-4">
+			
+				<div class="card bg-body-tertiary">
+					<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
+
+						{% if in_progress_issues == 0 %}
+						<h6 class="card-title">IN PROGRESS ISSUES</h6>
+						{% elif in_progress_issues|divisibleby:2 %}
+						<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUES</h6>
+						{% else %}
+						<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUE</h6>
+						{% endif %}
+
+						{% for issue in issues_list %}
+							{% if issue.status == "In progress" %}
+								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
+									<div class="card-body">
+										{{ issue.title }}
+									</div>
 					
-						<div class="card bg-body-tertiary">
-							<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
-
-								{% if in_progress_issues == 0 %}
-								<h6 class="card-title">IN PROGRESS ISSUES</h6>
-								{% elif in_progress_issues|divisibleby:2 %}
-								<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUES</h6>
-								{% else %}
-								<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUE</h6>
-								{% endif %}
-
-								{% for issue in issues_list %}
-									{% if issue.status == "In progress" %}
-										<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
-											<div class="card-body">
-												{{ issue.title }}
-											</div>
-							
-											<div class="card-footer border-0 bg-transparent">
-												<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
-													data-bs-target="#staticBackdropBoard{{issue.id}}">{{ project.key }}-{{ issue.id}}
-												</button>
-											</div>
-										</div>
-									{% endif %}
-								{% endfor %}
-							</div>
-						</div>
+									<div class="card-footer border-0 bg-transparent">
+										<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
+											data-bs-target="#staticBackdropBoard{{issue.id}}">{{ project.key }}-{{ issue.id}}
+										</button>
+									</div>
+								</div>
+							{% endif %}
+						{% endfor %}
 					</div>
+				</div>
+			</div>
 
 <!-- DONE -->
-					<div class="col-sm-4">
-						<div class="card bg-body-tertiary">
-							<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
+			<div class="col-sm-4">
+				<div class="card bg-body-tertiary">
+					<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
 
-								{% if done_issues == 0 %}
-									<h6 class="card-title">DONE</h6>
-								{% elif done_issues|divisibleby:2 %}
-									<h6 class="card-title">DONE {{ done_issues }} ISSUES</h6>
-								{% else %}
-									<h6 class="card-title">DONE {{ done_issues }} ISSUE</h6>
-								{% endif %}
+						{% if done_issues == 0 %}
+							<h6 class="card-title">DONE</h6>
+						{% elif done_issues|divisibleby:2 %}
+							<h6 class="card-title">DONE {{ done_issues }} ISSUES</h6>
+						{% else %}
+							<h6 class="card-title">DONE {{ done_issues }} ISSUE</h6>
+						{% endif %}
 
-								{% for issue in issues_list %}
-									{% if issue.status == "Done" %}			
-										<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
-											<div class="card-body">
-												{{ issue.title }}
-											</div>
-							
-											<div class="card-footer border-0 bg-transparent">
-												<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
-													data-bs-target="#staticBackdropBoard{{issue.id}}">{{ project.key }}-{{ issue.id}}
-												</button>
-											</div>
-										</div>
-									{% endif %}
-								{% endfor %}
-							</div>
-						</div>
+						{% for issue in issues_list %}
+							{% if issue.status == "Done" %}			
+								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
+									<div class="card-body">
+										{{ issue.title }}
+									</div>
+					
+									<div class="card-footer border-0 bg-transparent">
+										<button type="button" class="btn stretched-link border-0" data-bs-toggle="modal"
+											data-bs-target="#staticBackdropBoard{{issue.id}}">{{ project.key }}-{{ issue.id}}
+										</button>
+									</div>
+								</div>
+							{% endif %}
+						{% endfor %}
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-
 
 <!-- CREATE ISSUE MODAL -->
 	<div class="modal fade" id="staticBackdropIssue" data-bs-backdrop="static" tabindex="-1"
@@ -308,10 +319,8 @@
 									</div>
 								</div>
 							</div>
-
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
