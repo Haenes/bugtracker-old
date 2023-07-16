@@ -128,6 +128,7 @@ def issue_details(request, project_id, issue_id):
     context = {
         'user_id': user.id,
         'project': project,
+        'issue': issue,
     }
 
     if request.method == 'POST':
@@ -277,7 +278,7 @@ def register(request):
 
 
 def logout_view(request):
-    
+
     logout(request)
     return redirect("login")
 

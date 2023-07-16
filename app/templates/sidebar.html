@@ -29,23 +29,6 @@
 			<div class="col py-3 mx-1" style="text-align: justify;">
 
 <!-- BREADCRUMB -->
-				<nav aria-label="Breadcrumb">
-					<ol class="breadcrumb">
+{% block breadcrumb %}{% endblock %}
 
-						<li class="breadcrumb-item">
-							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
-								link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'projects' %}">
-								Projects
-							</a>
-						</li>
-
-						<li class="breadcrumb-item">
-							<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
-								link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'boards' project.id %}">
-								{{ project.name }}
-							</a>
-						</li>
-
-					</ol>
-				</nav>
 {% endblock %}

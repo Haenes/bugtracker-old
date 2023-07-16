@@ -7,6 +7,36 @@
 {% block main %}
 	{% include 'sidebar.html' %}
 
+<!-- BREADCRUMB -->
+	{% block breadcrumb %}
+		<nav aria-label="Breadcrumb">
+			<ol class="breadcrumb">
+
+				<li class="breadcrumb-item">
+					<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+						link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'projects' %}">
+						Projects
+					</a>
+				</li>
+
+				<li class="breadcrumb-item">
+					<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+						link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'boards' project.id %}">
+						{{ project.name }}
+					</a>
+				</li>
+
+				<li class="breadcrumb-item">
+					<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
+						link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'issue-details' project.id issue.id%}">
+						Issue details
+					</a>
+				</li>
+
+			</ol>
+		</nav>
+	{% endblock %}
+
 <!-- ISSUE DETAILS -->
 	<div class="row mt-2">
 		<div class="container ms-3 mb-2">
