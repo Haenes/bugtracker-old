@@ -4,6 +4,18 @@
 {% block title %} Account details {% endblock%}
 
 {% block main %}
+
+	{% if messages %}
+		{% for message in messages %}
+		<div class="row justify-content-center">
+			<div class="col-4 align-self-center alert alert-dismissible alert-success text-center">
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				{{ message }}
+			</div>
+		</div>
+		{% endfor %}
+	{% endif %}
+
 	<div class="ms-3 mt-3">
 		<h4 class="h4 mb-3 fw-normal">Account Details</h4>
 		<form method="post">
@@ -51,7 +63,7 @@
 <!-- CREATE ISSUE MODAL -->
 
 	
-<!-- CHANGE PASSWORD MODAL (LINE 26)-->
+<!-- CHANGE PASSWORD MODAL (LINE 38)-->
 	<div class="modal fade" id="staticBackdropChangePassword" data-bs-backdrop="static" data-bs-keyboard="true"
 		tabindex="-1" aria-labelledby="staticBackdropChangePassword" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
@@ -62,38 +74,31 @@
 				</div>
 				<div class="modal-body">
 
-					<div class="col-6">
-						<label for="validationPassword" class="form-label text-secondary m-0">Old
-							password</label>
-						<div>
-							<input type="password" id="inputPassword1" class="form-control bg-body-tertiary" required>
-						</div>
-						<div class="invalid-feedback">Please enter a valid password.</div>
-					</div>
+					<form method="post">
+						{% csrf_token %}
 
-					<div class="col-6 mt-3 mb-2">
-						<label for="validationPassword" class="form-label text-secondary m-0">New
-							password</label>
-						<div>
-							<input type="password" id="inputPassword2" class="form-control bg-body-tertiary"
-								data-bs-toggle="popover" data-bs-placement="right" data-bs-custom-class="custom-popover"
-								data-bs-content="Your password must be 8 - 32 characters long, contain letters, numbers and special character."
-								required>
+						<div class="col-7">
+							{% for field in password_change_form %}
+								<div>
+									{{ field.label }}
+									{{ field }}
+								</div>
+							{% endfor %}						
 						</div>
-						<div class="invalid-feedback">Please enter a valid password.</div>
-					</div>
 
-				</div>
-				<div class="modal-footer">
-					<a href="{% url 'accounts' user_id %}">
-						<button type="button" class="btn btn-primary">Change password</button>
-					</a>
+						<div class="modal-footer pb-0">
+							<a href="{% url 'accounts' user_id %}">
+								<button type="submit" class="btn btn-primary">Change password</button>
+							</a>
+						</div>
+					</form>
+
 				</div>
 			</div>
 		</div>
 	</div>
 
-<!-- ACCOUNT DELETE MODAL (LINE 35)-->
+<!-- ACCOUNT DELETE MODAL (LINE 47)-->
 	<div class="modal fade" id="staticBackdropDelete" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
 		aria-labelledby="staticBackdropDelete" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">

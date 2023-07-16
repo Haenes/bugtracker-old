@@ -2,7 +2,6 @@ from django import forms
 from django.forms import ModelForm, TextInput, Textarea, EmailInput, PasswordInput, Select, DateInput, CheckboxInput
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from django.utils import timezone
 
 from bugtracker.models import Project, Issue
 
@@ -10,12 +9,27 @@ import re
 
 
 def validate_string(string):
-    # Returns True if string contain only letters
-    pattern = re.compile("^([a-zA-Z]+$)")
+    # Returns True if the string consists of only letters
+
+    pattern = re.compile("^([a-zA-Z]+$)")   
     if pattern.match(string):
         return True
-        
+    
 
+def validate_password(password):
+    """ 
+    Returns True if the password is:
+    1) a 8+ characters                 {8,};
+    2) at least one uppercase letter   (?=.*?[A-Z]);
+    3) at least one lowercase letter   (?=.*?[a-z]); 
+    4) at least one digit              (?=.*?[0-9]);
+    5) at least one special character  (?=.*?[#?!@$%^&*-]). """
+
+    pattern = re.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
+    if pattern.match(password):
+        return True
+
+        
 class RegisterForm(forms.Form):
 
 
@@ -55,7 +69,8 @@ class RegisterForm(forms.Form):
                 "class": "form-control mb-2"}))
 
     password1 = forms.CharField(
-        label="Password", 
+        label="Password",
+        min_length=8, 
         max_length=32, 
         widget=PasswordInput(
             attrs={
@@ -63,7 +78,8 @@ class RegisterForm(forms.Form):
                 "class": "form-control mb-2"}))
 
     password2 = forms.CharField(
-        label="Password confirmation", 
+        label="Password confirmation",
+        min_length=8, 
         max_length=32, 
         widget=PasswordInput(
             attrs={
@@ -71,7 +87,7 @@ class RegisterForm(forms.Form):
                 "class": "form-control mb-2"}))
 
 
-    def clean_first_name(self):
+    def clean_first_name(self):       
         first_name = self.cleaned_data["first_name"].capitalize()
 
         if not validate_string(first_name):
@@ -109,20 +125,11 @@ class RegisterForm(forms.Form):
         return email
 
     
-    def clean_password1(self):
-        """ 
-        Returns True if password have:
-            1) a 8 - 32 characters             {8,};
-            2) at least one uppercase letter   (?=.*?[A-Z]);
-            3) at least one lowercase letter   (?=.*?[a-z]); 
-            4) at least one digit              (?=.*?[0-9]);
-            5) at least one special character  (?=.*?[#?!@$%^&*-]). """
-        
+    def clean_password1(self):     
         password1 = self.cleaned_data["password1"]
-        pattern = re.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
 
-        if not pattern.match(password1):
-            raise ValidationError("The password doesn't match the conditions")
+        if not validate_password(password1):
+            raise ValidationError("The password doesn't meet the conditions")
 
         return password1
     
@@ -214,6 +221,52 @@ class UserForm(ModelForm):
         return last_name
 
 
+class UserPasswordChangeForm(forms.Form):
+
+
+    new_password1 = forms.CharField(
+        label=("New password"),
+        min_length=8,
+        max_length=32,
+        widget=forms.PasswordInput(attrs={"class": "col-4 mb-3 form-control bg-body-tertiary", "autofocus": True}),
+    )
+
+    new_password2 = forms.CharField(
+        label=("New password confirmation"),
+        min_length=8,
+        max_length=32,
+        widget=forms.PasswordInput(attrs={"class": "col-2  mb-4 form-control bg-body-tertiary"}),
+    )
+
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+
+    def clean_new_password1(self):
+        password1 = self.cleaned_data.get("new_password1")
+        if not validate_password(password1):
+            raise ValidationError("The password doesn't meet the conditions")
+        return password1
+
+
+    def clean_new_password2(self):
+        password1 = self.cleaned_data.get("new_password1")
+        password2 = self.cleaned_data.get("new_password2")
+        if password1 != password2:
+            raise ValidationError("Passwords don't match")
+        return password2
+    
+
+    def save(self, commit=True):
+        password = self.cleaned_data["new_password1"]
+        self.user.set_password(password)
+        if commit:
+            self.user.save()
+        return self.user
+
+
 class ProjectDetailsForm(ModelForm):
 
 
@@ -258,6 +311,25 @@ class ProjectModalForm(ModelForm):
             "type": Select(attrs={"class": "form-control bg-body-tertiary"}),
             "starred": CheckboxInput(attrs={"name": "Favorite", "style": "width:20px; height:20px"}),
         }
+
+    def clean_name(self):
+        cd = self.cleaned_data
+        name = cd["name"].capitalize()
+
+        if Project.objects.filter(name=name):
+            raise ValidationError("That project already exists")
+        
+        return name
+
+
+    def clean_key(self):
+        cd = self.cleaned_data
+        key = cd["key"].upper()
+
+        if Project.objects.filter(key=key):
+            raise ValidationError("Project with that key already exists")
+        
+        return key
 
 
     def save(self): 

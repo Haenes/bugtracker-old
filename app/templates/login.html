@@ -13,26 +13,28 @@
 
 	<body class="d-flex align-items-center py-4 bg-body-tertiary">
 
-		<div class="container text-center center"> 
+		<div class="container text-center center">
+			{% if messages %}
+				{% for message in messages %}
+					<div class="row justify-content-center">
+						<div class="col-4 align-self-center alert alert-dismissible alert-danger text-center">
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							{{ message }}
+						</div>
+					</div>
+				{% endfor %}
+			{% endif %}
+
 			<form method="post" class="form-signin m-auto"> 
 				{% csrf_token %}
 				
 				<h3 class="h3 mb-4 fw-normal">Please sign in</h3>
 
 				{% for field in login_form %}
-
 					<div class="form-floating">
 						{{ field }}
 						<label for="floating{{field.name|title}}">{{ field.name|title }}</label>
 					</div>
-
-<!-- If validation error: message will output only below password field once -->
-					{% if field.name == "password" and messages %}
-						{% for message in messages %}
-							<ol class="mt-2 text-danger fw-medium p-0">{{ message }}</ol>
-						{% endfor %}
-					{% endif %}
-
 				{% endfor %}
 
 				<div class="form-check text-start my-3">

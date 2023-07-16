@@ -9,7 +9,7 @@
 				<h4>Projects</h4>
 			</div>
 
-<!-- TRIGER PROJECT MODAL -->
+<!-- TRIGER CREATE PROJECT MODAL -->
 			<button type="button" class="btn btn-outline-primary rounded-3 mt-2" data-bs-toggle="modal"
 				data-bs-target="#staticBackdropProject">
 				Create new project
@@ -73,7 +73,7 @@
 	</div>
 
 
-<!-- PROJECT MODAL -->
+<!-- CREATE PROJECT MODAL -->
 	<div class="modal fade" id="staticBackdropProject" data-bs-backdrop="static" tabindex="-1"
 		aria-labelledby="staticBackdropProject" aria-hidden="true" data-backdrop="static">
 		<div class="modal-dialog  modal-dialog-centered">
@@ -101,6 +101,12 @@
 								{{ field }}
 							</div>
 
+							{% endif %}
+
+							{% if field.errors %}
+								{% for error in field.errors %}
+									<ol class="mt-2 text-danger fw-medium p-0">{{ error }}</ol>
+								{% endfor %}
 							{% endif %}
 						{% endfor %}
 

@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib import messages
 
 from .models import Project, Project_type, Issue_priority, Issue_type, Issue
-from .forms import UserForm, ProjectDetailsForm, RegisterForm, LoginForm, ProjectModalForm, IssueModalForm, IssueDetailsForm
+from .forms import UserForm, ProjectDetailsForm, RegisterForm, LoginForm, ProjectModalForm, IssueModalForm, IssueDetailsForm, UserPasswordChangeForm
 
 
 projects_list = Project.objects.order_by("-starred")
@@ -19,6 +19,7 @@ user = User.objects.get(id=1)
 
 @login_required(login_url="/login/")
 def projects(request):
+
     context = {
         'projects_list': projects_list,
         'project_types_list': project_types_list,
@@ -28,7 +29,6 @@ def projects(request):
     if request.method == 'POST':
         project_modal_form = ProjectModalForm(request.POST or None)
         issue_modal_form = IssueModalForm(request.POST or None)
-
 
         if project_modal_form.is_valid():
             project_modal_form.save()
@@ -114,7 +114,6 @@ def boards(request, project_id):
 
     else:
         issue_modal_form = IssueModalForm()   
-
         context['issue_modal_form'] = issue_modal_form
 
     return render(request, "boards.html", context)
@@ -122,7 +121,7 @@ def boards(request, project_id):
 
 @login_required(login_url="/login/")
 def issue_details(request, project_id, issue_id):
-    print(issue_id)
+
     project = Project.objects.get(id=project_id)
     issue = Issue.objects.get(id=issue_id)
 
@@ -159,15 +158,13 @@ def issue_details(request, project_id, issue_id):
 
 @login_required(login_url="/login/")
 def project_settings(request, project_id):
+
     project = Project.objects.get(id=project_id)
 
     context = {
         'project': project,
         'project_id': project.id,
         'user_id': user.id,
-        'projects_list': projects_list,
-        'issue_types_list': issue_types_list,
-        'issue_priority_list': issue_priority_list,
     }
 
     if request.method == 'POST':
@@ -193,6 +190,7 @@ def project_settings(request, project_id):
 
 @login_required(login_url="/login/")
 def accounts(request, user_id):
+
     user = User.objects.get(id=user_id)
     project = Project.objects.get(name='BugTracker')
 
@@ -200,19 +198,27 @@ def accounts(request, user_id):
         'user': user,
         'user_id': user.id,
         'project':project,
-        'projects_list': projects_list,
-        'issue_types_list': issue_types_list,
-        'issue_priority_list': issue_priority_list,
     }
   
     if request.method == 'POST':
         user_form = UserForm(request.POST or None, instance=user)
+        password_change_form = UserPasswordChangeForm(request.user, request.POST or None)
 
         if user_form.is_valid():
             user_form.save()
 
+        if password_change_form.is_valid():
+            user = password_change_form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect("accounts", user.id)
+          
         context['user_form'] = user_form
+        context['password_change_form'] = password_change_form
+        messages.error(request, 'Invalid password!') 
 
+        return redirect("accounts", user.id)
+    
     else:
         user_form = UserForm(
             initial = {
@@ -222,13 +228,16 @@ def accounts(request, user_id):
                 "email": user.email,
             }
         )
-
+        password_change_form = UserPasswordChangeForm(request.user)
+                
         context['user_form'] = user_form
+        context['password_change_form'] = password_change_form
 
     return render(request, "accounts.html", context)
 
 
 def login_view(request):
+
     if request.method == 'POST':
         login_form = LoginForm(request.POST)
 
@@ -253,6 +262,7 @@ def login_view(request):
 
 
 def register(request):
+
     if request.method == 'POST':
         register_form = RegisterForm(request.POST)
 
@@ -267,10 +277,11 @@ def register(request):
 
 
 def logout_view(request):
+    
     logout(request)
     return redirect("login")
 
 
-def password_reset(request):
+def password_reset(request):   
     return render(request, "password-reset.html")
  
