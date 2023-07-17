@@ -37,6 +37,18 @@
 {% block main %}
 	{% include 'sidebar.html' %}
 
+	{% if messages %}
+		{% for message in messages %}
+			<div class="row justify-content-center">
+				<div class="col-4 align-self-center alert alert-dismissible alert-danger text-center">
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					{{ message|striptags }}
+				</div>
+			</div>
+		{% endfor %}
+	{% endif %}
+
+
 <!-- BREADCRUMB -->
 	{% block breadcrumb %}
 		<nav aria-label="Breadcrumb">

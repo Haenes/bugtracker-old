@@ -1,11 +1,20 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
 from django.contrib import messages
 
-from .models import Project, Project_type, Issue_priority, Issue_type, Issue
-from .forms import UserForm, ProjectDetailsForm, RegisterForm, LoginForm, ProjectModalForm, IssueModalForm, IssueDetailsForm, UserPasswordChangeForm
+from .models import Issue, Issue_type, Issue_priority, Project, Project_type
+from .forms import ( 
+    IssueDetailsForm,
+    IssueModalForm,
+    LoginForm,
+    ProjectDetailsForm, 
+    ProjectModalForm, 
+    RegisterForm, 
+    UserPasswordChangeForm,
+    UserForm,
+    )
 
 
 projects_list = Project.objects.order_by("-starred")
@@ -100,7 +109,7 @@ def boards(request, project_id):
 
             Issue.objects.create(
                 project=cd["project"],
-                title=cd["title"],
+                title=cd["title"].capitalize(),
                 description=cd["description"],
                 type=cd["type"],
                 priority=cd["priority"],
@@ -108,8 +117,13 @@ def boards(request, project_id):
                 author_id=user.id,
                 duedate=cd["duedate"]
             )
+            return redirect('boards', project.id)
         
         context['issue_modal_form'] = issue_modal_form
+
+        for field in issue_modal_form.errors:
+            if issue_modal_form.errors[field]:
+                messages.error(request, issue_modal_form.errors[field])
 
     else:
         issue_modal_form = IssueModalForm()   
@@ -192,7 +206,6 @@ def project_settings(request, project_id):
 def accounts(request, user_id):
 
     user = User.objects.get(id=user_id)
-    project = Project.objects.get(name='BugTracker')
 
     context = {
         'user': user,
@@ -214,7 +227,10 @@ def accounts(request, user_id):
           
         context['user_form'] = user_form
         context['password_change_form'] = password_change_form
-        messages.error(request, 'Invalid password!') 
+
+        for field in password_change_form.errors:
+            if password_change_form.errors[field]:
+                messages.error(request, password_change_form.errors[field])
 
         return redirect("accounts", user.id)
     

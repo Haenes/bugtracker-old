@@ -1,7 +1,18 @@
 from django import forms
-from django.forms import ModelForm, TextInput, Textarea, EmailInput, PasswordInput, Select, DateInput, CheckboxInput
-from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.forms import (   
+    CheckboxInput,
+    DateInput,
+    EmailInput,
+    ModelForm, 
+    PasswordInput,
+    Select, 
+    Textarea, 
+    TextInput,    
+    )
+from django.utils.html import escape
+
 
 from bugtracker.models import Project, Issue
 
@@ -9,7 +20,7 @@ import re
 
 
 def validate_string(string):
-    # Returns True if the string consists of only letters
+    """  Returns True if the string consists of only letters  """
 
     pattern = re.compile("^([a-zA-Z]+$)")   
     if pattern.match(string):
@@ -312,6 +323,7 @@ class ProjectModalForm(ModelForm):
             "starred": CheckboxInput(attrs={"name": "Favorite", "style": "width:20px; height:20px"}),
         }
 
+
     def clean_name(self):
         cd = self.cleaned_data
         name = cd["name"].capitalize()
@@ -362,6 +374,15 @@ class IssueModalForm(ModelForm):
             "author": TextInput(attrs={"author": forms.HiddenInput(),"class": "form-control bg-body-tertiary"}),
         }
 
+
+    def clean_title(self):
+        title = self.cleaned_data["title"].capitalize()
+
+        if Issue.objects.filter(title=title):
+            raise ValidationError("Issue with that title already exists")
+        
+        return title
+            
 
 class IssueDetailsForm(ModelForm):
 

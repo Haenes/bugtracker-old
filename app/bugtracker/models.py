@@ -1,7 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
 from django.utils import timezone
-from django.contrib.auth.models import User
+
 
 # Make email field in User modal unique (for UserForm)
 User._meta.get_field('email')._unique = True
@@ -83,7 +84,7 @@ class Issue(models.Model):
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     # key_issue = models.ForeignKey(projects, on_delete=models.CASCADE, unique=True,)
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, default='')
     type = models.CharField(max_length=8, choices=ISSUE_TYPE)
     priority = models.CharField(max_length=8, choices=ISSUE_PRIORITY)
