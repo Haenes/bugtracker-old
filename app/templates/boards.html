@@ -101,7 +101,6 @@
 <!-- ISSUE CARDS -->
 <!-- TO DO -->
 			<div class="col-sm-4">
-
 				<div class="card bg-body-tertiary">
 					<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
 
@@ -143,6 +142,7 @@
 						</div>
 
 						{% for issue in issues_list %}
+						
 							{% if issue.status == "To do" %}
 								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
 									<div class="card-body">
@@ -162,17 +162,16 @@
 			</div>
 
 <!-- IN PROGRESS -->
-			<div class="col-sm-4">
-			
+			<div class="col-sm-4">			
 				<div class="card bg-body-tertiary">
 					<div class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
 
 						{% if in_progress_issues == 0 %}
-						<h6 class="card-title">IN PROGRESS ISSUES</h6>
+							<h6 class="card-title">IN PROGRESS ISSUES</h6>
 						{% elif in_progress_issues|divisibleby:2 %}
-						<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUES</h6>
+							<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUES</h6>
 						{% else %}
-						<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUE</h6>
+							<h6 class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUE</h6>
 						{% endif %}
 
 						{% for issue in issues_list %}
@@ -221,11 +220,12 @@
 									</div>
 								</div>
 							{% endif %}
-						{% endfor %}
+						{% endfor %}						
 					</div>
 				</div>
 			</div>
 		</div>
+			
 
 <!-- CREATE ISSUE MODAL -->
 	<div class="modal fade" id="staticBackdropIssue" data-bs-backdrop="static" tabindex="-1"
