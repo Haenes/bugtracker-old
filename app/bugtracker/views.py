@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 from .models import Issue, Issue_type, Issue_priority, Project, Project_type
 from .forms import ( 
@@ -29,11 +30,16 @@ user = User.objects.get(id=1)
 @login_required(login_url="/login/")
 def projects(request):
 
+    paginator = Paginator(projects_list, 9)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
         'projects_list': projects_list,
         'user_id': user.id,
+        'page_obj': page_obj,
     }
-
+    
     if request.method == 'POST':
         project_modal_form = ProjectModalForm(request.POST or None)
         issue_modal_form = IssueModalForm(request.POST or None)
