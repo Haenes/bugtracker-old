@@ -11,16 +11,16 @@ Right now this project is still being developed.
   2) Temporary SQLite database with Django Models and URLconf;
   3) All HTML (except one form in TODO card in boards.html) is filled with information from database;
   4) Registration and log in process;
-  5) Abillity to add, edit, delete projects and issues;
-  6) Ability to edit user details and change password;
-  7) Ability to delete an account;
-  8) Pagination for projects in projects.hmtl.
+  5) Ability to create Projects and Issues;
+  6) Abillity to add, edit, delete projects and issues;
+  7) Ability to edit user details and change password;
+  8) Ability to delete an account;
+  9) Pagination for projects in projects.hmtl.
 
 <b>Nearest to-do list</b>:
-  1) Add author foreign_key in Project model (FIX BUG: 1);
+  1) Add email confirmation for register and reset password; 
   2) Add dynamically change of favorite project icon (star in project.html and boards.html);
   3) Add dynamically change of Issue status via drag-n-drop card in boards.html.
 
 <b>Bugs and errors detected</b>:
-  1) Projects are not tied to a specific user (who created it) - need to add Foreign key to Project model;
-  2) Errors in users.hmtl after change user data WITHOUT changing password (change password form is issue).
+  1) Errors in users.hmtl after change user data WITHOUT changing password (change password form is issue).
