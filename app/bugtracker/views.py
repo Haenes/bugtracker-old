@@ -18,17 +18,11 @@ from .forms import (
     )
 
 
-projects_list = Project.objects.order_by("-starred")
-project_types_list = Project_type.objects.all()
-
-issue_types_list = Issue_type.objects.all()
-issue_priority_list = Issue_priority.objects.all()
-
-user = User.objects.get(id=1)
-
-
 @login_required(login_url="/login/")
 def projects(request):
+
+    user = request.user
+    projects_list = Project.objects.order_by("-starred")
 
     paginator = Paginator(projects_list, 9)
     page_number = request.GET.get('page')
@@ -66,7 +60,7 @@ def boards(request, project_id):
 
     project = Project.objects.get(id=project_id)
     all_issues = Issue.objects.order_by('status')
-    user = User.objects.get(id=1)
+    user = request.user
 
     todo_issues = 0
     in_progress_issues = 0
@@ -127,6 +121,7 @@ def boards(request, project_id):
 @login_required(login_url="/login/")
 def issue_details(request, project_id, issue_id):
 
+    user = request.user
     project = Project.objects.get(id=project_id)
     issue = Issue.objects.get(id=issue_id)
 
@@ -165,6 +160,7 @@ def issue_details(request, project_id, issue_id):
 @login_required(login_url="/login/")
 def project_settings(request, project_id):
 
+    user = request.user
     project = Project.objects.get(id=project_id)
 
     context = {
@@ -308,3 +304,12 @@ def delete_issue(request, project_id, issue_id):
     messages.success(request, "Issue deleted!")
 
     return redirect('boards', project_id)
+
+
+def delete_account(request, user_id):
+    user = User.objects.get(id=user_id)
+    user.delete()
+
+    messages.success(request, "Account deleted!")
+
+    return redirect('login')
