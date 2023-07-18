@@ -138,12 +138,15 @@
 						{% csrf_token %}
 						{% for field in project_modal_form %}
 
-							{% if field.name == "starred" %}
+							{% if field.name == "author" %}
+								{{ field.as_hidden }}
+
+							{% elif field.name == "starred" %}
 								<div class="col-md-6 mb-4">
 									<p class="text-secondary m-0 text-start">Favorite</p>
 									{{ field }}
 								</div>
-
+							
 							{% else %}
 							<div class="col-md-6 mb-3">
 								<p class="text-secondary m-0 text-start">{{ field.name|title }}*</p>

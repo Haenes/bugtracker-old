@@ -22,7 +22,7 @@ from .forms import (
 def projects(request):
 
     user = request.user
-    projects_list = Project.objects.order_by("-starred")
+    projects_list = Project.objects.filter(author_id=user.id)
 
     paginator = Paginator(projects_list, 9)
     page_number = request.GET.get('page')
@@ -38,8 +38,15 @@ def projects(request):
         project_modal_form = ProjectModalForm(request.POST or None)
 
         if project_modal_form.is_valid():
-            project_modal_form.save()
-            context['projects_list'] = Project.objects.order_by("-starred")
+            cd = project_modal_form.cleaned_data
+            
+            Project.objects.create(
+                author_id=user.id,
+                name=cd["name"].capitalize(),
+                key=cd["key"].upper(),
+                type=cd["type"],
+                starred=cd["starred"]
+            )          
             messages.success(request, "Project created!")
         
         context['project_modal_form'] = project_modal_form
@@ -49,7 +56,7 @@ def projects(request):
                 messages.error(request, project_modal_form.errors[field])
 
     else:
-        project_modal_form = ProjectModalForm()
+        project_modal_form = ProjectModalForm(initial={"author": user.id})
         context['project_modal_form'] = project_modal_form
 
     return render(request, "projects.html", context)
@@ -102,7 +109,8 @@ def boards(request, project_id):
                 status="To do",
                 author_id=user.id,
                 duedate=cd["duedate"]
-            )
+            )          
+            messages.success(request, "Issue created!")
             return redirect('boards', project.id)
         
         context['issue_modal_form'] = issue_modal_form

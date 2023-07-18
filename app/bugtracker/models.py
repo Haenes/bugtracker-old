@@ -21,11 +21,15 @@ class Project(models.Model):
     description = models.CharField(max_length=255, default='')
     key = models.CharField(max_length=10, unique=True, validators=[MinLengthValidator(3, "Key field must contain at least 3 letters")])
     type = models.CharField(max_length=18, choices=PROJECT_TYPE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     starred = models.BooleanField(verbose_name="favorite project", default=False)
     created = models.DateTimeField(default=timezone.now)
    
     def __str__(self):
         return self.name
+ 
+    class Meta:
+        ordering = ["-starred"]
 
 
 class Issue(models.Model):

@@ -312,9 +312,10 @@ class ProjectModalForm(ModelForm):
 
     class Meta:
         model = Project
-        fields = ["name", "key", "type", "starred"]
+        fields = ["author", "name", "key", "type", "starred"]
 
         widgets = {
+            "author": TextInput(),
             "name": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "key": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "type": Select(attrs={"class": "form-control bg-body-tertiary"}),
@@ -340,19 +341,6 @@ class ProjectModalForm(ModelForm):
             raise ValidationError("Project with that key already exists")
         
         return key
-
-
-    def save(self): 
-        cd = self.cleaned_data
-
-        project = Project.objects.create(
-            name=cd["name"].capitalize(),
-            key=cd["key"].upper(),
-            type=cd["type"],
-            starred=cd["starred"]
-        )
-
-        return project 
 
 
 class IssueModalForm(ModelForm):
