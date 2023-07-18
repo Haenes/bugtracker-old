@@ -4,10 +4,33 @@
 
 {% block main %}
 	<div class="container-fluid">
+
 		<div>
 			<div class="ms-auto mt-3">
 				<h4>Projects</h4>
 			</div>
+
+			{% if messages %}
+				{% for message in messages %}
+					{% if message.tags == 'error' %}
+						<div class="row justify-content-center">
+							<div class="col-4 align-self-center alert alert-dismissible alert-danger text-center">
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								{{ message|striptags }}
+							</div>
+						</div>
+					
+					{% else %}
+						<div class="row justify-content-center">
+							<div class="col-4 align-self-center alert alert-dismissible alert-success text-center">
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								{{ message }}
+							</div>
+						</div>
+					{% endif %}
+				{% endfor %}
+			{% endif %}
+
 
 <!-- TRIGER CREATE PROJECT MODAL -->
 			<button type="button" class="btn btn-outline-primary rounded-3 mt-2" data-bs-toggle="modal"
@@ -128,21 +151,13 @@
 							</div>
 
 							{% endif %}
-
-							{% if field.errors %}
-								{% for error in field.errors %}
-									<ol class="mt-2 text-danger fw-medium p-0">{{ error }}</ol>
-								{% endfor %}
-							{% endif %}
 						{% endfor %}
 
 						<div class="modal-footer pb-0">
 							<button type="submit" class="btn btn-primary">Create</button>
 						</div>
-
 					</form>
 				</div>
-
 			</div>
 		</div>
 	</div>

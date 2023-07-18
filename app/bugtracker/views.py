@@ -46,8 +46,13 @@ def projects(request):
         if project_modal_form.is_valid():
             project_modal_form.save()
             context['projects_list'] = Project.objects.order_by("-starred")
+            messages.success(request, "Project created!")
         
         context['project_modal_form'] = project_modal_form
+
+        for field in project_modal_form.errors:
+            if project_modal_form.errors[field]:
+                messages.error(request, project_modal_form.errors[field])
 
     else:
         project_modal_form = ProjectModalForm()
@@ -290,6 +295,8 @@ def password_reset(request):
 def delete_project(request, id):
     project = Project.objects.get(id=id)
     project.delete()
+
+    messages.success(request, "Project deleted!")
     
     return redirect("projects")
 
@@ -297,5 +304,7 @@ def delete_project(request, id):
 def delete_issue(request, project_id, issue_id):
     issue = Issue.objects.get(id=issue_id)
     issue.delete() 
+
+    messages.success(request, "Issue deleted!")
 
     return redirect('boards', project_id)
