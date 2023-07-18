@@ -13,14 +13,13 @@ Right now this project is still being developed.
   4) Registration and log in process;
   5) Abillity to add, edit, delete projects and issues;
   6) Ability to edit user details and change password;
-  7) Pagination for projects in projects.hmtl.
+  7) Ability to delete an account;
+  8) Pagination for projects in projects.hmtl.
 
 <b>Nearest to-do list</b>:
-  1) Add ability to delete account;
-  2) Add author foreign_key in Project model (FIX BUG: 1);
-  3) Make the app finally dynamic (right now some data is taken in advance from db for convenience, for example - user);
-  4) Add dynamically change of favorite project icon (star in project.html and boards.html);
-  5) Add dynamically change of Issue status via drag-n-drop card in boards.html.
+  1) Add author foreign_key in Project model (FIX BUG: 1);
+  2) Add dynamically change of favorite project icon (star in project.html and boards.html);
+  3) Add dynamically change of Issue status via drag-n-drop card in boards.html.
 
 <b>Bugs and errors detected</b>:
   1) Projects are not tied to a specific user (who created it) - need to add Foreign key to Project model;
