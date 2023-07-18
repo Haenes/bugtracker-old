@@ -243,32 +243,29 @@
 						{% csrf_token %}
 						{% for field in issue_modal_form %}
 	
-						{% if field.name == "title" %}
-						<hr class="border-1 mt-4">
-						<div class="col-md-12 mb-3">
-							<p class="text-secondary m-0 text-start">{{ field.name|title }}*</p>
-							{{ field }}
-						</div>
-	
-						{% elif field.name == "description" %}
-						<div class="col-md-12 mb-3">
-							<p class="text-secondary m-0 text-start">{{ field.name|title }}</p>
-							{{ field }}
-						</div>
-	
-						{% elif field.name == "duedate" %}
-						<div class="col-md-12 mb-3">
-							<p class="text-secondary m-0 text-start">{{ field.name|title }}</p>
-							{{ field }}
-						</div>
-	
-						{% else %}
-						<div class="col-md-6 mb-3">
-							<p class="text-secondary m-0 text-start">{{ field.name|title }}*</p>
-							{{ field }}
-						</div>
-	
-						{% endif %}
+							{% if field.name == "title" %}
+								<hr class="border-1 mt-4">
+								<div class="col-md-12 mb-3">
+									<p class="text-secondary m-0 text-start">{{ field.name|title }}*</p>
+									{{ field }}
+								</div>
+		
+							{% elif field.name == "description" %}
+								<div class="col-md-12 mb-3">
+									<p class="text-secondary m-0 text-start">{{ field.name|title }}</p>
+									{{ field }}
+								</div>
+		
+							{% elif field.name == "project" or field.name == "author" %}
+								{{ field.as_hidden }}
+						
+							{% else %}
+								<div class="col-md-4 mb-3">
+									<p class="text-secondary m-0 text-start">{{ field.name|title }}</p>
+									{{ field }}
+								</div>
+		
+							{% endif %}
 						{% endfor %}
 	
 						<div class="modal-footer pb-0">

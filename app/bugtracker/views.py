@@ -42,35 +42,16 @@ def projects(request):
     
     if request.method == 'POST':
         project_modal_form = ProjectModalForm(request.POST or None)
-        issue_modal_form = IssueModalForm(request.POST or None)
 
         if project_modal_form.is_valid():
             project_modal_form.save()
             context['projects_list'] = Project.objects.order_by("-starred")
-
-        if issue_modal_form.is_valid():
-            cd = issue_modal_form.cleaned_data
-
-            Issue.objects.create(
-                project=cd["project"],
-                title=cd["title"],
-                description=cd["description"],
-                type=cd["type"],
-                priority=cd["priority"],
-                status="To do",
-                author_id=user.id,
-                duedate=cd["duedate"]
-            )
         
         context['project_modal_form'] = project_modal_form
-        context['issue_modal_form'] = issue_modal_form
 
     else:
         project_modal_form = ProjectModalForm()
-        issue_modal_form = IssueModalForm()
-
         context['project_modal_form'] = project_modal_form
-        context['issue_modal_form'] = issue_modal_form
 
     return render(request, "projects.html", context)
 
@@ -132,7 +113,7 @@ def boards(request, project_id):
                 messages.error(request, issue_modal_form.errors[field])
 
     else:
-        issue_modal_form = IssueModalForm()   
+        issue_modal_form = IssueModalForm(initial={"project":project.id, "author": user.id})   
         context['issue_modal_form'] = issue_modal_form
 
     return render(request, "boards.html", context)
@@ -298,11 +279,23 @@ def register(request):
 
 
 def logout_view(request):
-
-    logout(request)
+    logout(request)  
     return redirect("login")
 
 
 def password_reset(request):   
     return render(request, "password-reset.html")
- 
+
+
+def delete_project(request, id):
+    project = Project.objects.get(id=id)
+    project.delete()
+    
+    return redirect("projects")
+
+
+def delete_issue(request, project_id, issue_id):
+    issue = Issue.objects.get(id=issue_id)
+    issue.delete() 
+
+    return redirect('boards', project_id)

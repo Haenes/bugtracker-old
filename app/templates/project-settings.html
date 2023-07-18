@@ -63,9 +63,8 @@
 					{% endfor %}
 
 				<div class="col-4 mt-3">
-					<a href="#" 
-						class="link-danger link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover"
-						data-bs-toggle="modal" data-bs-target="#staticBackdropDelete">
+					<a href="{% url 'delete-project' project.id %}" 
+						class="link-danger link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover">
 						Delete project
 					</a>
 				</div>

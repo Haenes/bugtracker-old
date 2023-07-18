@@ -28,7 +28,7 @@
 
 				<li class="breadcrumb-item">
 					<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
-						link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'issue-details' project.id issue.id%}">
+						link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'issue-details' project.id issue.id %}">
 						Issue details
 					</a>
 				</li>
@@ -57,6 +57,9 @@
 								<p class=" m-0 text-start">{{ field.name|title }}</p>
 								{{ field }}
 							</div>
+						
+						{% elif field.name == 'project' or field.name == 'author'%}
+							{{ field.as_hidden }}
 
 						{% else %}
 							<div class="col-2 mb-3">
@@ -68,9 +71,8 @@
 					{% endfor %}
 
 					<div class="col-4 mt-3">
-						<a href="#"
-							class="link-danger link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover"
-							data-bs-toggle="modal" data-bs-target="#staticBackdropDelete">
+						<a href="{% url 'delete-issue' project.id issue.id %}"
+							class="link-danger link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover">
 							Delete issue
 						</a>
 					</div>

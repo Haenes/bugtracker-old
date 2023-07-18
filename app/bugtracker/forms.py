@@ -11,8 +11,6 @@ from django.forms import (
     Textarea, 
     TextInput,    
     )
-from django.utils.html import escape
-
 
 from bugtracker.models import Project, Issue
 
@@ -362,16 +360,16 @@ class IssueModalForm(ModelForm):
 
     class Meta:
         model = Issue
-        fields = ["project", "type", "priority", "title", "description", "duedate", "author"]
+        fields = ["project", "type", "priority", "duedate", "title", "description", "author"]
 
         widgets = {
-            "project": Select(attrs={"class": "form-control bg-body-tertiary"}),
+            "project": Select(),
             "type": Select(attrs={"class": "form-control bg-body-tertiary"}),
             "priority": Select(attrs={"class": "form-control bg-body-tertiary"}),
+            "duedate": DateInput(attrs={"type": "date", "placeholder": "mm-dd-yyyy", "class": "form-control bg-body-tertiary"}),
             "title": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "description": Textarea(attrs={"class": "form-control bg-body-tertiary", "rows": "5"}),
-            "duedate": DateInput(attrs={"type": "date", "placeholder": "mm-dd-yyyy", "class": "form-control bg-body-tertiary"}),
-            "author": TextInput(attrs={"author": forms.HiddenInput(),"class": "form-control bg-body-tertiary"}),
+            "author": TextInput(),
         }
 
 
