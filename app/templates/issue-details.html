@@ -70,9 +70,11 @@
 						{% endif %}
 					{% endfor %}
 
+<!-- ISSUE DELETE MODAL TRIGER  -->
 					<div class="col-4 mt-3">
-						<a href="{% url 'delete-issue' project.id issue.id %}"
-							class="link-danger link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover">
+						<a href="#"
+							class="link-danger link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover"
+							data-bs-toggle="modal" data-bs-target="#DeleteIssue">
 							Delete issue
 						</a>
 					</div>
@@ -81,6 +83,30 @@
 						<button class="btn btn-primary" type="submit">Save</button>
 					</div>
 				</form>
+			</div>
+		</div>
+	</div>
+
+
+<!-- ISSUE DELETE MODAL (LINE 73) -->
+	<div class="modal fade" id="DeleteIssue" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
+		aria-labelledby="DeleteIssue" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="DeleteIssue">Attention</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p class="text-center">
+						Please note, if you delete issue you will not be able to restore it.
+					</p>
+					<p class="text-center">Do you really want to delete issue?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="{% url 'delete-issue' project.id issue.id %}"><button type="button"
+							class="btn btn-danger">Delete</button></a>
+				</div>
 			</div>
 		</div>
 	</div>

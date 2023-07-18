@@ -8,38 +8,6 @@ from django.utils import timezone
 User._meta.get_field('email')._unique = True
 
 
-class Issue_type(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    description = models.CharField(max_length=255, default='')
-
-    def __str__(self):
-        return self.name
-
-
-class Issue_priority(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    description = models.CharField(max_length=255, default='')
-
-    def __str__(self):
-        return self.name
-
-
-class Issue_status(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    description = models.CharField(max_length=255, default='')
-
-    def __str__(self):
-        return self.name
-
-
-class Project_type(models.Model):
-    name = models.CharField(max_length=255, unique=True)
-    description = models.CharField(max_length=255, default='')
-
-    def __str__(self):
-        return self.name
-
-
 class Project(models.Model):
 
 

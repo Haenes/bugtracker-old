@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
 
-from .models import Issue, Issue_type, Issue_priority, Project, Project_type
+from .models import Issue, Project
 from .forms import ( 
     IssueDetailsForm,
     IssueModalForm,
