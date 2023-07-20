@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.utils.http import urlsafe_base64_decode
 
 from .models import Issue, Project
 from .forms import ( 
@@ -14,6 +15,8 @@ from .forms import (
     ProjectModalForm, 
     RegisterForm, 
     UserPasswordChangeForm,
+    UserForgotPasswordForm,
+    UserSetNewPasswordForm,
     UserForm,
     )
 
@@ -292,11 +295,46 @@ def logout_view(request):
     return redirect("login")
 
 
-def password_reset(request):   
-    return render(request, "password-reset.html")
+def password_reset(request):
+
+    if request.method == 'POST':
+        reset_password_form = UserForgotPasswordForm(request.POST)
+
+        if reset_password_form.is_valid():
+            reset_password_form.save(from_email="***REMOVED***" ,request=request)
+
+            return redirect("password-reset-done")
+
+    else:
+        reset_password_form = UserForgotPasswordForm()
+
+    return render(request, "password-reset.html", {"reset_password_form": reset_password_form})
+
+
+def password_reset_done(request):
+    return render(request, "password-reset-done.html")
+
+
+def password_reset_confirm(request, uidb64, token): 
+
+    uid = urlsafe_base64_decode(uidb64) 
+    user = User.objects.get(pk=uid)
+
+    if request.method == 'POST':
+        set_password_form = UserSetNewPasswordForm(user, request.POST)
+
+        if set_password_form.is_valid():
+            set_password_form.save()
+            return redirect("login")
+
+    else:
+        set_password_form = UserSetNewPasswordForm(user=user)
+
+    return render(request, "password-reset-confirm.html", {"set_password_form": set_password_form})
 
 
 def delete_project(request, id):
+
     project = Project.objects.get(id=id)
     project.delete()
 
@@ -306,6 +344,7 @@ def delete_project(request, id):
 
 
 def delete_issue(request, project_id, issue_id):
+
     issue = Issue.objects.get(id=issue_id)
     issue.delete() 
 
@@ -315,6 +354,7 @@ def delete_issue(request, project_id, issue_id):
 
 
 def delete_account(request, user_id):
+
     user = User.objects.get(id=user_id)
     user.delete()
 
