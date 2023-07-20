@@ -15,12 +15,13 @@ Right now this project is still being developed.
   6) Abillity to add, edit, delete projects and issues;
   7) Ability to edit user details and change password;
   8) Ability to delete an account;
-  9) Pagination for projects in projects.hmtl.
+  9) Pagination for projects in projects.hmtl;
+  10) Email confirmation for password reset and user register processes.
 
 <b>Nearest to-do list</b>:
-  1) Add email confirmation for registration; 
-  2) Add dynamically change of favorite project icon (star in project.html and boards.html);
-  3) Add dynamically change of Issue status via drag-n-drop card in boards.html.
+  1) Add dynamically change of favorite project icon (star in project.html and boards.html);
+  2) Add dynamically change of Issue status via drag-n-drop card in boards.html;
+  3) Code refactoring and bug #1 fix.
 
 <b>Bugs and errors detected</b>:
   1) Errors in users.hmtl after change user data WITHOUT changing password (change password form is issue).
