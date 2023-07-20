@@ -18,7 +18,7 @@ Right now this project is still being developed.
   9) Pagination for projects in projects.hmtl.
 
 <b>Nearest to-do list</b>:
-  1) Add email confirmation for register and reset password; 
+  1) Add email confirmation for registration; 
   2) Add dynamically change of favorite project icon (star in project.html and boards.html);
   3) Add dynamically change of Issue status via drag-n-drop card in boards.html.
 
