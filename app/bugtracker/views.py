@@ -1,10 +1,21 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from django.shortcuts import render, redirect
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib import messages
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.sites.models import Site
 from django.core.paginator import Paginator
-from django.utils.http import urlsafe_base64_decode
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from .models import Issue, Project
 from .forms import ( 
@@ -281,13 +292,48 @@ def register(request):
         register_form = RegisterForm(request.POST)
 
         if register_form.is_valid():
-            register_form.save()
+            user = register_form.save(commit=False)
+            user.is_active = False
+            user.save()
+
+            current_site = get_current_site(request)
+            mail_subject = 'Activation link has been sent to your email' 
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+
+            message = render_to_string('register-activate.html', { 
+                'user': user, 
+                'domain': current_site.domain, 
+                'uid':uid, 
+                'token':token
+            }) 
+            to_email = register_form.cleaned_data.get('email') 
+            email = EmailMessage(mail_subject, message, to=[to_email]) 
+            email.send() 
+
             return redirect("login")
 
     else:
         register_form = RegisterForm()
 
+
     return render(request, "register.html", {"register_form": register_form})
+
+def register_confirm(request, uidb64, token):
+    try: 
+        uid = urlsafe_base64_decode(uidb64)
+        user = User.objects.get(pk=uid) 
+    except(TypeError, ValueError, OverflowError, User.DoesNotExist): 
+        user = None 
+
+    if user is not None and default_token_generator.check_token(user, token): 
+        user.is_active = True 
+        user.save() 
+        messages.success(request, "Email is confirmed, you can log in now!")
+        return redirect('login') 
+    else: 
+        messages.error(request, "Email confirmation is failed!")
+        return redirect('login') 
 
 
 def logout_view(request):
@@ -301,7 +347,7 @@ def password_reset(request):
         reset_password_form = UserForgotPasswordForm(request.POST)
 
         if reset_password_form.is_valid():
-            reset_password_form.save(from_email="***REMOVED***" ,request=request)
+            reset_password_form.save(from_email=os.environ.get("EMAIL_HOST_USER") ,request=request)
 
             return redirect("password-reset-done")
 
