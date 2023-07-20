@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordResetForm
 from django.core.exceptions import ValidationError
 from django.forms import (   
     CheckboxInput,
@@ -387,3 +388,44 @@ class IssueDetailsForm(ModelForm):
             "duedate": DateInput(attrs={"type": "date", "placeholder": "mm-dd-yyyy", "class": "form-control bg-body-tertiary"}),
             "author": TextInput(attrs={"author": forms.HiddenInput(),"class": "form-control bg-body-tertiary"}),
         }
+
+
+class UserForgotPasswordForm(PasswordResetForm):
+    """  Request to reset password  """
+
+
+    # Change style of field 
+    email = forms.CharField(
+        min_length=4, 
+        max_length=150, 
+        widget=EmailInput(
+            attrs={
+                "class": "form-control", 
+                "id": "floatingEmail", 
+                "placeholder": "Email",
+                "autofocus": True}))
+
+
+class UserSetNewPasswordForm(UserPasswordChangeForm):
+    """  Change user password after confirm via link in email  """
+
+
+    # Change style of fields:
+    new_password1 = forms.CharField(
+        label="New password",
+        min_length=8,
+        max_length=32,
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "col-4 mb-3 form-control", 
+                "autofocus": True, 
+                "placeholder": "New password"}))
+
+    new_password2 = forms.CharField(
+        label="New password confirmation",
+        min_length=8,
+        max_length=32,
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "col-2  mb-4 form-control", 
+                "placeholder": "Password confirmation"}))
