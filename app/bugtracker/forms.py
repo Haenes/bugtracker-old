@@ -282,11 +282,12 @@ class ProjectDetailsForm(ModelForm):
 
     class Meta:
         model = Project
-        fields = ["name", "key"]
+        fields = ["name", "key", "starred"]
 
         widgets = {
             "name": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
             "key": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
+            "starred": CheckboxInput(attrs={"name": "Favorite", "style": "width:20px; height:20px"}),
         }
 
 

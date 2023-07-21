@@ -203,7 +203,8 @@ def project_settings(request, project_id):
         project_form = ProjectDetailsForm(
             initial = {
                 "name": project.name, 
-                "key": project.key
+                "key": project.key,
+                "starred": project.starred
             }
         )
 

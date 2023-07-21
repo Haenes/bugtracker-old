@@ -58,12 +58,15 @@
 							<th scope="row">{{ forloop.counter }}</th>
 
 							{% if project.starred %}
-								<td><button type="button" class="btn star-table">
-									<i class="fs-6 bi bi-star-fill" style="color: gold;"></i></button>
-								</td>
+								<td>
+									<button type="button" class="btn star-table">
+										<i class="fs-6 bi bi-star-fill" style="color: gold;"></i>
+									</button>
+								</td>						
 							{% else %}
-								<td><button type="button" class="btn star-table">
-										<i class="fs-6 bi bi-star" style="color:grey;"></i>
+								<td>
+									<button type="button" class="btn star-table">
+										<i class="fs-6 bi bi-star" style="color: grey;"></i>
 									</button>
 								</td>
 							{% endif %}
