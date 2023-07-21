@@ -22,7 +22,7 @@ Right now this project is still being developed.
   1) Fix bug #1.
 
 <b>It would be great to be able to</b>:
-  1) Dynamically change the Favorite status of projects with AJAX or smth (star icon in project.html and boards.html);
+  1) Dynamically change the Favorite status of projects with AJAX or smth (star icon in projects.html and boards.html);
   2) Dynamically change the Issue status via drag-n-drop card in boards.html with AJAX;
 
 <b>Bugs and errors detected</b>:
