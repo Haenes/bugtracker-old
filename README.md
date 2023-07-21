@@ -19,9 +19,11 @@ Right now this project is still being developed.
   10) Email confirmation for password reset and user register processes.
 
 <b>Nearest to-do list</b>:
-  1) Add dynamically change of favorite project icon (star in project.html and boards.html);
-  2) Add dynamically change of Issue status via drag-n-drop card in boards.html;
-  3) Code refactoring and bug #1 fix.
+  1) Fix bug #1.
+
+<b>It would be great to be able to</b>:
+  1) Dynamically change the Favorite status of projects with AJAX or smth (star icon in project.html and boards.html);
+  2) Dynamically change the Issue status via drag-n-drop card in boards.html with AJAX;
 
 <b>Bugs and errors detected</b>:
   1) Errors in users.hmtl after change user data WITHOUT changing password (change password form is issue).
