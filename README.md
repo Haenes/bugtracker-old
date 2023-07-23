@@ -20,10 +20,8 @@ Right now this project is still being developed.
   11) Ability to change the Issue status by Drag'n'Drop Issue cards in boards.html.
 
 <b>Nearest to-do list</b>:
-  1) Fix bug #1.
+  1) Make the search bar working;
 
 <b>It would be great to be able to</b>:
   1) Dynamically change the Favorite status of projects with AJAX or smth (star icon in projects.html and boards.html);
-
-<b>Bugs and errors detected</b>:
-  1) Errors in users.hmtl after change user data WITHOUT changing password (change password form is issue).
+  2) Add dark/light switch mode
