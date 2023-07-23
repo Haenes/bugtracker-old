@@ -287,7 +287,7 @@ class ProjectDetailsForm(ModelForm):
         widgets = {
             "name": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
             "key": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
-            "starred": CheckboxInput(attrs={"name": "Favorite", "style": "width:20px; height:20px"}),
+            "starred": CheckboxInput(attrs={"name": "Favorite", "style": "width:20px; height:20px", "class": "form-check-input"}),
         }
 
 
@@ -321,7 +321,7 @@ class ProjectModalForm(ModelForm):
             "name": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "key": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "type": Select(attrs={"class": "form-control bg-body-tertiary"}),
-            "starred": CheckboxInput(attrs={"name": "Favorite", "style": "width:20px; height:20px"}),
+            "starred": CheckboxInput(attrs={"name": "Favorite", "style": "width:20px; height:20px", "class": "form-check-input"}),
         }
 
 
