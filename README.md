@@ -16,14 +16,14 @@ Right now this project is still being developed.
   7) Ability to edit user details and change password;
   8) Ability to delete an account;
   9) Pagination for projects in projects.hmtl;
-  10) Email confirmation for password reset and user register processes.
+  10) Email confirmation for password reset and user register processes;
+  11) Ability to change the Issue status by Drag'n'Drop Issue cards in boards.html.
 
 <b>Nearest to-do list</b>:
   1) Fix bug #1.
 
 <b>It would be great to be able to</b>:
   1) Dynamically change the Favorite status of projects with AJAX or smth (star icon in projects.html and boards.html);
-  2) Dynamically change the Issue status via drag-n-drop card in boards.html with AJAX;
 
 <b>Bugs and errors detected</b>:
   1) Errors in users.hmtl after change user data WITHOUT changing password (change password form is issue).
