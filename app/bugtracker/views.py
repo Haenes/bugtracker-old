@@ -259,24 +259,28 @@ def accounts(request, user_id):
     }
   
     if request.method == 'POST':
-        user_form = UserForm(request.POST or None, instance=user)
-        password_change_form = UserPasswordChangeForm(request.user, request.POST or None)
 
-        if user_form.is_valid():
-            user_form.save()
+        if "user_details" in request.POST:
+            user_form = UserForm(request.POST or None, instance=user)
 
-        if password_change_form.is_valid():
-            user = password_change_form.save()
-            update_session_auth_hash(request, user)
-            messages.success(request, 'Your password was successfully updated!')
-            return redirect("accounts", user.id)
-          
-        context['user_form'] = user_form
-        context['password_change_form'] = password_change_form
+            if user_form.is_valid():
+                user_form.save()
 
-        for field in password_change_form.errors:
-            if password_change_form.errors[field]:
-                messages.error(request, password_change_form.errors[field])
+            context['user_form'] = user_form
+
+        elif "change_password" in request.POST:
+            password_change_form = UserPasswordChangeForm(request.user, request.POST or None)
+
+            if password_change_form.is_valid():
+                user = password_change_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Your password was successfully updated!')
+                    
+            context['password_change_form'] = password_change_form
+
+            for field in password_change_form.errors:
+                if password_change_form.errors[field]:
+                    messages.error(request, password_change_form.errors[field])
 
         return redirect("accounts", user.id)
     
