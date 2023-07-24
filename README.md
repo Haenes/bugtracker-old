@@ -20,8 +20,7 @@ Right now this project is still being developed.
   11) Ability to change the Issue status by Drag'n'Drop Issue cards in boards.html.
 
 <b>Nearest to-do list</b>:
-  1) Make the search bar working;
+  1) Make the search bar working.
 
 <b>It would be great to be able to</b>:
-  1) Dynamically change the Favorite status of projects with AJAX or smth (star icon in projects.html and boards.html);
-  2) Add dark/light switch mode
+  1) Dynamically change the Favorite status of projects with AJAX or smth (star icon in projects.html and boards.html).
