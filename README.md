@@ -17,7 +17,8 @@ Right now this project is still being developed.
   8) Ability to delete an account;
   9) Pagination for projects in projects.hmtl;
   10) Email confirmation for password reset and user register processes;
-  11) Ability to change the Issue status by Drag'n'Drop Issue cards in boards.html.
+  11) Ability to change the Issue status by Drag'n'Drop Issue cards in boards.html;
+  12) Ability to change color mode (not implemented on such pages as registration, login, password-reset, etc... so far).
 
 <b>Nearest to-do list</b>:
   1) Make the search bar working.
