@@ -10,26 +10,9 @@
 				<h4>Projects</h4>
 			</div>
 
-			{% if messages %}
-				{% for message in messages %}
-					{% if message.tags == 'error' %}
-						<div class="row justify-content-center">
-							<div class="col-4 align-self-center alert alert-dismissible alert-danger text-center">
-								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-								{{ message|striptags }}
-							</div>
-						</div>
-					
-					{% else %}
-						<div class="row justify-content-center">
-							<div class="col-4 align-self-center alert alert-dismissible alert-success text-center">
-								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-								{{ message }}
-							</div>
-						</div>
-					{% endif %}
-				{% endfor %}
-			{% endif %}
+			
+<!-- SHOWS SUCCESS/ERROR MESSAGES  -->
+			{% include 'messages.html' %}
 
 
 <!-- TRIGER CREATE PROJECT MODAL -->
@@ -126,46 +109,6 @@
 
 
 <!-- CREATE PROJECT MODAL -->
-	<div class="modal fade" id="staticBackdropProject" data-bs-backdrop="static" tabindex="-1"
-		aria-labelledby="staticBackdropProject" aria-hidden="true" data-backdrop="static">
-		<div class="modal-dialog  modal-dialog-centered">
-			<div class="modal-content">
-
-				<div class="modal-header">
-					<h1 class="modal-title fs-5 text-secondary" id="staticBackdropProject">Create project</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-
-				<div class="modal-body">
-					<form action="{% url 'projects' %}" method="post">
-						{% csrf_token %}
-						{% for field in project_modal_form %}
-
-							{% if field.name == "author" %}
-								{{ field.as_hidden }}
-
-							{% elif field.name == "starred" %}
-								<div class="col-md-6 mb-4">
-									<p class="text-secondary m-0 text-start">Favorite</p>
-									{{ field }}
-								</div>
-							
-							{% else %}
-							<div class="col-md-6 mb-3">
-								<p class="text-secondary m-0 text-start">{{ field.name|title }}*</p>
-								{{ field }}
-							</div>
-
-							{% endif %}
-						{% endfor %}
-
-						<div class="modal-footer pb-0">
-							<button type="submit" class="btn btn-primary">Create</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+	{% include 'create-project.html' %}
 
 {% endblock %}

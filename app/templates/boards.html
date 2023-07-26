@@ -4,49 +4,47 @@
 {% block title %} Board {% endblock%}
 
 {% block script %}
-<script>
+	<script>
+		var source;  // Get source id
+		var target;  // Get target id
 
-	var source;       // Get source id
-	var target;       // Get target id
+		function allowDrop(ev) {
+			ev.preventDefault();
+		}
 
-	function allowDrop(ev) {
-		ev.preventDefault();
-	}
+		function drag(ev) {
+			ev.dataTransfer.setData("text", ev.target.id);
+			source = ev.target.parentNode.id;                        // Issue status (To do, In Progress, Done) ID
+		}
 
-	function drag(ev) {
-		ev.dataTransfer.setData("text", ev.target.id);
-		source = ev.target.parentNode.id;                             // Issue status (To do, In Progress, Done) ID
-	}
+		function drop(ev) {
+			ev.preventDefault();
+			var data = ev.dataTransfer.getData("text");              // Issue card ID
+			ev.target.appendChild(document.getElementById(data));
+			var target = ev.target.id;                               // Same as source from drag function
 
-	function drop(ev) {
-		ev.preventDefault();
-		var data = ev.dataTransfer.getData("text");                   // Issue card ID
-		ev.target.appendChild(document.getElementById(data));
-		var target = ev.target.id;                                    // Same as source from drag function
+			if (source != target) {                                  // Check if card was drag to another Issue status
 
-		if (source != target) {                                       // Check if card was drag to another Issue status
-
-			response = fetch("{% url 'boards' project.id %}", {       // If so: make POST request and send data in body
-				method: "PUT",
-				credentials: "same-origin",
-				headers: {
-					"Accept": "application/json",
-					"X-Requested-With": "XMLHttpRequest",
-					"X-CSRFToken": "{{ csrf_token }}"
-				},
-				body: JSON.stringify({
-					"source": source,
-					"target": target,
-					"data": data,
+				response = fetch("{% url 'boards' project.id %}", {  // If so: make POST request and send data in body
+					method: "PUT",
+					credentials: "same-origin",
+					headers: {
+						"Accept": "application/json",
+						"X-Requested-With": "XMLHttpRequest",
+						"X-CSRFToken": "{{ csrf_token }}"
+					},
+					body: JSON.stringify({
+						"source": source,
+						"target": target,
+						"data": data,
+					})
 				})
-			})
+			}
+			else {
+				console.log("Error");
+			}
 		}
-		else {
-			console.log("Error");
-		}
-	}
-	
-</script>
+	</script>
 {% endblock %}
 
 {% block issue_modal %}
@@ -65,26 +63,8 @@
 {% block main %}
 	{% include 'sidebar.html' %}
 
-	{% if messages %}
-		{% for message in messages %}
-			{% if message.tags == 'error' %}
-				<div class="row justify-content-center">
-					<div class="col-4 align-self-center alert alert-dismissible alert-danger text-center">
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						{{ message|striptags }}
-					</div>
-				</div>
-			
-			{% else %}
-				<div class="row justify-content-center">
-					<div class="col-4 align-self-center alert alert-dismissible alert-success text-center">
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-						{{ message }}
-					</div>
-				</div>
-			{% endif %}
-		{% endfor %}
-	{% endif %}
+<!-- SHOWS SUCCESS/ERROR MESSAGES  -->
+	{% include 'messages.html' %}
 
 
 <!-- BREADCRUMB -->
@@ -135,6 +115,7 @@
 					</div>
 				</div>
 			</div>
+
 
 <!-- ISSUE CARDS -->
 <!-- TO DO -->
@@ -248,56 +229,7 @@
 			
 
 <!-- CREATE ISSUE MODAL -->
-	<div class="modal fade" id="staticBackdropIssue" data-bs-backdrop="static" tabindex="-1"
-		aria-labelledby="staticBackdropIssue" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-			<div class="modal-content">
-	
-				<div class="modal-header">
-					<h1 class="modal-title fs-5 text-secondary" id="staticBackdropIssue">Create issue</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-	
-				<div class="modal-body">
-					<form method="post">
-						{% csrf_token %}
-						{% for field in issue_modal_form %}
-	
-							{% if field.name == "title" %}
-								<hr class="border-1 mt-4">
-								<div class="col-md-12 mb-3">
-									<p class="text-secondary m-0 text-start">{{ field.name|title }}*</p>
-									{{ field }}
-								</div>
-		
-							{% elif field.name == "description" %}
-								<div class="col-md-12 mb-3">
-									<p class="text-secondary m-0 text-start">{{ field.name|title }}</p>
-									{{ field }}
-								</div>
-		
-							{% elif field.name == "project" or field.name == "author" %}
-								{{ field.as_hidden }}
-						
-							{% else %}
-								<div class="col-md-4 mb-3">
-									<p class="text-secondary m-0 text-start">{{ field.name|title }}</p>
-									{{ field }}
-								</div>
-		
-							{% endif %}
-						{% endfor %}
-	
-						<div class="modal-footer pb-0">
-							<button type="submit" class="btn btn-primary">Create</button>
-						</div>
-	
-					</form>
-				</div>
-	
-			</div>
-		</div>
-	</div>
+	{% include 'create-issue.html' %}
 
 <!-- BOARD ISSUE MODAL -->
 	{% for issue in issues_list %}
@@ -305,12 +237,12 @@
 			aria-labelledby="staticBackdropBoardIssue" aria-hidden="true">
 			<div class="modal-dialog modal-dialog-centered modal-lg">
 				<div class="modal-content">
-
+		
 					<div class="modal-header">
 						<h6 class="modal-title fw-normal">{{ project.key }}-{{ issue.id }}</h6>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
-
+		
 					<div class="modal-body">
 						<div class="container">
 							<div class="row justify-content-between text-start">
@@ -318,29 +250,29 @@
 									<h5 class="fw-normal">{{ issue.title }}</h5>
 								</div>
 							</div>
-
+		
 							<div class="row justify-content-between text-start mt-3">
 								<div class="col-6">
 									<div class="form-outline mb-3">
 										{% if issue.description %}
-										<textarea class="form-control w-100 bg-body-tertiary" id="textArea" rows="8"
-											placeholder="{{ issue.description }}" disabled></textarea>
+											<textarea class="form-control w-100 bg-body-tertiary" id="textArea" rows="8"
+												placeholder="{{ issue.description }}" disabled></textarea>
 										{% else %}
 										{% endif %}
 									</div>
-
 								</div>
-
+		
 								<div class="col-5">
 									<div class="d-flex flex-column">
-										<div class="p-2 fw-normal">Status:   {{ issue.status }}</div>
+										<div class="p-2 fw-normal">Status: {{ issue.status }}</div>
 										<div class="p-2 fw-normal">Priority: {{ issue.priority }}</div>
-										<div class="p-2 fw-normal">Type:     {{ issue.type }}</div>
-										<div class="p-2 fw-normal">Created:  {{ issue.created }}</div>
-										<div class="p-2 fw-normal">Updated:  {{ issue.updated }}</div>	
+										<div class="p-2 fw-normal">Type: {{ issue.type }}</div>
+										<div class="p-2 fw-normal">Created: {{ issue.created }}</div>
+										<div class="p-2 fw-normal">Updated: {{ issue.updated }}</div>
 										<hr>
 										<div class="align-self-end">
-											<a href="{% url 'issue-details' project.id issue.id %}" class="nav-link px-0 text-end text-secondary">
+											<a href="{% url 'issue-details' project.id issue.id %}"
+												class="nav-link px-0 text-end text-secondary">
 												<i class="fs-5 bi bi-gear-wide icon-color"></i>
 												<span class="ms-1 d-none d-sm-inline">Configure</span>
 											</a>
@@ -353,7 +285,7 @@
 				</div>
 			</div>
 		</div>
-
 	{% endfor %}
+
 
 {% endblock %}

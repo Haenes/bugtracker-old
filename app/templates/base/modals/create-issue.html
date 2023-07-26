@@ -1,0 +1,50 @@
+<div class="modal fade" id="staticBackdropIssue" data-bs-backdrop="static" tabindex="-1"
+	aria-labelledby="staticBackdropIssue" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content">
+
+			<div class="modal-header">
+				<h1 class="modal-title fs-5 text-secondary" id="staticBackdropIssue">Create issue</h1>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+
+			<div class="modal-body">
+				<form method="post">
+					{% csrf_token %}
+					{% for field in issue_modal_form %}
+
+						{% if field.name == "title" %}
+							<hr class="border-1 mt-4">
+							<div class="col-md-12 mb-3">
+								<p class="text-secondary m-0 text-start">{{ field.name|title }}*</p>
+								{{ field }}
+							</div>
+
+						{% elif field.name == "description" %}
+							<div class="col-md-12 mb-3">
+								<p class="text-secondary m-0 text-start">{{ field.name|title }}</p>
+								{{ field }}
+							</div>
+
+						{% elif field.name == "project" or field.name == "author" %}
+							{{ field.as_hidden }}
+
+						{% else %}
+							<div class="col-md-4 mb-3">
+								<p class="text-secondary m-0 text-start">{{ field.name|title }}</p>
+								{{ field }}
+							</div>
+
+						{% endif %}
+					{% endfor %}
+
+					<div class="modal-footer pb-0">
+						<button type="submit" class="btn btn-primary">Create</button>
+					</div>
+
+				</form>
+			</div>
+
+		</div>
+	</div>
+</div>
