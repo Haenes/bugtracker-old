@@ -45,7 +45,7 @@
 			}
 		}
 	</script>
-{% endblock %}
+{% endblock script %}
 
 {% block issue_modal %}
 	<ul class="navbar-nav nav-underline me-auto mb-lg-0">
@@ -58,7 +58,7 @@
 			</li>
 		</ul>
 	</ul>
-{% endblock %}
+{% endblock issue_modal %}
 
 {% block main %}
 	{% include 'sidebar.html' %}
@@ -88,7 +88,7 @@
 
 			</ol>
 		</nav> 
-	{% endblock %}
+	{% endblock breadcrumb %}
 
 <!-- FAVORITE PROJECT STAR -->
 		<div class="row mt-2">
@@ -286,6 +286,5 @@
 			</div>
 		</div>
 	{% endfor %}
-
-
-{% endblock %}
+	
+{% endblock main %}

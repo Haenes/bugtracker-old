@@ -9,11 +9,9 @@
 			<div class="ms-auto mt-3">
 				<h4>Projects</h4>
 			</div>
-
-			
+		
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
 			{% include 'messages.html' %}
-
 
 <!-- TRIGER CREATE PROJECT MODAL -->
 			<button type="button" class="btn btn-outline-primary rounded-3 mt-2" data-bs-toggle="modal"
@@ -55,8 +53,10 @@
 							{% endif %}
 
 							<td><a class="link-offset-2 link-primary link-offset-3-hover link-underline 
-                                link-underline-opacity-0 link-underline-opacity-75-hover"
-									href="{% url 'boards' project.id %}">{{ project.name }}</a></td>
+									link-underline-opacity-0 link-underline-opacity-75-hover"
+									href="{% url 'boards' project.id %}">{{ project.name }}
+								</a>
+							</td>
 									
 							<td>{{ project.key }}</td>
 							<td>{{ project.type }}</td>
@@ -110,5 +110,4 @@
 
 <!-- CREATE PROJECT MODAL -->
 	{% include 'create-project.html' %}
-
-{% endblock %}
+{% endblock main %}
