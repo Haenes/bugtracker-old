@@ -1,23 +1,21 @@
 import os
-import re
 import json
 from dotenv import load_dotenv
 
 load_dotenv()
 
-from django.shortcuts import render, redirect
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.sites.shortcuts import get_current_site
-from django.contrib.sites.models import Site
-from django.core.paginator import Paginator
 from django.core.mail import EmailMessage
+from django.core.paginator import Paginator
+from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Q
+from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from django.http import JsonResponse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
