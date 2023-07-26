@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Search results{% endblock %}
+
+{% block main %}
+	<div class="ms-3 mt-3">
+		<h4> You searched for "{{ query }}", the results are listed below:</h4>
+	</div>
+	
+	<div class="ms-3 mt-3">
+		<ul class="list-group">
+			{% if results_projects %}
+				Projects:
+				{% for project in results_projects %}
+					<li class="ms-5">
+						<a href="{% url 'boards' project.id%}">{{ project }}</a>
+					</li>
+				{% endfor %}
+			{% endif %}
+		</ul>
+
+		<ul class="list-group mt-3">
+			{% if results_issues %}
+				Issues:
+				{% for issue in results_issues %}
+					<li class="ms-5">
+						<a href="{% url 'issue-details' issue.project_id issue.id%}">{{ issue }}</a>
+					</li>
+				{% endfor %}
+			{% endif%}
+		</ul>
+	</div>
+{% endblock %}

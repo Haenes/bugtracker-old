@@ -30,14 +30,14 @@
 
 
 <!-- TRIGER ISSUE MODAL-->
-				
+
 				<div class="collapse navbar-collapse" id="navbarText">
-					{% block issue_modal %}{% endblock %}									
+					{% block issue_modal %}{% endblock %}
 				</div>
 
 <!-- RIGTH SIDE -->
-				<form class="col-12 col-lg-3 me-3" role="search">
-					<input type="search" class="form-control" placeholder="Search" aria-label="Search">
+				<form action="{% url 'search' %}" class="col-12 col-lg-3 me-3" role="search">
+					<input type="search" class="form-control" name="q"  placeholder="Search" aria-label="Search">
 				</form>
 
 				<div class="d-flex justify-content-center">
@@ -59,26 +59,23 @@
 
 							<li class="nav-item dropdown m-1 me-3">
 								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
-									data-bs-placement="bottom" title="Toggle color mode" aria-expanded="false" 
+									data-bs-placement="bottom" title="Toggle color mode" aria-expanded="false"
 									aria-labelledby="bd-theme-text" id="bd-theme">
 									<i class="bi bi-gear-wide" style="font-size: 20px;color: grey;"></i>
 								</a>
 								<ul class="dropdown-menu text-small shadow" data-popper-placement="bottom-end"
-									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);">					
+									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);">
 									<li>
-										<button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="false">
-											Light
-										</button>
+										<button type="button" class="dropdown-item d-flex align-items-center"
+											data-bs-theme-value="light" aria-pressed="false">Light</button>
 									</li>
 									<li>
-										<button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="false">
-											Dark
-										</button>
+										<button type="button" class="dropdown-item d-flex align-items-center"
+											data-bs-theme-value="dark" aria-pressed="false">Dark</button>
 									</li>
 									<li>
-										<button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="false">
-											Auto
-										</button>
+										<button type="button" class="dropdown-item d-flex align-items-center"
+											data-bs-theme-value="auto" aria-pressed="false">Auto</button>
 									</li>
 								</ul>
 							</li>
@@ -104,9 +101,9 @@
 			</div>
 		</nav>
 
-		{% block sidebar %}{% endblock %}		
+		{% block sidebar %}{% endblock %}
 		{% block main %}{% endblock %}
-		
+
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	</body>
 </html>

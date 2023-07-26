@@ -15,6 +15,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.sites.models import Site
 from django.core.paginator import Paginator
 from django.core.mail import EmailMessage
+from django.db.models import Q
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.utils.encoding import force_bytes
@@ -299,6 +300,36 @@ def accounts(request, user_id):
         context['password_change_form'] = password_change_form
 
     return render(request, "accounts.html", context)
+
+
+@login_required(login_url="/login/")
+def search(request):
+
+    if 'q' in request.GET and request.GET['q']:
+        q = request.GET.get("q")
+
+        return redirect("search-results", q)
+        
+    messages.error(request,"Please, provide a data for search")
+    return redirect(request.META.get("HTTP_REFERER", "/"))
+
+
+@login_required(login_url="/login/")
+def search_results(request, q):
+
+    query = q 
+    user = request.user
+
+    if query is not None:
+        lookups_projects = Q(name__icontains=query) | Q(key__icontains=query) | Q(id__icontains=query)
+        lookups_issues = Q(title__icontains=query) | Q(type__icontains=query) | Q(status__icontains=query) | Q(priority__icontains=query) | Q(id__icontains=query)
+
+        results_projects = Project.objects.filter(lookups_projects).distinct()
+        results_issues = Issue.objects.filter(lookups_issues).distinct()
+
+        context = {'query':query, 'results_projects':results_projects, 'results_issues': results_issues, 'user_id': user.id}
+
+    return render(request, "search-results.html", context)
 
 
 def login_view(request):
