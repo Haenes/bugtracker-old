@@ -7,10 +7,7 @@
 <script>
 
 	var source;       // Get source id
-	var source_count; // Get all text, example: TO DO 2 ISSUES
-
-	var target;       // Same as above
-	var target_count;
+	var target;       // Get target id
 
 	function allowDrop(ev) {
 		ev.preventDefault();
@@ -18,16 +15,14 @@
 
 	function drag(ev) {
 		ev.dataTransfer.setData("text", ev.target.id);
-		source = ev.target.parentNode.id;                                  // Issue status (To do, In Progress, Done) ID
-		source_count = document.getElementsByName(source)[0].textContent;  // Number of issues of source status
+		source = ev.target.parentNode.id;                             // Issue status (To do, In Progress, Done) ID
 	}
 
 	function drop(ev) {
 		ev.preventDefault();
-		var data = ev.dataTransfer.getData("text");                            // Issue card ID
+		var data = ev.dataTransfer.getData("text");                   // Issue card ID
 		ev.target.appendChild(document.getElementById(data));
-		var target = ev.target.id;                                            // Same as source from drag function
-		var target_count = document.getElementsByName(target)[0].textContent;
+		var target = ev.target.id;                                    // Same as source from drag function
 
 		if (source != target) {                                       // Check if card was drag to another Issue status
 
@@ -41,30 +36,16 @@
 				},
 				body: JSON.stringify({
 					"source": source,
-					"source_count": source_count,
 					"target": target,
-					"target_count": target_count,
 					"data": data,
 				})
-			})
-			.then(response => {
-				if (!response.ok) {
-					console.log("HTTP request unsuccessful");
-				}
-				return response.json();
-			})
-			.then(data => {              // Work with received data from views.py (boards view)
-				const source_html = document.getElementsByName(source);
-				source_html[0].innerText = source_count.replace(/[0-9]/g, data['source_count']);
-
-				const target_html = document.getElementsByName(target);
-				target_html[0].innerHTML = target_count.replace(/[0-9]/g, data['target_count']);
 			})
 		}
 		else {
 			console.log("Error");
 		}
 	}
+	
 </script>
 {% endblock %}
 
@@ -161,13 +142,7 @@
 				<div class="card bg-body-tertiary">
 					<div id="To do" class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
 
-						{% if todo_issues == 0 %}
-							<h6 name="To do" class="card-title">TO DO 0 ISSUES</h6>
-						{% elif todo_issues|divisibleby:2 %}
-							<h6 name="To do" class="card-title">TO DO {{ todo_issues }} ISSUES</h6>
-						{% else %}
-							<h6 name="To do" class="card-title">TO DO {{ todo_issues }} ISSUE</h6>
-						{% endif %}
+						<h6 name="To do" class="card-title">TO DO</h6>
 
 						<div class="dropdown">
 							<button type="button" class="btn p-0 mb-2 fw-medium text-secondary border-0" data-bs-toggle="dropdown"
@@ -223,13 +198,7 @@
 				<div class="card bg-body-tertiary">
 					<div id="In progress" class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
 
-						{% if in_progress_issues == 0 %}
-							<h6 name="In progress" class="card-title">IN PROGRESS 0 ISSUES</h6>
-						{% elif in_progress_issues|divisibleby:2 %}
-							<h6 name="In progress" class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUES</h6>
-						{% else %}
-							<h6 name="In progress" class="card-title">IN PROGRESS {{ in_progress_issues }} ISSUE</h6>
-						{% endif %}
+						<h6 name="In progress" class="card-title">IN PROGRESS</h6>
 
 						{% for issue in issues_list %}
 							{% if issue.status == "In progress" %}
@@ -255,13 +224,7 @@
 				<div class="card bg-body-tertiary">
 					<div id="Done" class="card-body" ondrop="drop(event)" ondragover="allowDrop(event)">
 
-						{% if done_issues == 0 %}
-							<h6 name="Done" class="card-title">DONE 0 ISSUES</h6>
-						{% elif done_issues|divisibleby:2 %}
-							<h6 name="Done" class="card-title">DONE {{ done_issues }} ISSUES</h6>
-						{% else %}
-							<h6 name="Done"class="card-title">DONE {{ done_issues }} ISSUE</h6>
-						{% endif %}
+						<h6 name="Done" class="card-title">DONE</h6>
 
 						{% for issue in issues_list %}
 							{% if issue.status == "Done" %}			

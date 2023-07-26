@@ -36,15 +36,6 @@ from .forms import (
     )
 
 
-def clean_str(string):
-    number = ''.join(re.findall('\d+', string))
-    if len(number) == 0:
-        number = 0
-    number = int(number)
- 
-    return number
-
-
 @login_required(login_url="/login/")
 def projects(request):
 
@@ -152,10 +143,7 @@ def boards(request, project_id):
 
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         data = json.load(request)
-
-        source_count = clean_str(data["source_count"])
         target = data["target"] 
-        target_count = clean_str(data["target_count"])
     
         issue_id = data["data"].removeprefix("card")      
         issue = Issue.objects.get(id=issue_id)
@@ -163,15 +151,6 @@ def boards(request, project_id):
         if issue.status != target:
             issue.status = target
             issue.save()
-
-            source_count -= 1
-            target_count += 1
-
-            return JsonResponse({
-                "source_count": source_count,
-                "target_count": target_count,
-                'safe':False
-            })
            
     return render(request, "boards.html", context)
 
