@@ -16,6 +16,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
+from django.http import JsonResponse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
@@ -85,29 +86,18 @@ def boards(request, project_id):
     all_issues = Issue.objects.order_by('status')
     user = request.user
 
-    todo_issues = 0
-    in_progress_issues = 0
-    done_issues  = 0
+
     issue_list = []
 
     for issue in all_issues:
-        if issue.project_id == project.id:
-            if issue.status == "To do":
-                todo_issues += 1
-            elif issue.status == "In progress":
-                in_progress_issues += 1
-            else:
-                done_issues += 1           
+        if issue.project_id == project.id:         
             issue_list.append(issue)
 
     context = {
         'project': project,
         'user_id': user.id,
         'project_id': project.id,        
-        'issues_list': issue_list,
-        'todo_issues': todo_issues,
-        'in_progress_issues': in_progress_issues,
-        'done_issues': done_issues,
+        'issues_list': issue_list
     }
 
     if request.method == 'POST':
@@ -149,6 +139,11 @@ def boards(request, project_id):
         if issue.status != target:
             issue.status = target
             issue.save()
+
+            return JsonResponse({
+                "id": issue.id,
+                "source": issue.status,
+            })
            
     return render(request, "boards.html", context)
 
