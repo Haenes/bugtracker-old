@@ -19,7 +19,7 @@
 
 <!-- NAVBAR -->
 <!-- LEFT SIDE -->
-{% block navbar %}
+	{% block navbar %}
 		<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
 			<div class="container-fluid">
 
@@ -44,19 +44,6 @@
 				<div class="d-flex justify-content-center">
 					<ul class="navbar-expand p-0 mb-0 mb-lg-0">
 						<ul class="navbar-nav">
-
-							<li class="nav-item dropdown  m-1 me-3">
-								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
-									data-bs-placement="bottom" title="Help" aria-expanded="false">
-									<i class="bi bi-question-circle" style="font-size: 20px;color: grey;"></i>
-								</a>
-								<ul class="dropdown-menu text-small shadow"
-									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
-									data-popper-placement="bottom-end">
-									<li><a class="dropdown-item" href="#">Raise a bug</a></li>
-									<li><a class="dropdown-item" href="#">Give feedback</a></li>
-								</ul>
-							</li>
 
 							<li class="nav-item dropdown m-1 me-3">
 								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
@@ -101,11 +88,10 @@
 				</div>
 			</div>
 		</nav>
-{% endblock navbar %}
-
-		{% block sidebar %}{% endblock %}
-		{% block main %}{% endblock %}
+	{% endblock navbar %}
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+		{% block sidebar %}{% endblock %}
+		{% block main %}{% endblock %}
 	</body>
 </html>

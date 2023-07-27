@@ -50,15 +50,24 @@
 			<form method="post">
 				{% csrf_token %}					
 					{% for field in project_form %}
-						<div class="col-2 mb-3">
-							<p class=" m-0 text-start">{{ field.name|title }}</p>
-							{{ field }}
-						</div>
+						{% if field.name == "starred" %}
+							<div class="col-md-6 mb-4">
+								<p class="text-secondary m-0 text-start">Favorite</p>
+								{{ field }}
+							</div>
+					
+						{% else %}
+							<div class="col-2 mb-3">
+								<p class=" m-0 text-start">{{ field.name|title }}</p>
+								{{ field }}
+							</div>
 
-						{% if field.errors %}
-							{% for error in field.errors %}
-								<ol class="mt-2 text-danger fw-medium p-0">{{ error }}</ol>
-							{% endfor %}
+							{% if field.errors %}
+								{% for error in field.errors %}
+									<ol class="mt-2 text-danger fw-medium p-0">{{ error }}</ol>
+								{% endfor %}
+							{% endif %}
+							
 						{% endif %}
 					{% endfor %}
 
