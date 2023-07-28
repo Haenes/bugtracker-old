@@ -353,7 +353,7 @@ def register(request):
             to_email = register_form.cleaned_data.get('email') 
             email = EmailMessage(mail_subject, message, to=[to_email]) 
             email.send() 
-            messages.success("Almost done! Check your email to confirm it and complete the registration!")
+            messages.success(request, "Almost done! Check your email to confirm it and complete the registration!")
 
             return redirect("login")
 
