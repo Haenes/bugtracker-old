@@ -5,8 +5,8 @@
 {% block navbar %}{% endblock %}
 
 {% block main %}
-		<div class="container text-center center">
-			<form method="post" class="g-3">
+		<div class="h-100 d-flex text-center">
+			<form method="post" class="form-register m-auto">
 				{% csrf_token %}
 
 				<h3 class="h3 mb-4 fw-normal">Registration</h3>
@@ -59,11 +59,7 @@
 				</div>
 			</form>
 
-			<footer class="col-12 position-fixed bottom-0 start-0">
-				<p class="border-top"></p>
-				<!-- <p class="text-body-secondary">&copy; 2023 Haenes</p> -->
-				&copy; 2023 Haenes
-			</footer>
+			{% include 'footer.html' %}
 		</div>
 
 

@@ -1,11 +1,9 @@
-/* Color of icons in all appearance, except starred projects*/
+/* Color of star icons in all appearance, except starred projects*/
 .icon-color { color: grey; }
 
 
-/* BOARD.HTML */
+/* NAVBAR DROPDOWNS */
 .text-small { font-size: 85%; }
-
-.placeholder-color::placeholder { color: black; }
 
 
 /* PROJECTS.HTML */
@@ -15,20 +13,30 @@
 }
 
 
-/* LOGIN.HTML, RESET-PASSWORD.HTML, REGISTER.HTML */
-.center { margin-top: 8%; }
+html,
+body {
+	height: 98%;
+	
+}
 
 
-/* LOGIN.HTML */
+/* SIDEBAR HEIGHT (TRY TO PREVENT UNNECESSARY SCROLLBAR) */
+.fill {
+	min-height: 91.2vh;
+}
+
+
+/* LOGIN, PASSWORD RESET AND PASSWORD CONFIRM PAGES */
 .form-signin {
 	max-width: 330px;
 	padding: 1rem;
 }
 
+
+/* LOGIN.HTML */
 .form-signin .form-floating:focus-within { z-index: 2; }
 
-.form-signin input[type="email"] {
-	margin-bottom: -1pxpx;
+.form-signin input[type="text"] {
 	border-bottom-right-radius: 0;
 	border-bottom-left-radius: 0;
 }
@@ -41,6 +49,11 @@
 
 
 /* REGISTER.HTML */
+.form-register {
+	max-width: 700px;
+	padding: 1rem;
+}
+
 .custom-popover {
 	--bs-popover-max-width: 225px;
 	--bs-popover-border-color: var(--bs-primary);

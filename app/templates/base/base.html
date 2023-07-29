@@ -20,7 +20,7 @@
 <!-- NAVBAR -->
 <!-- LEFT SIDE -->
 	{% block navbar %}
-		<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+		<nav class="navbar navbar-expand-md bg-body-tertiary border-bottom">
 			<div class="container-fluid">
 
 				<a class="navbar-brand" href="{% url 'projects' %}">BugTracker</a>
@@ -33,8 +33,9 @@
 <!-- TRIGER ISSUE MODAL-->
 
 				<div class="collapse navbar-collapse" id="navbarText">
-					{% block issue_modal %}{% endblock %}
-				</div>
+					<ul class="navbar-nav me-auto">
+						{% block issue_modal %}{% endblock %}
+					</ul>
 
 <!-- RIGTH SIDE -->
 				<form action="{% url 'search' %}" class="col-12 col-lg-3 me-3" role="search">

@@ -5,7 +5,7 @@
 {% block navbar %}{% endblock %}
 
 {% block main %}
-	<div class="container text-center center">
+	<div class="h-100 d-flex text-center">
 
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
 		{% include 'messages.html' %}
@@ -36,9 +36,6 @@
 
 		</form>
 
-		<footer class="col-12 position-fixed bottom-0 start-0">
-			<p class="border-top"></p>
-			&copy; 2023 Haenes		
-		</footer> 
+		{% include 'footer.html' %}
 	</div>
 {% endblock main %}
