@@ -279,10 +279,16 @@ def search(request):
 
     if 'q' in request.GET and request.GET['q']:
         q = request.GET.get("q")
-
+        q = q.strip()
+    
+        if len(q) == 0:
+            messages.error(request,"Please, give a data for search")
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+        elif " " in q:
+            messages.error(request,"Please give just one word to search")
+            return redirect(request.META.get("HTTP_REFERER", "/"))
         return redirect("search-results", q)
-        
-    messages.error(request,"Please, provide a data for search")
+    
     return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
