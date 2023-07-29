@@ -7,13 +7,11 @@
 {% block main %}
 	<div class="h-100 d-flex text-center">
 
-<!-- SHOWS SUCCESS/ERROR MESSAGES  -->
-
-
 		<form method="post" class="form-signin m-auto"> 
 			{% csrf_token %}
 			
 			<h3 class="h3 mb-4 fw-normal">Log in</h3>
+<!-- SHOWS SUCCESS/ERROR MESSAGES  -->
 					{% include 'messages.html' %}
 
 			{% for field in login_form %}
