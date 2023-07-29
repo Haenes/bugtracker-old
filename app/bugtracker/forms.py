@@ -418,9 +418,9 @@ class UserSetNewPasswordForm(UserPasswordChangeForm):
         max_length=32,
         widget=forms.PasswordInput(
             attrs={
-                "class": "col-4 mb-3 form-control", 
-                "autofocus": True, 
-                "placeholder": "New password"}))
+                "class": "mb-3 form-control", 
+                "autofocus": True,
+                }))
 
     new_password2 = forms.CharField(
         label="New password confirmation",
@@ -428,5 +428,6 @@ class UserSetNewPasswordForm(UserPasswordChangeForm):
         max_length=32,
         widget=forms.PasswordInput(
             attrs={
-                "class": "col-2  mb-4 form-control", 
-                "placeholder": "Password confirmation"}))
+                "class": "mb-4 form-control", 
+                }))
+                # "placeholder": "Password confirmation"

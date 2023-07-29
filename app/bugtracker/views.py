@@ -416,6 +416,9 @@ def password_reset_confirm(request, uidb64, token):
         if set_password_form.is_valid():
             set_password_form.save()
             return redirect("login")
+        for field in set_password_form.errors:
+                if set_password_form.errors[field]:
+                    messages.error(request, set_password_form.errors[field])
 
     else:
         set_password_form = UserSetNewPasswordForm(user=user)
