@@ -31,7 +31,7 @@ from .forms import (
     UserPasswordChangeForm,
     UserForgotPasswordForm,
     UserSetNewPasswordForm,
-    UserForm,
+    UserForm
     )
 
 
@@ -321,6 +321,15 @@ def login_view(request):
             user = authenticate(request, username=username, password=password)
             
             if user:
+                # Set the session expiration time.
+                # If the user hasn't checked the "Remember me" checkbox - the session will last 30 min.
+                # Otherwise - 1 month.  
+
+                if not request.POST.get('remember', None):
+                    request.session.set_expiry(60 * 30)
+                else:
+                    request.session.set_expiry(60 * 60 * 24 * 30)
+
                 login(request, user)
                 return redirect("projects")
             
@@ -432,6 +441,7 @@ def password_reset_confirm(request, uidb64, token):
     return render(request, "password-reset-confirm.html", {"set_password_form": set_password_form})
 
 
+@login_required(login_url="/login/")
 def delete_project(request, id):
 
     project = Project.objects.get(id=id)
@@ -442,6 +452,7 @@ def delete_project(request, id):
     return redirect("projects")
 
 
+@login_required(login_url="/login/")
 def delete_issue(request, project_id, issue_id):
 
     issue = Issue.objects.get(id=issue_id)
@@ -452,6 +463,7 @@ def delete_issue(request, project_id, issue_id):
     return redirect('boards', project_id)
 
 
+@login_required(login_url="/login/")
 def delete_account(request, user_id):
 
     user = User.objects.get(id=user_id)

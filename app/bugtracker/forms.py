@@ -10,7 +10,7 @@ from django.forms import (
     PasswordInput,
     Select, 
     Textarea, 
-    TextInput,    
+    TextInput    
     )
 
 from bugtracker.models import Project, Issue
@@ -33,7 +33,8 @@ def validate_password(password):
     2) at least one uppercase letter   (?=.*?[A-Z]);
     3) at least one lowercase letter   (?=.*?[a-z]); 
     4) at least one digit              (?=.*?[0-9]);
-    5) at least one special character  (?=.*?[#?!@$%^&*-]). """
+    5) at least one special character  (?=.*?[#?!@$%^&*-]). 
+    """
 
     pattern = re.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
     if pattern.match(password):
@@ -192,7 +193,14 @@ class LoginForm(forms.Form):
                 "class": "form-control", 
                 "id": "floatingPassword", 
                 "placeholder": "Password"}))
-
+    
+    remember = forms.CharField(
+        required=False,
+        widget=CheckboxInput(
+            attrs={
+                "class": "form-check-input", 
+                "id": "remember_me"}))
+    
 
 class UserForm(ModelForm):
 
@@ -419,7 +427,7 @@ class UserSetNewPasswordForm(UserPasswordChangeForm):
         widget=forms.PasswordInput(
             attrs={
                 "class": "mb-3 form-control", 
-                "autofocus": True,
+                "autofocus": True
                 }))
 
     new_password2 = forms.CharField(
@@ -427,7 +435,4 @@ class UserSetNewPasswordForm(UserPasswordChangeForm):
         min_length=8,
         max_length=32,
         widget=forms.PasswordInput(
-            attrs={
-                "class": "mb-4 form-control", 
-                }))
-                # "placeholder": "Password confirmation"
+            attrs={"class": "mb-4 form-control"}))

@@ -16,16 +16,25 @@
 			<h3 class="h3 mb-4 fw-normal">Log in</h3>
 
 			{% for field in login_form %}
+				{% if field.name == 'remember' %}
+					<div class="form-check text-start my-3">
+						{{ field }}
+						<label class="form-check-label" for="remember_me">Remember me</label>						
+					</div>
+
+				{% else %}
 				<div class="form-floating">
 					{{ field }}
 					<label for="floating{{field.name|title}}">{{ field.name|title }}</label>
 				</div>
+
+				{% endif %}
 			{% endfor %}
 
-			<div class="form-check text-start my-3">
+			<!-- <div class="form-check text-start my-3">
 				<input class="form-check-input" type="checkbox" value="remember-me" id="flexCheckDefault">
 				<label class="form-check-label" for="flexCheckDefault">Remember me</label>
-			</div>
+			</div> -->
 
 			<a href="{% url 'projects' %}"><button class="btn btn-primary w-100 py-2" type="submit">Sign in</button></a>
 
