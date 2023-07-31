@@ -1,26 +1,17 @@
 # BugTracker
 This is the light version of bug tracker, that have:
-  1) Ability to create <b>Projects</b> with different types (Fullstack, Front-end and Back-end);
-  2) Ability to create <b>Issues</b> related to one of your projects;
-  3) Ability to keep track the progress of your work on issues and projects in general.
+  1) Ability to account registration with email confirmation/edit and delete account;
+  2) Ability to reset password with email confirmation;
+  3) Ability to create/edit/delete <b>Projects</b> with different types (Fullstack, Front-end and Back-end);
+  4) Pagination for projects list and ability to set the projects as a favorite via star buttons/ in project details;
+  5) Ability to create/edit/delete <b>Issues</b> related to one of your projects;
+  6) Drag'n'Drop for Issue cards
+  7) Ability to search Projects and Issues via search bar
+  8) Ability to change color mode
 
-Right now this project is still being developed.
-
-<b>Completed</b>:
-  1) All HTML templates, style (CSS, Bootstrap) and required JS;
-  2) Temporary SQLite database with Django Models and URLconf;
-  3) All HTML (except one form in TODO card in boards.html) is filled with information from database;
-  4) Registration and log in process;
-  5) Ability to create Projects and Issues;
-  6) Abillity to add, edit, delete projects and issues;
-  7) Ability to edit user details and change password;
-  8) Ability to delete an account;
-  9) Pagination for projects in projects.hmtl;
-  10) Email confirmation for password reset and user register processes;
-  11) Ability to change the Issue status by Drag'n'Drop Issue cards in boards.html;
-  12) Ability to change color mode (not implemented on such pages as registration, login, password-reset, etc... so far);
-  13) Ability to search Projects/Issues via search bar (Navbar).
+Right now the project is in the final stage
 
 <b>Nearest to-do list</b>:
-  1) Change DB from SQLite to MySQL.
-
+  1) Create a project key + issue number FOR THIS PROJECT in footer of Issue cards;
+  2) Write tests;
+  3) Write install instruction
