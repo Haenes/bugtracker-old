@@ -22,8 +22,5 @@ Right now this project is still being developed.
   13) Ability to search Projects/Issues via search bar (Navbar).
 
 <b>Nearest to-do list</b>:
-  1) Templates refactoring;
-  2) Add validation to the search bar.
+  1) Change DB from SQLite to MySQL.
 
-<b>It would be great to be able to</b>:
-  1) Dynamically change the Favorite status of projects with AJAX or smth (star icon in projects.html and boards.html).
