@@ -76,6 +76,21 @@ def projects(request):
         project_modal_form = ProjectModalForm(initial={"author": user.id})
         context['project_modal_form'] = project_modal_form
 
+    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+        data = json.load(request)
+
+        icon_id = data["icon_id"].removeprefix("star")
+        icon_color = data["icon_color"]
+
+        project = Project.objects.get(id=icon_id)
+
+        if icon_color == "grey":
+            project.starred = 0
+            project.save()
+        else:
+            project.starred = 1
+            project.save()
+
     return render(request, "projects.html", context)
 
 

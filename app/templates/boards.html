@@ -1,60 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Board {% endblock%}
+{% block title %} Board {% endblock %}
 
 {% block script %}
-	<script>
-		var source;  // Get source id
-		var target;  // Get target id
-
-		function allowDrop(ev) {
-			ev.preventDefault();
-		}
-
-		function drag(ev) {
-			ev.dataTransfer.setData("text", ev.target.id);
-			source = ev.target.parentNode.id;                        // Issue status (To do, In Progress, Done) ID
-		}
-
-		function drop(ev) {
-			ev.preventDefault();
-			var data = ev.dataTransfer.getData("text");              // Issue card ID
-			ev.target.appendChild(document.getElementById(data));
-			var target = ev.target.id;                               // Same as source from drag function
-
-			if (source != target) {                                  // Check if card was drag to another Issue status
-
-				response = fetch("{% url 'boards' project.id %}", {  // If so: make POST request and send data in body
-					method: "PUT",
-					credentials: "same-origin",
-					headers: {
-						"Accept": "application/json",
-						"X-Requested-With": "XMLHttpRequest",
-						"X-CSRFToken": "{{ csrf_token }}"
-					},
-					body: JSON.stringify({
-						"source": source,
-						"target": target,
-						"data": data,
-					})
-				})
-				.then(response => {
-						if (!response.ok) {
-							console.log("HTTP request unsuccessful");
-						}
-						return response.json();
-				})
-				.then(data => {                                                                 // Work with received data from views.py (boards view)
-					const issue_modal_status = document.getElementById("status" + data["id"])   // Take an issue modal status text and change it to new (where now card is)
-					issue_modal_status.innerHTML = "Status:" + " " + data["source"];
-				})
-			}
-			else {
-				console.log("Error");
-			}
-		}
-	</script>
+	<script type="text/javascript" src="{% static 'favorite.js' %}"></script>
+	<script type="text/javascript" src="{% static 'cards.js' %}"></script>
 {% endblock script %}
 
 {% block issue_modal %}
@@ -93,14 +44,14 @@
 					<div class="col-sm-4 text-end">
 
 						{% if project.starred %}
-							<button type="button" class="btn p-0" data-id="1" data-text="add" data-bs-toggle="tooltip" data-bs-placement="bottom"
+							<button type="button" class="btn p-0" data-text="add" data-bs-toggle="tooltip" data-bs-placement="bottom"
 								title="Favorite project">
-								<i class="fs-5 bi bi-star-fill" style="color: gold;"></i>
+								<i id="star{{project.id}}" class="fs-5 bi bi-star-fill" onclick="changeIcon(this)" data="{% url 'projects' %}" style="color: gold;"></i>
 							</button>
 						{% else %}
-							<button type="button" class="btn p-0" data-id="2" data-text="remove" data-bs-toggle="tooltip" data-bs-placement="bottom"
+							<button type="button" class="btn p-0" data-text="remove" data-bs-toggle="tooltip" data-bs-placement="bottom"
 								title="Favorite project">
-								<i class="fs-5 bi bi-star icon-color"></i>
+								<i id="star{{project.id}}" class="fs-5 bi bi-star icon-color" onclick="changeIcon(this)" data="{% url 'projects' %}"></i>
 							</button>
 						{% endif %}
 
@@ -120,7 +71,7 @@
 						{% for issue in issues_list %}
 						
 							{% if issue.status == "To do" %}
-								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
+								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}" data="{% url 'boards' project.id %}">
 									<div class="card-body">
 										{{ issue.title }}
 									</div>
@@ -146,7 +97,7 @@
 
 						{% for issue in issues_list %}
 							{% if issue.status == "In progress" %}
-								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
+								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}" data="{% url 'boards' project.id %}">
 									<div class="card-body">
 										{{ issue.title }}
 									</div>
@@ -172,7 +123,7 @@
 
 						{% for issue in issues_list %}
 							{% if issue.status == "Done" %}			
-								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}">
+								<div class="card mb-2" draggable="true" ondragstart="drag(event)" id="card{{issue.id}}" data="{% url 'boards' project.id %}">
 									<div class="card-body">
 										{{ issue.title }}
 									</div>

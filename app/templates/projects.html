@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block title %} Projects {% endblock %}
 
-{% block title %} Projects {% endblock%}
+
+{% block script %}
+<script type="text/javascript" src="{% static 'favorite.js' %}"></script>  
+{% endblock %}
 
 {% block main %}
 	<div class="container-fluid">
@@ -41,13 +46,13 @@
 							{% if project.starred %}
 								<td>
 									<button type="button" class="btn star-table">
-										<i class="fs-6 bi bi-star-fill" style="color: gold;"></i>
+										<i id="star{{project.id}}" class="fs-6 bi bi-star-fill" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: gold;"></i>
 									</button>
 								</td>						
 							{% else %}
 								<td>
 									<button type="button" class="btn star-table">
-										<i class="fs-6 bi bi-star" style="color: grey;"></i>
+										<i id="star{{project.id}}" class="fs-6 bi bi-star" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: grey;"></i>
 									</button>
 								</td>
 							{% endif %}
