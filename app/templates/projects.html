@@ -40,34 +40,35 @@
 					</thead>
 					<tbody>
 						{% for project in page_obj %}
-						<tr>
-							<th scope="row">{{ forloop.counter }}</th>
+							<tr>
+								<th scope="row">{{ forloop.counter }}</th>
 
-							{% if project.starred %}
+								{% if project.starred %}
+									<td>
+										<button type="button" class="btn star-table">
+											<i id="star{{project.id}}" class="fs-6 bi bi-star-fill" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: gold;"></i>
+										</button>
+									</td>						
+								{% else %}
+									<td>
+										<button type="button" class="btn star-table">
+											<i id="star{{project.id}}" class="fs-6 bi bi-star" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: grey;"></i>
+										</button>
+									</td>
+								{% endif %}
+
 								<td>
-									<button type="button" class="btn star-table">
-										<i id="star{{project.id}}" class="fs-6 bi bi-star-fill" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: gold;"></i>
-									</button>
-								</td>						
-							{% else %}
-								<td>
-									<button type="button" class="btn star-table">
-										<i id="star{{project.id}}" class="fs-6 bi bi-star" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: grey;"></i>
-									</button>
+									<a class="link-offset-2 link-primary link-offset-3-hover link-underline 
+										link-underline-opacity-0 link-underline-opacity-75-hover"
+										href="{% url 'boards' project.id %}">{{ project.name }}
+									</a>
 								</td>
-							{% endif %}
-
-							<td><a class="link-offset-2 link-primary link-offset-3-hover link-underline 
-									link-underline-opacity-0 link-underline-opacity-75-hover"
-									href="{% url 'boards' project.id %}">{{ project.name }}
-								</a>
-							</td>
-									
-							<td>{{ project.key }}</td>
-							<td>{{ project.type }}</td>
-							<td>{{ project.created.date }}</td>
-							<td>{{ project.created.time }}</td>
-						</tr>
+										
+								<td>{{ project.key }}</td>
+								<td>{{ project.type }}</td>
+								<td>{{ project.created.date }}</td>
+								<td>{{ project.created.time }}</td>
+							</tr>
 						{% endfor %}
 					</tbody>
 				</table>
@@ -99,7 +100,7 @@
 
 					{% endfor %}
 					
-					{% if page_obj.has_next and page_obj.paginator.num_pages > 2%}
+					{% if page_obj.has_next and page_obj.paginator.num_pages > 2 %}
 						<li class="page-item">
 							<a class="page-link" href="?page={{ page_obj.next_page_number }}">
 								<span aria-hidden="true">&raquo;</span>

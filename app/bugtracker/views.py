@@ -46,9 +46,8 @@ def projects(request):
     page_obj = paginator.get_page(page_number)
 
     context = {
-        'projects_list': projects_list,
         'user_id': user.id,
-        'page_obj': page_obj,
+        'page_obj': page_obj
     }
     
     if request.method == 'POST':

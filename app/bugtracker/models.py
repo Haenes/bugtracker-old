@@ -29,7 +29,7 @@ class Project(models.Model):
         return self.name
  
     class Meta:
-        ordering = ["-starred"]
+        ordering = ["-starred", "created"]
 
 
 class Issue(models.Model):
@@ -65,8 +65,6 @@ class Issue(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     duedate = models.DateTimeField(blank=True, null=True)
-    closed  = models.DateTimeField(blank=True, null=True)
-    timespent = models.PositiveIntegerField(blank=True, default=0)
 
     def __str__(self):
         return self.title
