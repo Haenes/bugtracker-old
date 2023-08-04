@@ -183,6 +183,10 @@ def issue_details(request, project_id, issue_id):
 
         context['issue_details_form'] = issue_details_form
 
+        for field in issue_details_form.errors:
+            if issue_details_form.errors[field]:
+                messages.error(request, issue_details_form.errors[field])
+
     else:
         issue_details_form = IssueDetailsForm(
             initial = {

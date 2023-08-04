@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordResetForm
@@ -12,10 +14,9 @@ from django.forms import (
     Textarea, 
     TextInput    
     )
+from django.utils import timezone
 
 from bugtracker.models import Project, Issue
-
-import re
 
 
 def validate_string(string):
@@ -39,6 +40,12 @@ def validate_password(password):
     pattern = re.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
     if pattern.match(password):
         return True
+    
+
+def validate_date(date):
+    if  date < timezone.now():
+        raise ValidationError("You can't choose past days for duedate")
+    return date
 
         
 class RegisterForm(forms.Form):
@@ -376,8 +383,13 @@ class IssueModalForm(ModelForm):
 
         if Issue.objects.filter(title=title):
             raise ValidationError("Issue with that title already exists")
-        
+
         return title
+
+
+    def clean_duedate(self):
+        duedate = self.cleaned_data["duedate"]
+        validate_date(duedate)
             
 
 class IssueDetailsForm(ModelForm):
@@ -397,6 +409,11 @@ class IssueDetailsForm(ModelForm):
             "duedate": DateInput(attrs={"type": "date", "placeholder": "mm-dd-yyyy", "class": "form-control bg-body-tertiary"}),
             "author": TextInput(attrs={"author": forms.HiddenInput(),"class": "form-control bg-body-tertiary"}),
         }
+
+
+    def clean_duedate(self):
+        duedate = self.cleaned_data["duedate"]
+        validate_date(duedate)
 
 
 class UserForgotPasswordForm(PasswordResetForm):
