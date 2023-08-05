@@ -6,7 +6,6 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.core.exceptions import ValidationError
 from django.forms import (   
     CheckboxInput,
-    DateInput,
     EmailInput,
     ModelForm, 
     PasswordInput,
@@ -14,7 +13,6 @@ from django.forms import (
     Textarea, 
     TextInput    
     )
-from django.utils import timezone
 
 from bugtracker.models import Project, Issue
 
@@ -25,7 +23,7 @@ def validate_string(string):
     pattern = re.compile("^([a-zA-Z]+$)")   
     if pattern.match(string):
         return True
-    
+
 
 def validate_password(password):
     """ 
@@ -40,14 +38,8 @@ def validate_password(password):
     pattern = re.compile("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$")
     if pattern.match(password):
         return True
-    
 
-def validate_date(date):
-    if  date < timezone.now():
-        raise ValidationError("You can't choose past days for duedate")
-    return date
 
-        
 class RegisterForm(forms.Form):
 
 
@@ -110,18 +102,18 @@ class RegisterForm(forms.Form):
 
         if not validate_string(first_name):
             raise ValidationError("First name must have only letters")
-        
+
         return first_name
 
-    
+
     def clean_last_name(self):
         last_name = self.cleaned_data["last_name"].capitalize()
-        
+
         if not validate_string(last_name):
             raise ValidationError("Last name must have only letters")
-        
+
         return last_name
-    
+
 
     def clean_username(self):
         username = self.cleaned_data["username"].lower()
@@ -132,7 +124,7 @@ class RegisterForm(forms.Form):
             raise ValidationError("That username already exists")
 
         return username
-    
+
 
     def clean_email(self):
         email = self.cleaned_data["email"]
@@ -142,7 +134,7 @@ class RegisterForm(forms.Form):
 
         return email
 
-    
+
     def clean_password1(self):     
         password1 = self.cleaned_data["password1"]
 
@@ -150,7 +142,7 @@ class RegisterForm(forms.Form):
             raise ValidationError("The password doesn't meet the conditions")
 
         return password1
-    
+
 
     def clean(self):
         cleaned_data = super().clean()
@@ -178,9 +170,9 @@ class RegisterForm(forms.Form):
 
         return user 
 
-        
+
 class LoginForm(forms.Form):
-        
+
 
     username = forms.CharField(
         min_length=4, 
@@ -191,7 +183,7 @@ class LoginForm(forms.Form):
                 "id": "floatingUsername", 
                 "placeholder": "Username", 
                 "autofocus": True}))
-    
+
     password = forms.CharField(
         min_length=8, 
         max_length=32, 
@@ -200,18 +192,18 @@ class LoginForm(forms.Form):
                 "class": "form-control", 
                 "id": "floatingPassword", 
                 "placeholder": "Password"}))
-    
+
     remember = forms.CharField(
         required=False,
         widget=CheckboxInput(
             attrs={
                 "class": "form-check-input", 
                 "id": "remember_me"}))
-    
+
 
 class UserForm(ModelForm):
 
-      
+
     class Meta:
         model = User
         fields = ["first_name", "last_name", "username", "email"]
@@ -227,22 +219,22 @@ class UserForm(ModelForm):
     def clean_first_name(self):
         first_name = self.cleaned_data["first_name"]
 
-        if len(first_name) < 2:
-            raise ValidationError("First name must contain at least 2 letters")       
+        if len(first_name) < 3:
+            raise ValidationError("First name must contain at least 3 letters")       
         elif not validate_string(first_name):
             raise ValidationError("Name must have only letters")
 
         return first_name
-    
+
 
     def clean_last_name(self):
         last_name = self.cleaned_data["last_name"]
 
-        if len(last_name) < 2:
-            raise ValidationError("Last name must contain at least 2 letters") 
+        if len(last_name) < 3:
+            raise ValidationError("Last name must contain at least 3 letters") 
         elif not validate_string(last_name):
             raise ValidationError("Name must have only letters")
-        
+
         return last_name
 
 
@@ -282,7 +274,7 @@ class UserPasswordChangeForm(forms.Form):
         if password1 != password2:
             raise ValidationError("Passwords don't match")
         return password2
-    
+
 
     def save(self, commit=True):
         password = self.cleaned_data["new_password1"]
@@ -313,14 +305,14 @@ class ProjectDetailsForm(ModelForm):
             raise ValidationError("Project name must have only letters")
 
         return name
-    
+  
 
     def clean_key(self):
         key = self.cleaned_data["key"]
 
         if not validate_string(key):
             raise ValidationError("Key must have only letters")
-        
+
         return key
 
 
@@ -346,7 +338,7 @@ class ProjectModalForm(ModelForm):
 
         if Project.objects.filter(name=name):
             raise ValidationError("That project already exists")
-        
+
         return name
 
 
@@ -356,7 +348,7 @@ class ProjectModalForm(ModelForm):
 
         if Project.objects.filter(key=key):
             raise ValidationError("Project with that key already exists")
-        
+
         return key
 
 
@@ -365,13 +357,12 @@ class IssueModalForm(ModelForm):
 
     class Meta:
         model = Issue
-        fields = ["project", "type", "priority", "duedate", "title", "description", "author"]
+        fields = ["project", "type", "priority", "title", "description", "author"]
 
         widgets = {
             "project": Select(),
             "type": Select(attrs={"class": "form-control bg-body-tertiary"}),
             "priority": Select(attrs={"class": "form-control bg-body-tertiary"}),
-            "duedate": DateInput(attrs={"type": "date", "placeholder": "mm-dd-yyyy", "class": "form-control bg-body-tertiary"}),
             "title": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "description": Textarea(attrs={"class": "form-control bg-body-tertiary", "rows": "5"}),
             "author": TextInput(),
@@ -387,17 +378,12 @@ class IssueModalForm(ModelForm):
         return title
 
 
-    def clean_duedate(self):
-        duedate = self.cleaned_data["duedate"]
-        validate_date(duedate)
-            
-
 class IssueDetailsForm(ModelForm):
 
 
     class Meta:
         model = Issue
-        fields = ["project", "status", "type", "priority", "title", "description", "duedate", "author"]
+        fields = ["project", "status", "type", "priority", "title", "description", "author"]
 
         widgets = {
             "project": Select(attrs={"class": "form-select bg-body-tertiary"}),
@@ -406,14 +392,8 @@ class IssueDetailsForm(ModelForm):
             "priority": Select(attrs={"class": "form-select bg-body-tertiary"}),
             "title": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "description": Textarea(attrs={"class": "form-control bg-body-tertiary", "rows": "7"}),
-            "duedate": DateInput(attrs={"type": "date", "placeholder": "mm-dd-yyyy", "class": "form-control bg-body-tertiary"}),
-            "author": TextInput(attrs={"author": forms.HiddenInput(),"class": "form-control bg-body-tertiary"}),
+            "author": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
         }
-
-
-    def clean_duedate(self):
-        duedate = self.cleaned_data["duedate"]
-        validate_date(duedate)
 
 
 class UserForgotPasswordForm(PasswordResetForm):

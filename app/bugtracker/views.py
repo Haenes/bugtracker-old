@@ -127,8 +127,7 @@ def boards(request, project_id):
                 type=cd["type"],
                 priority=cd["priority"],
                 status="To do",
-                author_id=user.id,
-                duedate=cd["duedate"]
+                author_id=user.id
             )          
             messages.success(request, "Issue created!")
             return redirect('boards', project.id)
@@ -196,8 +195,7 @@ def issue_details(request, project_id, issue_id):
                 "priority": issue.priority,
                 "title": issue.title,
                 "description": issue.description,
-                "duedate": issue.duedate,
-                "author": issue.author,
+                "author": issue.author
             }
         )
         context['issue_details_form'] = issue_details_form

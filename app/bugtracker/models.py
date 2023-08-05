@@ -24,10 +24,10 @@ class Project(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     starred = models.BooleanField(verbose_name="favorite project", default=False)
     created = models.DateTimeField(default=timezone.now)
-   
+
     def __str__(self):
         return self.name
- 
+
     class Meta:
         ordering = ["-starred", "created"]
 
@@ -64,7 +64,7 @@ class Issue(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    duedate = models.DateTimeField(blank=True, null=True)
+
 
     def __str__(self):
         return self.title
