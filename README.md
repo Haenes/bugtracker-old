@@ -13,5 +13,5 @@ Right now the project is in the final stage
 
 <b>Nearest to-do list</b>:
   1) Create a project key + issue number FOR THIS PROJECT in footer of Issue cards;
-  2) Write tests;
+  2) Write more tests for views (post not tested) and models;
   3) Write install instruction
