@@ -16,7 +16,7 @@ class ProjectsTestCase(TestCase):
     
 
     def test_call_view_anonymous(self):      
-        response = self.client.get("")
+        response = self.client.get(reverse("projects"))
         self.assertRedirects(response, "/login/?next=/")
 
 
@@ -24,7 +24,7 @@ class ProjectsTestCase(TestCase):
         user = User.objects.get(username="testing")     
         self.client.force_login(user)     
 
-        response = self.client.get("")
+        response = self.client.get(reverse("projects"))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "projects.html")
@@ -40,7 +40,7 @@ class BoardsTestCase(TestCase):
 
     def test_call_view_anonymous(self):      
         project = str(Project.objects.get(key="TEST1").id)
-        response = self.client.get(f"/boards/{project}/")
+        response = self.client.get(reverse("boards", args=[project]))
 
         self.assertRedirects(response, f"/login/?next=/boards/{project}/")
 
@@ -50,7 +50,7 @@ class BoardsTestCase(TestCase):
         project = str(Project.objects.get(key="TEST1").id)     
         self.client.force_login(user)
 
-        response = self.client.get(f"/boards/{project}/")
+        response = self.client.get(reverse("boards", args=[project]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "boards.html")
@@ -76,7 +76,7 @@ class IssueDetailsTestCase(TestCase):
         project = str(Project.objects.get(key="TEST1").id)
         issue = str(Issue.objects.get(title="Issue").id)
 
-        response = self.client.get(f"/boards/{project}/{issue}/issue-details/")
+        response = self.client.get(reverse("issue-details", args=[project, issue]))
 
         self.assertRedirects(response, f"/login/?next=/boards/{project}/{issue}/issue-details/")
 
@@ -87,7 +87,7 @@ class IssueDetailsTestCase(TestCase):
         issue = str(Issue.objects.get(title="Issue").id)     
         self.client.force_login(user)
 
-        response = self.client.get(f"/boards/{project}/{issue}/issue-details/")
+        response = self.client.get(reverse("issue-details", args=[project, issue]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "issue-details.html")
@@ -103,7 +103,7 @@ class ProjectSettingsTestCase(TestCase):
 
     def test_call_view_anonymous(self):      
         project = str(Project.objects.get(key="TEST1").id)
-        response = self.client.get(f"/boards/{project}/project-settings/")
+        response = self.client.get(reverse("project-settings", args=[project]))
 
         self.assertRedirects(response, f"/login/?next=/boards/{project}/project-settings/")
 
@@ -113,7 +113,7 @@ class ProjectSettingsTestCase(TestCase):
         project = str(Project.objects.get(key="TEST1").id)     
         self.client.force_login(user)
 
-        response = self.client.get(f"/boards/{project}/project-settings/")
+        response = self.client.get(reverse("project-settings", args=[project]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "project-settings.html")
@@ -127,17 +127,17 @@ class AccountsTestCase(TestCase):
 
 
     def test_call_view_anonymous(self):      
-        user = str(User.objects.get(username="testing").id)
-        response = self.client.get(f"/accounts/{user}/")
+        user = User.objects.get(username="testing")
+        response = self.client.get(reverse("accounts", args=[user.id]))
 
-        self.assertRedirects(response, f"/login/?next=/accounts/{user}/")
+        self.assertRedirects(response, f"/login/?next=/accounts/{user.id}/")
 
 
     def test_call_view_logged_in(self):
         user = User.objects.get(username="testing")
         self.client.force_login(user)
 
-        response = self.client.get(f"/accounts/{user.id}/")
+        response = self.client.get(reverse("accounts", args=[user.id]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "accounts.html")
@@ -172,18 +172,18 @@ class SearchResultsTestCase(TestCase):
 
 
     def test_call_view_anonymous(self):   
-        q = "bug/"   
-        response = self.client.get(f"/search-results/{q}")
+        q = "bug"   
+        response = self.client.get(reverse("search-results", args=[q]))
 
-        self.assertRedirects(response, f"/login/?next=/search-results/{q}")
+        self.assertRedirects(response, f"/login/?next=/search-results/{q}/")
 
 
     def test_call_view_logged_in(self):
         user = User.objects.get(username="testing")
-        q = "bug/" 
+        q = "bug"
         self.client.force_login(user)
 
-        response = self.client.get(f"/search-results/{q}")
+        response = self.client.get(reverse("search-results", args=[q]))
         
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "search-results.html")
@@ -221,7 +221,7 @@ class RegisterConfirmTestCase(TestCase):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
 
-        response = self.client.get(f"/register-confirm/{uid}/{token}/")
+        response = self.client.get(reverse("register_confirm", args=[uid, token]))
 
         self.assertTrue(response.status_code, 200)
 
@@ -271,7 +271,7 @@ class PasswordResetConfirmTestCase(TestCase):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         token = default_token_generator.make_token(user)
 
-        response = self.client.get(f"/password-reset-confirm/{uid}/{token}/")
+        response = self.client.get(reverse("password_reset_confirm", args=[uid, token]))
         
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "password-reset-confirm.html")
@@ -287,7 +287,7 @@ class DeleteProjectTestCase(TestCase):
 
     def test_call_view_anonymous(self):   
         project = str(Project.objects.get(key="TEST1").id)  
-        response = self.client.get(f"/delete-project/{project}/")
+        response = self.client.get(reverse("delete-project", args=[project]))
 
         self.assertRedirects(response, f"/login/?next=/delete-project/{project}/")
 
@@ -295,9 +295,9 @@ class DeleteProjectTestCase(TestCase):
     def test_call_view_logged_in(self):
         user = User.objects.get(username="testing")
         project = str(Project.objects.get(key="TEST1").id) 
-
         self.client.force_login(user)
-        response = self.client.get(f"/delete-project/{project}/")
+
+        response = self.client.get(reverse("delete-project", args=[project]))
         
         self.assertTrue(response.status_code, 301)
 
@@ -322,7 +322,7 @@ class DeleteIssueTestCase(TestCase):
         project = str(Project.objects.get(key="TEST1").id)  
         issue = str(Issue.objects.get(title="Issue").id)
 
-        response = self.client.get(f"/delete-issue/{project}/{issue}/")
+        response = self.client.get(reverse("delete-issue", args=[project, issue]))
 
         self.assertRedirects(response, f"/login/?next=/delete-issue/{project}/{issue}/")
 
@@ -331,9 +331,9 @@ class DeleteIssueTestCase(TestCase):
         user = User.objects.get(username="testing")
         project = str(Project.objects.get(key="TEST1").id) 
         issue = str(Issue.objects.get(title="Issue").id)
-
         self.client.force_login(user)
-        response = self.client.get(f"/delete-issue/{project}/{issue}/")
+
+        response = self.client.get(reverse("delete-issue", args=[project, issue]))
         
         self.assertTrue(response.status_code, 301)
 
@@ -346,16 +346,16 @@ class DeleteAccountTestCase(TestCase):
 
 
     def test_call_view_anonymous(self):   
-        user = str(User.objects.get(username="testing").id)
-        response = self.client.get(f"/delete-account/{user}")
+        user = User.objects.get(username="testing")
+        response = self.client.get(reverse("delete-account", args=[user.id]))
 
-        self.assertRedirects(response, f"/delete-account/{user}/", status_code=301, target_status_code=302)
+        self.assertRedirects(response, f"/login/?next=/delete-account/{user.id}/")
 
 
     def test_call_view_logged_in(self):
         user = User.objects.get(username="testing")
-
         self.client.force_login(user)
-        response = self.client.get(f"/delete-account/{user}")
+
+        response = self.client.get(reverse("delete-account", args=[user.id]))
         
         self.assertTrue(response.status_code, 301)
