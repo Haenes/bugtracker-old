@@ -12,6 +12,6 @@ This is the light version of bug tracker, that have:
 Right now the project is in the final stage
 
 <b>Nearest to-do list</b>:
-  1) Create a project key + issue number FOR THIS PROJECT in footer of Issue cards;
+  1) Make the username input fields accept only lowercase letters (so they are stored in the db), this will avoid problems when logging in;
   2) Write more tests for views (post not tested) and models;
   3) Write install instruction
