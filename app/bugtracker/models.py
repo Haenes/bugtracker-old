@@ -55,7 +55,7 @@ class Issue(models.Model):
     ]
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    # key_issue = models.ForeignKey(projects, on_delete=models.CASCADE, unique=True,)
+    key = models.PositiveIntegerField(default=1)
     title = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, default='')
     type = models.CharField(max_length=8, choices=ISSUE_TYPE)

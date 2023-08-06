@@ -4,12 +4,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
 from django.contrib.sites.shortcuts import get_current_site
@@ -97,21 +97,14 @@ def projects(request):
 def boards(request, project_id):  
 
     project = Project.objects.get(id=project_id)
-    all_issues = Issue.objects.order_by('status')
+    all_issues = Issue.objects.filter(project_id=project.id)
     user = request.user
-
-
-    issue_list = []
-
-    for issue in all_issues:
-        if issue.project_id == project.id:         
-            issue_list.append(issue)
-
+     
     context = {
         'project': project,
         'user_id': user.id,
         'project_id': project.id,        
-        'issues_list': issue_list
+        'issues_list': all_issues,
     }
 
     if request.method == 'POST':
@@ -119,9 +112,16 @@ def boards(request, project_id):
 
         if issue_modal_form.is_valid():
             cd = issue_modal_form.cleaned_data
+        
+        # Take the key of the last issue to use it to set the key for the next one
+            try:
+                latest_key = Issue.objects.filter(project_id=project.id).latest("key").key
+            except ObjectDoesNotExist:
+                latest_key = 0
 
             Issue.objects.create(
                 project=cd["project"],
+                key = latest_key + 1,
                 title=cd["title"].capitalize(),
                 description=cd["description"],
                 type=cd["type"],
