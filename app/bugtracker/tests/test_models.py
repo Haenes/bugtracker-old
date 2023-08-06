@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
 from bugtracker.models import Project, Issue
@@ -14,11 +15,19 @@ class ProjectTestCase(TestCase):
         Project.objects.create(name="Testing3", description="Description for second test project", key="TEST3", type="Fullstack software", starred=1, author_id=user.id)
 
 
-    def test_name_label(self):
-        project = Project.objects.get(name="Testing1")
-        field_label = project._meta.get_field("name").verbose_name
-
-        self.assertEquals(field_label, "name")
+    def test_model_validation(self):
+        try:
+            user = User.objects.get(username="testing")
+            project = Project(name="Te", description="Description for test project", key="TE", type="Fullstack software", author_id=user.id)
+            project.full_clean()
+        except ValidationError as e:
+           self.assertEqual(
+               {
+                   'name': ['Name field must contain at least 3 letters'],
+                   'key': ['Key field must contain at least 3 letters']
+                }, 
+                e.message_dict
+            )
 
 
     def test_description(self):
