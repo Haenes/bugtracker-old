@@ -292,36 +292,28 @@ class ProjectDetailsFormTestCase(TestCase):
 
 
     def test_name_field(self):
-        project = Project.objects.get(key="TEST")
-        data_invalid = {"name": "Testing1", "key": "TEST", "starred":1}
-        data_valid = {"name": "Test", "key": "TEST", "starred":1}
+        data_invalid = {"name": "Testing1", "key": "TESTII", "starred":1}
+        data_valid = {"name": "Test", "key": "TESTI", "starred":1}
 
-        form_invalid = ProjectDetailsForm(data_invalid, instance=project)
-        form_valid = ProjectDetailsForm(data_valid, instance=project)
+        form_invalid = ProjectDetailsForm(data_invalid)
+        form_valid = ProjectDetailsForm(data_valid)
         
         self.assertEqual(form_invalid.errors["name"], ["Project name must have only letters"])
         self.assertEqual(form_valid.errors, {})
 
 
     def test_key_field_label(self):
-        project = Project.objects.get(key="TEST")
-        data_invalid = {"name": "Testing1", "key": "TEST", "starred":1}
-        data_valid = {"name": "Test", "key": "TEST", "starred":1}
-
-        form_invalid = ProjectDetailsForm(data_invalid, instance=project)
-        form_valid = ProjectDetailsForm(data_valid, instance=project)
+        form = ProjectDetailsForm()
         
-        self.assertEqual(form_invalid.errors["name"], ["Project name must have only letters"])
-        self.assertEqual(form_valid.errors, {})
+        self.assertTrue(form.fields["key"].label == "Key")
 
 
     def test_key_field(self):
-        project = Project.objects.get(key="TEST")
         data_invalid = {"name": "Test", "key": "TEST1", "starred":1}
-        data_valid = {"name": "Test", "key": "TEST", "starred":1}
+        data_valid = {"name": "Test", "key": "TESTII", "starred":1}
 
-        form_invalid = ProjectDetailsForm(data_invalid, instance=project)
-        form_valid = ProjectDetailsForm(data_valid, instance=project)
+        form_invalid = ProjectDetailsForm(data_invalid)
+        form_valid = ProjectDetailsForm(data_valid)
         
         self.assertEqual(form_invalid.errors["key"], ["Key must have only letters"])
         self.assertEqual(form_valid.errors, {})

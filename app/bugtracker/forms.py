@@ -386,13 +386,13 @@ class IssueDetailsForm(ModelForm):
         fields = ["project", "status", "type", "priority", "title", "description", "author"]
 
         widgets = {
-            "project": Select(attrs={"class": "form-select bg-body-tertiary"}),
+            "project": Select(),
             "status": Select(attrs={"class": "form-select bg-body-tertiary"}),
             "type": Select(attrs={"class": "form-select bg-body-tertiary"}),
             "priority": Select(attrs={"class": "form-select bg-body-tertiary"}),
             "title": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "description": Textarea(attrs={"class": "form-control bg-body-tertiary", "rows": "7"}),
-            "author": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
+            "author": TextInput(),
         }
 
 

@@ -257,6 +257,10 @@ def accounts(request, user_id):
 
             context['user_form'] = user_form
 
+            for field in user_form.errors:
+                if user_form.errors[field]:
+                    messages.error(request, user_form.errors[field])
+
         elif "change_password" in request.POST:
             password_change_form = UserPasswordChangeForm(request.user, request.POST or None)
 
@@ -393,6 +397,7 @@ def register(request):
 
 
     return render(request, "register.html", {"register_form": register_form})
+
 
 def register_confirm(request, uidb64, token):
     try: 
