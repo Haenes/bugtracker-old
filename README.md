@@ -12,5 +12,5 @@ This is the light version of bug tracker, that have:
 Right now the project is in the final stage
 
 <b>Nearest to-do list</b>:
-  1) Write more tests for views (post not tested);
+  1) Finish the tests;
   2) Write install instruction
