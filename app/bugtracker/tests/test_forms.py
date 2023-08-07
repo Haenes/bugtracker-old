@@ -16,7 +16,7 @@ class RegisterFormTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_first_name_field_label(self):
@@ -182,7 +182,7 @@ class UserFormTestCase(TestCase):
     
 
     def setUp(self):
-        User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_first_name_field_label(self):
@@ -237,7 +237,7 @@ class UserPasswordChangeFormTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_new_password1_field_label(self):
@@ -280,7 +280,7 @@ class ProjectDetailsFormTestCase(TestCase):
     
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
         Project.objects.create(name="Testing", key="TEST", type="Fullstack software", starred=1, author_id=user.id)
 
 
@@ -323,7 +323,7 @@ class ProjectModalFormTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
         Project.objects.create(name="Testing", key="TEST", type="Fullstack software", starred=1, author_id=user.id)
 
 
@@ -355,7 +355,7 @@ class IssueModalFormTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
         project = Project.objects.create(name="Testing", key="TEST", type="Fullstack software", starred=1, author_id=user.id)
         Issue.objects.create(
             project_id=project.id,

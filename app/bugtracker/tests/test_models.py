@@ -9,7 +9,7 @@ class ProjectTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")      
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")      
         Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=user.id)
         Project.objects.create(name="Testing2", description="Description for second test project", key="TEST2", type="Fullstack software", author_id=user.id)
         Project.objects.create(name="Testing3", description="Description for second test project", key="TEST3", type="Fullstack software", starred=1, author_id=user.id)
@@ -50,7 +50,7 @@ class IssueTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")      
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")      
         project = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=user.id)
         Issue.objects.create(
             project_id=project.id,

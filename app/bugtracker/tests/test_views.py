@@ -23,7 +23,7 @@ class ProjectsTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
         Project.objects.create(name="Testing", key="TEST", type="Fullstack software", starred=1, author_id=user.id)
 
 
@@ -72,7 +72,7 @@ class BoardsTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
         project = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=user.id)
         Issue.objects.create(
             project_id=project.id,
@@ -150,7 +150,7 @@ class IssueDetailsTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
         project = Project.objects.create(name="Testing", key="TEST", type="Fullstack software", author_id=user.id)
         Issue.objects.create(
             project_id=project.id,
@@ -254,7 +254,7 @@ class AccountsTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view_anonymous(self):      
@@ -297,7 +297,7 @@ class SearchTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view_anonymous(self):      
@@ -318,7 +318,7 @@ class SearchResultsTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view_anonymous(self):   
@@ -434,7 +434,7 @@ class RegisterConfirmTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view(self):
@@ -451,7 +451,7 @@ class LogoutTestCase(TestCase):
 
 
     def setUp(self):
-       User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+       User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view(self):
@@ -552,7 +552,7 @@ class DeleteProjectTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
         Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=user.id)
 
 
@@ -580,7 +580,7 @@ class DeleteIssueTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
         project = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=user.id)
         Issue.objects.create(
             project_id=project.id,
@@ -619,7 +619,7 @@ class DeleteAccountTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view_anonymous(self):   
