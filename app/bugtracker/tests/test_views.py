@@ -1,6 +1,6 @@
 import re
 
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages import get_messages
@@ -23,8 +23,8 @@ class ProjectsTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
-        Project.objects.create(name="Testing", key="TEST", type="Fullstack software", starred=1, author_id=user.id)
+        self.user =  User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.project = Project.objects.create(name="Testing", key="TEST", type="Fullstack software", starred=1, author_id=self.user.id)
 
 
     def test_call_view_anonymous(self):      
@@ -32,9 +32,8 @@ class ProjectsTestCase(TestCase):
         self.assertRedirects(response, "/login/?next=/")
 
 
-    def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")     
-        self.client.force_login(user)     
+    def test_call_view_logged_in(self):    
+        self.client.force_login(self.user)     
 
         response = self.client.get(reverse("projects"))
 
@@ -43,9 +42,8 @@ class ProjectsTestCase(TestCase):
 
 
     def test_post_success(self):
-        user = User.objects.get(username="testing")
-        self.client.force_login(user)
-        data = {"author": user.id, "name": "Test", "key": "TESTII", "type": "Fullstack software", "starred":1}
+        self.client.force_login(self.user)
+        data = {"author": self.user.id, "name": "Test", "key": "TESTII", "type": "Fullstack software", "starred":1}
 
         response = self.client.post(reverse("projects"), data=data)
         messages = list(get_messages(response.wsgi_request))
@@ -55,9 +53,8 @@ class ProjectsTestCase(TestCase):
 
 
     def test_post_fail(self):
-        user = User.objects.get(username="testing")
-        self.client.force_login(user)
-        data = {"author": user.id, "name": "Testing", "key": "TEST", "type": "Fullstack software", "starred":1}
+        self.client.force_login(self.user)
+        data = {"author": self.user.id, "name": "Testing", "key": "TEST", "type": "Fullstack software", "starred":1}
 
         response = self.client.post(reverse("projects"), data=data)
         messages = list(get_messages(response.wsgi_request))
@@ -72,52 +69,47 @@ class BoardsTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
-        project = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=user.id)
-        Issue.objects.create(
-            project_id=project.id,
-            title="Issue", 
-            description="Big Socks Just Big Socks", 
-            type="Feature",
-            priority="Medium", 
-            status="To do", 
-            author_id=user.id)
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.project = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=self.user.id)
+        self.issue = Issue.objects.create(
+            project_id = self.project.id,
+            title = "Issue", 
+            description = "Big Socks Just Big Socks", 
+            type = "Feature",
+            priority = "Medium", 
+            status = "To do", 
+            author_id = self.user.id)
 
 
-    def test_call_view_anonymous(self):      
-        project = str(Project.objects.get(key="TEST1").id)
-        response = self.client.get(reverse("boards", args=[project]))
+    def test_call_view_anonymous(self):
+        response = self.client.get(reverse("boards", args=[self.project.id]))
 
-        self.assertRedirects(response, f"/login/?next=/boards/{project}/")
+        self.assertRedirects(response, f"/login/?next=/boards/{self.project.id}/")
 
 
     def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")
-        project = str(Project.objects.get(key="TEST1").id)     
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
-        response = self.client.get(reverse("boards", args=[project]))
+        response = self.client.get(reverse("boards", args=[self.project.id]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "boards.html")
 
 
     def test_post_success(self):
-        user = User.objects.get(username="testing")
-        project = Project.objects.get(key="TEST1")
-        self.client.force_login(user)
+        self.client.force_login(self.user)
         data = {
-            "project": project.id,
+            "project": self.project.id,
             "key": 1,
             "title": "Title issue", 
             "description": "Testing test", 
             "type": "Feature",
             "priority": "Medium", 
             "status": "To do", 
-            "author": user.id
+            "author": self.user.id
         }
 
-        response = self.client.post(reverse("boards", args=[project.id]), data=data)
+        response = self.client.post(reverse("boards", args=[self.project.id]), data=data)
         messages = list(get_messages(response.wsgi_request))
 
         self.assertEqual(response.status_code, 302)
@@ -125,20 +117,18 @@ class BoardsTestCase(TestCase):
 
 
     def test_post_fail(self):
-        user = User.objects.get(username="testing")
-        project = str(Project.objects.get(key="TEST1").id) 
-        self.client.force_login(user)
+        self.client.force_login(self.user)
         data = {
-            "project": project,
+            "project": self.project.id,
             "title": "Issue", 
             "description": "Testing test", 
             "type": "Feature",
             "priority": "Medium", 
             "status": "To do", 
-            "author": user.id
+            "author": self.user.id
         }
 
-        response = self.client.post(reverse("boards", args=[project]), data=data)
+        response = self.client.post(reverse("boards", args=[self.project.id]), data=data)
         messages = list(get_messages(response.wsgi_request))
 
         self.assertEqual(response.status_code, 200)
@@ -150,54 +140,46 @@ class IssueDetailsTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
-        project = Project.objects.create(name="Testing", key="TEST", type="Fullstack software", author_id=user.id)
-        Issue.objects.create(
-            project_id=project.id,
-            title="Issue", 
-            description="Big Socks Just Big Socks", 
-            type="Feature",
-            priority="Medium", 
-            status="To do", 
-            author_id=user.id)
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.project = Project.objects.create(name="Testing", key="TEST", type="Fullstack software", author_id=self.user.id)
+        self.issue = Issue.objects.create(
+            project_id=self.project.id,
+            title = "Issue", 
+            description = "Big Socks Just Big Socks", 
+            type = "Feature",
+            priority = "Medium", 
+            status = "To do", 
+            author_id = self.user.id
+            )
 
 
-    def test_call_view_anonymous(self):      
-        project = str(Project.objects.get(key="TEST").id)
-        issue = str(Issue.objects.get(title="Issue").id)
+    def test_call_view_anonymous(self):
+        response = self.client.get(reverse("issue-details", args=[self.project.id, self.issue.id]))
 
-        response = self.client.get(reverse("issue-details", args=[project, issue]))
-
-        self.assertRedirects(response, f"/login/?next=/boards/{project}/{issue}/issue-details/")
+        self.assertRedirects(response, f"/login/?next=/boards/{self.project.id}/{self.issue.id}/issue-details/")
 
 
     def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")
-        project = str(Project.objects.get(key="TEST").id)
-        issue = str(Issue.objects.get(title="Issue").id)     
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
-        response = self.client.get(reverse("issue-details", args=[project, issue]))
+        response = self.client.get(reverse("issue-details", args=[self.project.id, self.issue.id]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "issue-details.html")
 
 
     def test_post_success(self):
-        user = User.objects.get(username="testing")
-        project = Project.objects.get(key="TEST")
-        issue = Issue.objects.get(title="Issue")  
-        self.client.force_login(user)
+        self.client.force_login(self.user)
         data = {
-            "project": project.id,
+            "project": self.project.id,
             "title": "Title issue",  
             "type": "Feature",
             "priority": "Medium", 
             "status": "To do", 
-            "author": user.id
+            "author": self.user.id
         }
 
-        response = self.client.post(reverse("issue-details", args=[project.id, issue.id]), data=data)
+        response = self.client.post(reverse("issue-details", args=[self.project.id, self.issue.id]), data=data)
 
         self.assertEqual(response.status_code, 200)
 
@@ -210,38 +192,33 @@ class ProjectSettingsTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
-        Project.objects.create(name="Testing", key="TEST", type="Fullstack software", author_id=user.id)
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.project = Project.objects.create(name="Testing", key="TEST", type="Fullstack software", author_id=self.user.id)
 
 
-    def test_call_view_anonymous(self):      
-        project = str(Project.objects.get(key="TEST").id)
-        response = self.client.get(reverse("project-settings", args=[project]))
+    def test_call_view_anonymous(self):
+        response = self.client.get(reverse("project-settings", args=[self.project.id]))
 
-        self.assertRedirects(response, f"/login/?next=/boards/{project}/project-settings/")
+        self.assertRedirects(response, f"/login/?next=/boards/{self.project.id}/project-settings/")
 
 
-    def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")
-        project = str(Project.objects.get(key="TEST").id)     
-        self.client.force_login(user)
+    def test_call_view_logged_in(self): 
+        self.client.force_login(self.user)
 
-        response = self.client.get(reverse("project-settings", args=[project]))
+        response = self.client.get(reverse("project-settings", args=[self.project.id]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "project-settings.html")
 
 
     def test_post_success(self):
-        user = User.objects.get(username="testing")
-        project = Project.objects.get(key="TEST")
-        self.client.force_login(user)
+        self.client.force_login(self.user)
         data = {
             "name": "Test",
             "key": "TESTI" 
         }
 
-        response = self.client.post(reverse("project-settings", args=[project.id]), data=data)
+        response = self.client.post(reverse("project-settings", args=[self.project.id]), data=data)
 
         self.assertEqual(response.status_code, 200)
 
@@ -254,29 +231,26 @@ class AccountsTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
-    def test_call_view_anonymous(self):      
-        user = User.objects.get(username="testing")
-        response = self.client.get(reverse("accounts", args=[user.id]))
+    def test_call_view_anonymous(self):
+        response = self.client.get(reverse("accounts", args=[self.user.id]))
 
-        self.assertRedirects(response, f"/login/?next=/accounts/{user.id}/")
+        self.assertRedirects(response, f"/login/?next=/accounts/{self.user.id}/")
 
 
     def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
-        response = self.client.get(reverse("accounts", args=[user.id]))
+        response = self.client.get(reverse("accounts", args=[self.user.id]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "accounts.html")
 
 
     def test_post_success(self):
-        user = User.objects.get(username="testing")
-        self.client.force_login(user)
+        self.client.force_login(self.user)
         data = {
             "first_name": "Test",
             "last_name": "Test", 
@@ -284,7 +258,7 @@ class AccountsTestCase(TestCase):
             "email": "test@gmail.com"
         }
 
-        response = self.client.post(reverse("accounts", args=[user.id]), data=data)
+        response = self.client.post(reverse("accounts", args=[self.user.id]), data=data)
 
         self.assertEqual(response.status_code, 302)
 
@@ -297,7 +271,7 @@ class SearchTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view_anonymous(self):      
@@ -306,8 +280,7 @@ class SearchTestCase(TestCase):
 
 
     def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
         response = self.client.get(reverse("search"))
 
@@ -318,7 +291,7 @@ class SearchResultsTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view_anonymous(self):   
@@ -329,9 +302,8 @@ class SearchResultsTestCase(TestCase):
 
 
     def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")
         q = "bug"
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
         response = self.client.get(reverse("search-results", args=[q]))
 
@@ -343,7 +315,7 @@ class LoginTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
     def test_call_view(self):
         response = self.client.get(reverse("login"))
@@ -384,7 +356,7 @@ class LoginTestCase(TestCase):
 class RegisterTestCase(TestCase):
 
     def setUp(self):
-        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view(self):
@@ -434,13 +406,12 @@ class RegisterConfirmTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view(self):
-        user = User.objects.get(username="testing")
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = default_token_generator.make_token(self.user)
 
         response = self.client.get(reverse("register_confirm", args=[uid, token]))
 
@@ -451,12 +422,11 @@ class LogoutTestCase(TestCase):
 
 
     def setUp(self):
-       User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+       self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view(self):
-        user = User.objects.get(username="testing")
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
         response = self.client.get(reverse("logout"))
 
@@ -499,13 +469,12 @@ class PasswordResetConfirmTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
     def test_call_view(self):
-        user = User.objects.get(username="testing")
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = default_token_generator.make_token(self.user)
 
         response = self.client.get(reverse("password_reset_confirm", args=[uid, token]))
 
@@ -514,9 +483,8 @@ class PasswordResetConfirmTestCase(TestCase):
 
 
     def test_post_success(self):
-        user = User.objects.get(username="testing")
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = default_token_generator.make_token(self.user)
         data = {
             "new_password1": "Password123#",
             "new_password2": "Password123#"
@@ -530,9 +498,8 @@ class PasswordResetConfirmTestCase(TestCase):
 
 
     def test_post_fail(self):
-        user = User.objects.get(username="testing")
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
+        token = default_token_generator.make_token(self.user)
         data = {
             "new_password1": "testing1",
             "new_password2": "Password123#"
@@ -552,23 +519,20 @@ class DeleteProjectTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
-        Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=user.id)
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.project = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=self.user.id)
 
 
-    def test_call_view_anonymous(self):   
-        project = str(Project.objects.get(key="TEST1").id)  
-        response = self.client.get(reverse("delete-project", args=[project]))
+    def test_call_view_anonymous(self): 
+        response = self.client.get(reverse("delete-project", args=[self.project.id]))
 
-        self.assertRedirects(response, f"/login/?next=/delete-project/{project}/")
+        self.assertRedirects(response, f"/login/?next=/delete-project/{self.project.id}/")
 
 
     def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")
-        project = str(Project.objects.get(key="TEST1").id) 
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
-        response = self.client.get(reverse("delete-project", args=[project]))
+        response = self.client.get(reverse("delete-project", args=[self.project.id]))
         messages = list(get_messages(response.wsgi_request))
 
         self.assertTrue(response.status_code, 301)
@@ -580,34 +544,28 @@ class DeleteIssueTestCase(TestCase):
 
 
     def setUp(self):
-        user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
-        project = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=user.id)
-        Issue.objects.create(
-            project_id=project.id,
-            title="Issue", 
-            description="Big Socks Just Big Socks", 
-            type="Feature",
-            priority="Medium", 
-            status="To do", 
-            author_id=user.id)
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.project = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=self.user.id)
+        self.issue = Issue.objects.create(
+            project_id = self.project.id,
+            title = "Issue", 
+            description = "Big Socks Just Big Socks", 
+            type = "Feature",
+            priority = "Medium", 
+            status = "To do", 
+            author_id = self.user.id)
 
 
-    def test_call_view_anonymous(self):   
-        project = str(Project.objects.get(key="TEST1").id)  
-        issue = str(Issue.objects.get(title="Issue").id)
+    def test_call_view_anonymous(self):
+        response = self.client.get(reverse("delete-issue", args=[self.project.id, self.issue.id]))
 
-        response = self.client.get(reverse("delete-issue", args=[project, issue]))
-
-        self.assertRedirects(response, f"/login/?next=/delete-issue/{project}/{issue}/")
+        self.assertRedirects(response, f"/login/?next=/delete-issue/{self.project.id}/{self.issue.id}/")
 
 
     def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")
-        project = str(Project.objects.get(key="TEST1").id) 
-        issue = str(Issue.objects.get(title="Issue").id)
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
-        response = self.client.get(reverse("delete-issue", args=[project, issue]))
+        response = self.client.get(reverse("delete-issue", args=[self.project.id, self.issue.id]))
         messages = list(get_messages(response.wsgi_request))
 
         self.assertTrue(response.status_code, 301)
@@ -619,21 +577,19 @@ class DeleteAccountTestCase(TestCase):
 
 
     def setUp(self):
-        User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
 
 
-    def test_call_view_anonymous(self):   
-        user = User.objects.get(username="testing")
-        response = self.client.get(reverse("delete-account", args=[user.id]))
+    def test_call_view_anonymous(self):
+        response = self.client.get(reverse("delete-account", args=[self.user.id]))
 
-        self.assertRedirects(response, f"/login/?next=/delete-account/{user.id}/")
+        self.assertRedirects(response, f"/login/?next=/delete-account/{self.user.id}/")
 
 
     def test_call_view_logged_in(self):
-        user = User.objects.get(username="testing")
-        self.client.force_login(user)
+        self.client.force_login(self.user)
 
-        response = self.client.get(reverse("delete-account", args=[user.id]))
+        response = self.client.get(reverse("delete-account", args=[self.user.id]))
         messages = list(get_messages(response.wsgi_request))
 
         self.assertTrue(response.status_code, 301)
