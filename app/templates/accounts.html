@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %} Account details {% endblock%}
@@ -6,7 +6,7 @@
 {% block main %}
 
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
-	{% include 'messages.html' %}
+	{% include "messages.html" %}
 
 	<div class="ms-3 mt-3">
 		<h4 class="h4 mb-3 fw-normal">Account Details</h4>
@@ -52,13 +52,13 @@
 	</div>
 	
 <!-- CHANGE PASSWORD MODAL -->
-	{% include 'change-password.html' %}
+	{% include "change-password.html" %}
 
 <!-- ACCOUNT DELETE MODAL -->
-	{% include 'delete-account.html' %}
+	{% include "delete-account.html" %}
 
 	<script>
-		const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+		const popoverTriggerList = document.querySelectorAll("[data-bs-toggle='popover']")
 		const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 	</script>
 {% endblock main %}

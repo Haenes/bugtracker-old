@@ -21,18 +21,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 
 from .models import Issue, Project
-from .forms import ( 
-    IssueDetailsForm,
-    IssueModalForm,
-    LoginForm,
-    ProjectDetailsForm, 
-    ProjectModalForm, 
-    RegisterForm, 
-    UserPasswordChangeForm,
-    UserForgotPasswordForm,
-    UserSetNewPasswordForm,
-    UserForm
-    )
+from .forms import *
 
 
 @login_required(login_url="/login/")
@@ -42,30 +31,27 @@ def projects(request):
     projects_list = Project.objects.filter(author_id=user.id)
 
     paginator = Paginator(projects_list, 9)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context = {
-        'user_id': user.id,
-        'page_obj': page_obj
-    }
+    context = {"user_id": user.id, "page_obj": page_obj}
     
-    if request.method == 'POST':
+    if request.method == "POST":
         project_modal_form = ProjectModalForm(request.POST or None)
 
         if project_modal_form.is_valid():
             cd = project_modal_form.cleaned_data
             
             Project.objects.create(
-                author_id=user.id,
-                name=cd["name"].capitalize(),
-                key=cd["key"].upper(),
-                type=cd["type"],
-                starred=cd["starred"]
+                author_id = user.id,
+                name = cd["name"].capitalize(),
+                key = cd["key"].upper(),
+                type = cd["type"],
+                starred = cd["starred"]
             )          
             messages.success(request, "Project created!")
         
-        context['project_modal_form'] = project_modal_form
+        context["project_modal_form"] = project_modal_form
 
         for field in project_modal_form.errors:
             if project_modal_form.errors[field]:
@@ -73,7 +59,7 @@ def projects(request):
 
     else:
         project_modal_form = ProjectModalForm(initial={"author": user.id})
-        context['project_modal_form'] = project_modal_form
+        context["project_modal_form"] = project_modal_form
 
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         data = json.load(request)
@@ -101,13 +87,13 @@ def boards(request, project_id):
     user = request.user
      
     context = {
-        'project': project,
-        'user_id': user.id,
-        'project_id': project.id,        
-        'issues_list': all_issues,
+        "project": project,
+        "user_id": user.id,
+        "project_id": project.id,        
+        "issues_list": all_issues,
     }
 
-    if request.method == 'POST':
+    if request.method == "POST":
         issue_modal_form = IssueModalForm(request.POST or None)
 
         if issue_modal_form.is_valid():
@@ -120,19 +106,19 @@ def boards(request, project_id):
                 latest_key = 0
 
             Issue.objects.create(
-                project=cd["project"],
+                project = cd["project"],
                 key = latest_key + 1,
-                title=cd["title"].capitalize(),
-                description=cd["description"],
-                type=cd["type"],
-                priority=cd["priority"],
-                status="To do",
-                author_id=user.id
+                title = cd["title"].capitalize(),
+                description = cd["description"],
+                type = cd["type"],
+                priority = cd["priority"],
+                status = "To do",
+                author_id = user.id
             )          
             messages.success(request, "Issue created!")
-            return redirect('boards', project.id)
+            return redirect("boards", project.id)
         
-        context['issue_modal_form'] = issue_modal_form
+        context["issue_modal_form"] = issue_modal_form
 
         for field in issue_modal_form.errors:
             if issue_modal_form.errors[field]:
@@ -140,7 +126,7 @@ def boards(request, project_id):
 
     else:
         issue_modal_form = IssueModalForm(initial={"project":project.id, "author": user.id})   
-        context['issue_modal_form'] = issue_modal_form
+        context["issue_modal_form"] = issue_modal_form
 
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         data = json.load(request)
@@ -153,10 +139,7 @@ def boards(request, project_id):
             issue.status = target
             issue.save()
 
-            return JsonResponse({
-                "id": issue.id,
-                "source": issue.status,
-            })
+            return JsonResponse({"id": issue.id, "source": issue.status})
            
     return render(request, "boards.html", context)
 
@@ -169,18 +152,18 @@ def issue_details(request, project_id, issue_id):
     issue = Issue.objects.get(id=issue_id)
 
     context = {
-        'user_id': user.id,
-        'project': project,
-        'issue': issue,
-    }
+        "user_id": user.id, 
+        "project": project, 
+        "issue": issue
+        }
 
-    if request.method == 'POST':
+    if request.method == "POST":
         issue_details_form = IssueDetailsForm(request.POST or None, instance=issue)
 
         if issue_details_form.is_valid():
             issue_details_form.save()
 
-        context['issue_details_form'] = issue_details_form
+        context["issue_details_form"] = issue_details_form
 
         for field in issue_details_form.errors:
             if issue_details_form.errors[field]:
@@ -198,7 +181,7 @@ def issue_details(request, project_id, issue_id):
                 "author": issue.author
             }
         )
-        context['issue_details_form'] = issue_details_form
+        context["issue_details_form"] = issue_details_form
 
     return render(request, "issue-details.html", context)
 
@@ -210,18 +193,18 @@ def project_settings(request, project_id):
     project = Project.objects.get(id=project_id)
 
     context = {
-        'project': project,
-        'project_id': project.id,
-        'user_id': user.id,
+        "project": project,
+        "project_id": project.id,
+        "user_id": user.id
     }
 
-    if request.method == 'POST':
+    if request.method == "POST":
         project_form = ProjectDetailsForm(request.POST or None, instance=project)
 
         if project_form.is_valid():         
             project_form.save()
         
-        context['project_form'] = project_form
+        context["project_form"] = project_form
       
     else:
         project_form = ProjectDetailsForm(
@@ -232,7 +215,7 @@ def project_settings(request, project_id):
             }
         )
 
-        context['project_form'] = project_form
+        context["project_form"] = project_form
 
     return render(request, "project-settings.html", context)
 
@@ -242,12 +225,9 @@ def accounts(request, user_id):
 
     user = User.objects.get(id=user_id)
 
-    context = {
-        'user': user,
-        'user_id': user.id,
-    }
+    context = {"user": user, "user_id": user.id}
   
-    if request.method == 'POST':
+    if request.method == "POST":
 
         if "user_details" in request.POST:
             user_form = UserForm(request.POST or None, instance=user)
@@ -255,7 +235,7 @@ def accounts(request, user_id):
             if user_form.is_valid():
                 user_form.save()
 
-            context['user_form'] = user_form
+            context["user_form"] = user_form
 
             for field in user_form.errors:
                 if user_form.errors[field]:
@@ -267,9 +247,9 @@ def accounts(request, user_id):
             if password_change_form.is_valid():
                 user = password_change_form.save()
                 update_session_auth_hash(request, user)
-                messages.success(request, 'Your password was successfully updated!')
+                messages.success(request, "Your password was successfully updated!")
                     
-            context['password_change_form'] = password_change_form
+            context["password_change_form"] = password_change_form
 
             for field in password_change_form.errors:
                 if password_change_form.errors[field]:
@@ -288,8 +268,8 @@ def accounts(request, user_id):
         )
         password_change_form = UserPasswordChangeForm(request.user)
                 
-        context['user_form'] = user_form
-        context['password_change_form'] = password_change_form
+        context["user_form"] = user_form
+        context["password_change_form"] = password_change_form
 
     return render(request, "accounts.html", context)
 
@@ -297,7 +277,7 @@ def accounts(request, user_id):
 @login_required(login_url="/login/")
 def search(request):
 
-    if 'q' in request.GET and request.GET['q']:
+    if "q" in request.GET and request.GET["q"]:
         q = request.GET.get("q")
         q = q.strip()
     
@@ -325,14 +305,19 @@ def search_results(request, q):
         results_projects = Project.objects.filter(lookups_projects).distinct()
         results_issues = Issue.objects.filter(lookups_issues).distinct()
 
-        context = {'query':query, 'results_projects':results_projects, 'results_issues': results_issues, 'user_id': user.id}
+        context = {
+            "query": query, 
+            "results_projects": results_projects, 
+            "results_issues": results_issues, 
+            "user_id": user.id
+            }
 
     return render(request, "search-results.html", context)
 
 
 def login_view(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
         login_form = LoginForm(request.POST)
 
         if login_form.is_valid():         
@@ -345,7 +330,7 @@ def login_view(request):
                 # If the user hasn't checked the "Remember me" checkbox - the session will last 30 min.
                 # Otherwise - 1 month.  
 
-                if not request.POST.get('remember', None):
+                if not request.POST.get("remember", None):
                     request.session.set_expiry(60 * 30)
                 else:
                     request.session.set_expiry(60 * 60 * 24 * 30)
@@ -366,7 +351,7 @@ def login_view(request):
 
 def register(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
         register_form = RegisterForm(request.POST)
 
         if register_form.is_valid():
@@ -375,17 +360,17 @@ def register(request):
             user.save()
 
             current_site = get_current_site(request)
-            mail_subject = 'Activation link has been sent to your email' 
+            mail_subject = "Activation link has been sent to your email" 
             token = default_token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-            message = render_to_string('register-activate.html', { 
-                'user': user, 
-                'domain': current_site.domain, 
-                'uid':uid, 
-                'token':token
+            message = render_to_string("register-activate.html", { 
+                "user": user, 
+                "domain": current_site.domain, 
+                "uid": uid, 
+                "token":token
             }) 
-            to_email = register_form.cleaned_data.get('email') 
+            to_email = register_form.cleaned_data.get("email") 
             email = EmailMessage(mail_subject, message, to=[to_email]) 
             email.send() 
             messages.success(request, "Almost done! Check your email to confirm it and complete the registration!")
@@ -410,11 +395,11 @@ def register_confirm(request, uidb64, token):
         user.is_active = True 
         user.save() 
         messages.success(request, "Email is confirmed, you can log in now!")
-        return redirect('login')
+        return redirect("login")
 
     else: 
         messages.error(request, "Email confirmation is failed!")
-        return redirect('login') 
+        return redirect("login") 
 
 
 def logout_view(request):
@@ -424,7 +409,7 @@ def logout_view(request):
 
 def password_reset(request):
 
-    if request.method == 'POST':
+    if request.method == "POST":
         reset_password_form = UserForgotPasswordForm(request.POST)
 
         if reset_password_form.is_valid():
@@ -447,7 +432,7 @@ def password_reset_confirm(request, uidb64, token):
     uid = urlsafe_base64_decode(uidb64) 
     user = User.objects.get(pk=uid)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         set_password_form = UserSetNewPasswordForm(user, request.POST)
 
         if set_password_form.is_valid():
@@ -483,7 +468,7 @@ def delete_issue(request, project_id, issue_id):
 
     messages.success(request, "Issue deleted!")
 
-    return redirect('boards', project_id)
+    return redirect("boards", project_id)
 
 
 @login_required(login_url="/login/")
@@ -494,4 +479,4 @@ def delete_account(request, user_id):
 
     messages.success(request, "Account deleted!")
 
-    return redirect('login')
+    return redirect("login")

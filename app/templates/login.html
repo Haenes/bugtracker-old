@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Login{% endblock %}
@@ -7,7 +7,7 @@
 {% block main %}
 
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
-{% include 'messages.html' %}
+{% include "messages.html" %}
 
 	<div class="h-100 d-flex text-center">
 
@@ -17,7 +17,7 @@
 			<h3 class="h3 mb-4 fw-normal">Log in</h3>
 
 			{% for field in login_form %}
-				{% if field.name == 'remember' %}
+				{% if field.name == "remember" %}
 					<div class="form-check text-start my-3">
 						{{ field }}
 						<label class="form-check-label" for="remember_me">Remember me</label>						
@@ -41,6 +41,6 @@
 
 		</form>
 
-		{% include 'footer.html' %}
+		{% include "footer.html" %}
 	</div>
 {% endblock main %}

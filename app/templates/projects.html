@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 {% block title %} Projects {% endblock %}
 
@@ -16,7 +16,7 @@
 			</div>
 		
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
-			{% include 'messages.html' %}
+			{% include "messages.html" %}
 
 <!-- TRIGER CREATE PROJECT MODAL -->
 			<button type="button" class="btn btn-outline-primary rounded-3 mt-2" data-bs-toggle="modal"
@@ -115,5 +115,5 @@
 
 
 <!-- CREATE PROJECT MODAL -->
-	{% include 'create-project.html' %}
+	{% include "create-project.html" %}
 {% endblock main %}

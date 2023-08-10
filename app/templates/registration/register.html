@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Registration{% endblock %}
@@ -59,12 +59,12 @@
 				</div>
 			</form>
 
-			{% include 'footer.html' %}
+			{% include "footer.html" %}
 		</div>
 
 
 		<script>
-			const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+			const popoverTriggerList = document.querySelectorAll("[data-bs-toggle='popover']")
 			const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 		</script>
 {% endblock main %}

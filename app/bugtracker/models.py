@@ -5,7 +5,7 @@ from django.utils import timezone
 
 
 # Make email field in User modal unique (for UserForm)
-User._meta.get_field('email')._unique = True
+User._meta.get_field("email")._unique = True
 
 
 class Project(models.Model):
@@ -18,7 +18,7 @@ class Project(models.Model):
     ]
 
     name = models.CharField(max_length=255, unique=True, validators=[MinLengthValidator(3, "Name field must contain at least 3 letters")])
-    description = models.CharField(max_length=255, default='')
+    description = models.CharField(max_length=255, default="")
     key = models.CharField(max_length=10, unique=True, validators=[MinLengthValidator(3, "Key field must contain at least 3 letters")])
     type = models.CharField(max_length=18, choices=PROJECT_TYPE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -57,7 +57,7 @@ class Issue(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     key = models.PositiveIntegerField(default=1)
     title = models.CharField(max_length=255, unique=True)
-    description = models.TextField(blank=True, default='')
+    description = models.TextField(blank=True, default="")
     type = models.CharField(max_length=8, choices=ISSUE_TYPE)
     priority = models.CharField(max_length=8, choices=ISSUE_PRIORITY)
     status = models.CharField(max_length=11, choices=ISSUE_STATUS)

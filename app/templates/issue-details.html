@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% load static %}
 
 {% block title %} Issue details {% endblock %}
 
 {% block main %}
-	{% include 'sidebar.html' %}
+	{% include "sidebar.html" %}
 
 <!-- BREADCRUMB -->
 	{% block breadcrumb %}
@@ -21,7 +21,7 @@
 <!-- ISSUE DETAILS -->
 
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
-{% include 'messages.html' %}
+{% include "messages.html" %}
 
 	<div class="row mt-2 me-0">
 		<div class="container ms-3 mb-2">
@@ -37,13 +37,13 @@
 
 					{% for field in issue_details_form %}
 
-						{% if field.name == 'title' or field.name == 'description' %}
+						{% if field.name == "title" or field.name == "description" %}
 							<div class=" col-4 mb-3">
 								<p class=" m-0 text-start">{{ field.name|title }}</p>
 								{{ field }}
 							</div>
 						
-						{% elif field.name == 'project' or field.name == 'author'%}
+						{% elif field.name == "project" or field.name == "author" %}
 							{{ field.as_hidden }}
 
 						{% else %}
@@ -73,5 +73,5 @@
 	</div>
 
 <!-- ISSUE DELETE MODAL -->
-	{% include 'delete-issue.html' %}
+	{% include "delete-issue.html" %}
 {% endblock main %}

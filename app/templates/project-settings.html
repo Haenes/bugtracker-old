@@ -1,11 +1,11 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% load static %}
 
 {% block title %} Project settings {% endblock %}
 
 {% block main %}
-	{% include 'sidebar.html' %}
+	{% include "sidebar.html" %}
 
 <!-- BREADCRUMB -->
 	{% block breadcrumb %}
@@ -71,6 +71,6 @@
 
 
 <!-- DELETE PROJECT MODAL -->
-	{% include 'delete-project.html' %}
+	{% include "delete-project.html" %}
 					
 {% endblock main %}

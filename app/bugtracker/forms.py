@@ -146,8 +146,8 @@ class RegisterForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        password1 = cleaned_data.get('password1')
-        password2 = cleaned_data.get('password2')
+        password1 = cleaned_data.get("password1")
+        password2 = cleaned_data.get("password2")
 
         if password1 != password2:
             self.add_error("password2", "Passwords don't match")
