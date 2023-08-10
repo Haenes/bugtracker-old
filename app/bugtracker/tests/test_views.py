@@ -142,9 +142,19 @@ class IssueDetailsTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
         self.project = Project.objects.create(name="Testing", key="TEST", type="Fullstack software", author_id=self.user.id)
-        self.issue = Issue.objects.create(
+        self.issue1 = Issue.objects.create(
             project_id=self.project.id,
             title = "Issue", 
+            description = "Big Socks Just Big Socks", 
+            type = "Feature",
+            priority = "Medium", 
+            status = "To do", 
+            author_id = self.user.id
+            )
+        
+        self.issue2 = Issue.objects.create(
+            project_id=self.project.id,
+            title = "Issue2", 
             description = "Big Socks Just Big Socks", 
             type = "Feature",
             priority = "Medium", 
@@ -154,15 +164,15 @@ class IssueDetailsTestCase(TestCase):
 
 
     def test_call_view_anonymous(self):
-        response = self.client.get(reverse("issue-details", args=[self.project.id, self.issue.id]))
+        response = self.client.get(reverse("issue-details", args=[self.project.id, self.issue1.id]))
 
-        self.assertRedirects(response, f"/login/?next=/boards/{self.project.id}/{self.issue.id}/issue-details/")
+        self.assertRedirects(response, f"/login/?next=/boards/{self.project.id}/{self.issue1.id}/issue-details/")
 
 
     def test_call_view_logged_in(self):
         self.client.force_login(self.user)
 
-        response = self.client.get(reverse("issue-details", args=[self.project.id, self.issue.id]))
+        response = self.client.get(reverse("issue-details", args=[self.project.id, self.issue1.id]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "issue-details.html")
@@ -179,13 +189,28 @@ class IssueDetailsTestCase(TestCase):
             "author": self.user.id
         }
 
-        response = self.client.post(reverse("issue-details", args=[self.project.id, self.issue.id]), data=data)
+        response = self.client.post(reverse("issue-details", args=[self.project.id, self.issue1.id]), data=data)
 
         self.assertEqual(response.status_code, 200)
 
 
-# TODO 1:
-    def test_post_fail(self): pass
+    def test_post_fail(self):
+        self.client.force_login(self.user)
+        data = {
+            "project": self.project.id,
+            "title": "Issue2",  
+            "type": "Feature",
+            "priority": "Medium", 
+            "status": "To do", 
+            "author": self.user.id
+        }
+
+        response = self.client.post(reverse("issue-details", args=[self.project.id, self.issue1.id]), data=data)
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(remove_html(str(messages[0])), "Issue with this Title already exists.")
 
 
 class ProjectSettingsTestCase(TestCase):
@@ -193,19 +218,20 @@ class ProjectSettingsTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
-        self.project = Project.objects.create(name="Testing", key="TEST", type="Fullstack software", author_id=self.user.id)
+        self.project1 = Project.objects.create(name="TestingI", key="TEST", type="Fullstack software", author_id=self.user.id)
+        self.project2 = Project.objects.create(name="TestingII", key="TESTII", type="Fullstack software", author_id=self.user.id)
 
 
     def test_call_view_anonymous(self):
-        response = self.client.get(reverse("project-settings", args=[self.project.id]))
+        response = self.client.get(reverse("project-settings", args=[self.project1.id]))
 
-        self.assertRedirects(response, f"/login/?next=/boards/{self.project.id}/project-settings/")
+        self.assertRedirects(response, f"/login/?next=/boards/{self.project1.id}/project-settings/")
 
 
     def test_call_view_logged_in(self): 
         self.client.force_login(self.user)
 
-        response = self.client.get(reverse("project-settings", args=[self.project.id]))
+        response = self.client.get(reverse("project-settings", args=[self.project1.id]))
 
         self.assertTrue(response.status_code, 200)
         self.assertTemplateUsed(response, "project-settings.html")
@@ -218,13 +244,23 @@ class ProjectSettingsTestCase(TestCase):
             "key": "TESTI" 
         }
 
-        response = self.client.post(reverse("project-settings", args=[self.project.id]), data=data)
+        response = self.client.post(reverse("project-settings", args=[self.project1.id]), data=data)
 
         self.assertEqual(response.status_code, 200)
 
 
-# TODO 2: 
-    def test_post_fail(self): pass
+    def test_post_fail(self):
+        self.client.force_login(self.user)
+        data = {
+            "name": "TestingII",
+            "key": "TESTII" 
+        }
+
+        response = self.client.post(reverse("project-settings", args=[self.project1.id]), data=data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(b"Project with this Name already exists." in response.content)
+        self.assertTrue(b"Project with this Key already exists." in response.content)
 
 
 class AccountsTestCase(TestCase):
@@ -232,11 +268,11 @@ class AccountsTestCase(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")
+        self.user2 = User.objects.create_user(first_name="Test", last_name="Test", username="testingII", email="testemail2@gmail.com", password="Password123#")
 
 
     def test_call_view_anonymous(self):
         response = self.client.get(reverse("accounts", args=[self.user.id]))
-
         self.assertRedirects(response, f"/login/?next=/accounts/{self.user.id}/")
 
 
@@ -252,6 +288,7 @@ class AccountsTestCase(TestCase):
     def test_post_success(self):
         self.client.force_login(self.user)
         data = {
+            "user_details": True,
             "first_name": "Test",
             "last_name": "Test", 
             "username": "testi", 
@@ -263,8 +300,24 @@ class AccountsTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
 
 
-# TODO 3:
-    def test_post_fail(self): pass
+    def test_post_fail(self):
+        self.client.force_login(self.user)
+        data = {
+            "user_details": True,
+            "first_name": "Test",
+            "last_name": "Test", 
+            "username": "testingII", 
+            "email": "testemail2@gmail.com"
+        }
+
+        response = self.client.post(reverse("accounts", args=[self.user.id]), data=data)
+        messages = list(get_messages(response.wsgi_request))
+
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(messages), 2)
+        self.assertEqual(remove_html(str(messages[0])), "A user with that username already exists.")
+        self.assertEqual(remove_html(str(messages[1])), "User with this Email address already exists.")
 
 
 class SearchTestCase(TestCase):
