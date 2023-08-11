@@ -22,10 +22,11 @@ DATABASES = {
  }
 ```
 
-7) Create .env file in app folder (BugTracker/app): email settings required to send emails for user registration and password reset
-8) Do migrations: python3 manage.py migrate
-9) Create a superuser:  python3 manage.py createsuperuser
-10) After that, you can run server:  python3 manage.py runserver
+6) Create .env file in app folder (BugTracker/app): email settings required to send emails for user registration and password reset
+7) Do migrations: `python3 manage.py migrate`
+8) Create a superuser:  `python3 manage.py createsuperuser`
+9) Also, if you want to run tests, you can enter (in BugTracker/app): `python3 manage.py test bugtracker/tests --keepdb --verbosity 2`
+10) After that, you can run server:  `python3 manage.py runserver`
 
 
 <h3>.env file example:</h3>
@@ -46,4 +47,4 @@ DATABASE_PASSWORD = "PASSWORD FOR THAT USER"
 1) Steps 1-4 is absolutely identical to those specified for SQLite above
 2) Create a MySQL user and the database itself
 3) Сreate .env file (example above)
-4) Steps 7-9 is also identical to those specified for SQLite above
+4) Steps 6-10 is also identical to those specified for SQLite above
