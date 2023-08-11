@@ -46,5 +46,4 @@ DATABASE_PASSWORD = "PASSWORD FOR THAT USER"
 
 1) Steps 1-4 is absolutely identical to those specified for SQLite above
 2) Create a MySQL user and the database itself
-3) Сreate .env file (example above)
-4) Steps 6-10 is also identical to those specified for SQLite above
+3) Steps 6-10 is also identical to those specified for SQLite above
