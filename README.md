@@ -11,5 +11,5 @@ This is the light version of bug tracker, that have:
 
 Right now the project is in the final stage
 
-<b>Nearest to-do list</b>:
-  1) Write install instruction
+# Installation
+See [INSTALL.md](/INSTALL.md) for full instructions.
