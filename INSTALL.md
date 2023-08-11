@@ -10,7 +10,7 @@ In the end, you should have such a structure (without db.sqlite3 if you're using
 1) Clone project: `git clone https://github.com/Haenes/BugTracker.git`
 2) Create venv: `python3 -m venv venv`
 3) Activate venv: `source venv/bin/activate`
-4) Install requirements in app folder (BugTracker/app): `cd app -> pip install -r requirements.txt`
+4) Install requirements in app folder (BugTracker/app): `cd app` -> `pip install -r requirements.txt`
 5) Go to settings.py (BugTracker/app/app/settings.py) and change "DATABASES" to:
 
 ```python3
@@ -45,5 +45,5 @@ DATABASE_PASSWORD = "PASSWORD FOR THAT USER"
 <h3>MySQL:</h3>
 
 1) Steps 1-4 is absolutely identical to those specified for SQLite above
-2) Create a MySQL user and the database itself
+2) Create a MySQL user, database itself and don't forget to give privileges to the created user
 3) Steps 6-10 is also identical to those specified for SQLite above
