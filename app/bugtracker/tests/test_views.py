@@ -48,7 +48,7 @@ class ProjectsTestCase(TestCase):
         response = self.client.post(reverse("projects"), data=data)
         messages = list(get_messages(response.wsgi_request))
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(remove_html(str(messages[0])), "Project created!")
 
 

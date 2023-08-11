@@ -50,6 +50,7 @@ def projects(request):
                 starred = cd["starred"]
             )          
             messages.success(request, "Project created!")
+            return redirect("projects")
         
         context["project_modal_form"] = project_modal_form
 
