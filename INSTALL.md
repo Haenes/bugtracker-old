@@ -25,8 +25,11 @@ DATABASES = {
 6) Create .env file in app folder (BugTracker/app): email settings required to send emails for user registration and password reset
 7) Do migrations: `python3 manage.py migrate`
 8) Create a superuser:  `python3 manage.py createsuperuser`
-9) Also, if you want to run tests, you can enter (in BugTracker/app): `python3 manage.py test bugtracker/tests --keepdb --verbosity 2`
-10) After that, you can run server:  `python3 manage.py runserver`
+   
+   > Create a password containing at least 1 special character, 1 lowercase and uppercase letters, 1 digit, equal/longer than 8 characters
+
+10) Also, if you want to run tests, you can enter (in BugTracker/app): `python3 manage.py test bugtracker/tests --keepdb --verbosity 2`
+11) After that, you can run server:  `python3 manage.py runserver`
 
 
 <h3>.env file example:</h3>
