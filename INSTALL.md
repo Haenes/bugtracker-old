@@ -1,11 +1,12 @@
 # Installation Instructions
-Note that there are two instructions here: for SQLite and MySQL.
+>Note that there are two instructions here: for SQLite and MySQL.
 
-In the end, you should have such a structure (without db.sqlite3 if you're using MySQL:
+In the end, you should have such a structure (without db.sqlite3 if you're using MySQL):
 
 ![Screenshot of project structure](https://github.com/Haenes/BugTracker/assets/138951721/97c019b5-4e20-4adb-b370-9c434b2fbbb9)
 
-SQLite: 	
+<h3>SQLite:</h3> 	
+
 1) Clone project: `git clone https://github.com/Haenes/BugTracker.git`
 2) Create venv: `python3 -m venv venv`
 3) Activate venv: `source venv/bin/activate`
@@ -27,9 +28,9 @@ DATABASES = {
 10) After that, you can run server:  python3 manage.py runserver
 
 
-.env file example:
+<h3>.env file example:</h3>
 
-NOTE: if you prefer to use SQLite, then you DON'T needed to last two lines
+>NOTE: if you prefer to use SQLite, then you DON'T needed to last two lines
 
 ```python3
 EMAIL_HOST_USER = "YOUR EMAIL ADDRESS"   # it's better to create a new one, specifically for this project
@@ -40,7 +41,8 @@ DATABASE_USER = "USER THAT U CREATED"
 DATABASE_PASSWORD = "PASSWORD FOR THAT USER"
 ```
 
-MySQL:
+<h3>MySQL:</h3>
+
 1) Steps 1-4 is absolutely identical to those specified for SQLite above
 2) Create a MySQL user and the database itself
 3) Сreate .env file (example above)
