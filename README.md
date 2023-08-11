@@ -9,7 +9,10 @@ This is the light version of bug tracker, that have:
   7) Ability to search Projects and Issues via search bar;
   8) Ability to change color mode.
 
-Right now the project is in the final stage
+<h2>Installation</h2>
 
-<b>Nearest to-do list</b>:
-  1) Write install instruction
+See [INSTALL.md](/INSTALL.md) for full instructions.
+
+<h2>License</h2>
+
+See the [LICENSE](/LICENSE.md) file for license rights and limitations (MIT).
