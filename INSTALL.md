@@ -17,7 +17,7 @@ In the end, you should have such a structure (without db.sqlite3 if you're using
 DATABASES = {
     'default': {
       'ENGINE': 'django.db.backends.sqlite3',
-      'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+      'NAME': BASE_DIR / 'db.sqlite3',
     }
  }
 ```
