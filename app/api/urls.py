@@ -1,4 +1,6 @@
 from django.urls import include, path
+
+from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework.routers import DefaultRouter
 
 from . import views
@@ -11,4 +13,5 @@ router.register(r'issues', views.IssueViewSet, basename='issue')
 # Wire up API using automatic URL routing.
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api-token-auth/', obtain_auth_token)
 ]
