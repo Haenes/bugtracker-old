@@ -10,7 +10,7 @@ In the end, you should have such a structure (without db.sqlite3 if you're using
 1) Clone project: `git clone https://github.com/Haenes/BugTracker.git`
 2) Create venv: `python3 -m venv venv`
 3) Activate venv: `source venv/bin/activate`
-4) Install requirements in app folder (BugTracker/app): `cd app` -> `pip install -r requirements.txt`
+4) Install requirements: `pip install -r requirements.txt`
 5) Go to settings.py (BugTracker/app/app/settings.py) and change "DATABASES" to:
 
 ```python3
