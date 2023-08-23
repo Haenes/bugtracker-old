@@ -9,7 +9,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Project
-        fields = "__all__"
+        # fields = "__all__"
+        fields = ["id", "url", "author", "name", "description", "key", "type", "starred", "created"]
         read_only_fields = ("created", )
 
 
@@ -19,4 +20,5 @@ class IssueSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Issue
-        fields = "__all__"
+        # fields = "__all__"
+        fields = ["id", "url", "author", "title", "description", "key", "type", "priority", "status", "created", "updated"]
