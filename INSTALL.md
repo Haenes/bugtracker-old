@@ -30,7 +30,7 @@ DATABASES = {
 ```
 
 6) Create .env file in app folder (BugTracker/app): email settings required to send emails for user registration and password reset
-7) Do migrations: `python3 manage.py migrate`
+7) Do migrations: `python3 manage.py makemigrations && python3 manage.py migrate`
 8) Create a superuser:  `python3 manage.py createsuperuser`
    
    > Create a password containing at least 1 special character, 1 lowercase and uppercase letters, 1 digit, equal/longer than 8 characters
