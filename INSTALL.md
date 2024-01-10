@@ -1,4 +1,4 @@
-*# Installation Instructions
+# Installation Instructions
 >Note that there are three instructions here: for SQLite, MySQL and Docker (with SQLite).
 
 In the end, you should have such a structure (without db.sqlite3 if you're using MySQL):
