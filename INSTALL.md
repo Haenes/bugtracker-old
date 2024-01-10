@@ -1,9 +1,16 @@
-# Installation Instructions
->Note that there are two instructions here: for SQLite and MySQL.
+*# Installation Instructions
+>Note that there are three instructions here: for SQLite, MySQL and Docker (with SQLite).
 
 In the end, you should have such a structure (without db.sqlite3 if you're using MySQL):
 
 ![Screenshot of project structure](https://github.com/Haenes/BugTracker/assets/138951721/97c019b5-4e20-4adb-b370-9c434b2fbbb9)
+
+<h3>Docker:</h3> 
+
+1) Pull and run image: `docker run -dp 8000:8000 haenes/bugtracker`
+2) To log in use this credentialls: Username - test, Password - test123#
+>Please note that the email services will not work! As a result, you will not be able to register/reset your password.
+
 
 <h3>SQLite:</h3> 	
 
@@ -43,6 +50,8 @@ EMAIL_ADMIN = ["YOUR EMAIL ADDRESS"]     # there you can use email from above or
 
 DATABASE_USER = "USER THAT U CREATED"
 DATABASE_PASSWORD = "PASSWORD FOR THAT USER"
+DATABASE_PORT = "PORT"
+DATABASE_HOST = "HOST"
 ```
 
 <h3>MySQL:</h3>
