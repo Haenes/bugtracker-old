@@ -122,8 +122,8 @@ DATABASES = {
     	'NAME': 'bugtracker',
         'USER': os.environ.get('DATABASE_USER'),
         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'PORT': '3306',
-        'HOST': 'localhost',
+        'PORT': os.environ.get('DATABASE_PORT'),
+        'HOST': os.environ.get('DATABASE_HOST'),
 	}
 }
 
