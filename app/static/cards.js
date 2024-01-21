@@ -18,7 +18,7 @@ function drop(ev) {
 	ev.target.appendChild(document.getElementById(data));
 	var target = ev.target.id;                               // Same as source from drag function
 
-	if (source != target) {                                  // Check if card was drag to another Issue status
+	if (source != target && ev.target.ondrop != null) {      // Check if card was drag to another Issue status and not into another card
 
 		response = fetch(url, {                              // If so: make POST request and send data in body
 			method: "PUT",

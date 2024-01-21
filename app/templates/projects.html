@@ -34,8 +34,7 @@
 							<th scope="col">Name</th>
 							<th scope="col">Key</th>
 							<th scope="col">Type</th>
-							<th scope="col">Date</th>
-							<th scope="col">Time</th>
+							<th scope="col">Created</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -66,8 +65,7 @@
 										
 								<td>{{ project.key }}</td>
 								<td>{{ project.type }}</td>
-								<td>{{ project.created.date }}</td>
-								<td>{{ project.created.time }}</td>
+								<td>{{ project.created }}</td> 
 							</tr>
 						{% endfor %}
 					</tbody>
