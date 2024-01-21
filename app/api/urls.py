@@ -10,7 +10,6 @@ router = DefaultRouter()
 router.register(r'projects', views.ProjectViewSet, basename='project')
 router.register(r'issues', views.IssueViewSet, basename='issue')
 
-# Wire up API using automatic URL routing.
 urlpatterns = [
     path('api/', include(router.urls)),
     path('api-token-auth/', obtain_auth_token)
