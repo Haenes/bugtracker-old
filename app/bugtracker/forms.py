@@ -13,6 +13,7 @@ from django.forms import (
     Textarea, 
     TextInput    
     )
+from django.utils.translation import gettext_lazy as _
 
 from bugtracker.models import Project, Issue
 
@@ -44,7 +45,7 @@ class RegisterForm(forms.Form):
 
 
     first_name = forms.CharField(
-        label="First name", 
+        label=_("First name"), 
         min_length=2, 
         max_length=255, 
         widget=TextInput(
@@ -53,7 +54,7 @@ class RegisterForm(forms.Form):
             "class": "form-control mb-2"}))
 
     last_name = forms.CharField(
-        label="Last name", 
+        label=_("Last name"), 
         min_length=2, 
         max_length=255, 
         widget=TextInput(
@@ -62,7 +63,7 @@ class RegisterForm(forms.Form):
                 "class": "form-control mb-2"}))
 
     username = forms.CharField(
-        label="Username", 
+        label=_("Username"), 
         min_length=4, 
         max_length=150, 
         widget=TextInput(
@@ -71,7 +72,7 @@ class RegisterForm(forms.Form):
                 "class": "form-control mb-2"}))
 
     email = forms.EmailField(
-        label="Email", 
+        label=_("Email"), 
         max_length=255, 
         widget=TextInput(
             attrs={
@@ -79,7 +80,7 @@ class RegisterForm(forms.Form):
                 "class": "form-control mb-2"}))
 
     password1 = forms.CharField(
-        label="Password",
+        label=_("Password"),
         min_length=8, 
         max_length=32, 
         widget=PasswordInput(
@@ -88,7 +89,7 @@ class RegisterForm(forms.Form):
                 "class": "form-control mb-2"}))
 
     password2 = forms.CharField(
-        label="Password confirmation",
+        label=_("Password confirmation"),
         min_length=8, 
         max_length=32, 
         widget=PasswordInput(
@@ -101,7 +102,7 @@ class RegisterForm(forms.Form):
         first_name = self.cleaned_data["first_name"].capitalize()
 
         if not validate_string(first_name):
-            raise ValidationError("First name must have only letters")
+            raise ValidationError(_("First name must have only letters"))
 
         return first_name
 
@@ -110,7 +111,7 @@ class RegisterForm(forms.Form):
         last_name = self.cleaned_data["last_name"].capitalize()
 
         if not validate_string(last_name):
-            raise ValidationError("Last name must have only letters")
+            raise ValidationError(_("Last name must have only letters"))
 
         return last_name
 
@@ -119,9 +120,9 @@ class RegisterForm(forms.Form):
         username = self.cleaned_data["username"].lower()
 
         if not validate_string(username):
-            raise ValidationError("Username must have only letters")
+            raise ValidationError(_("Username must have only letters"))
         elif User.objects.filter(username=username):
-            raise ValidationError("That username already exists")
+            raise ValidationError(_("That username already exists"))
 
         return username
 
@@ -130,7 +131,7 @@ class RegisterForm(forms.Form):
         email = self.cleaned_data["email"]
 
         if User.objects.filter(email=email):
-            raise ValidationError("That email already exists")
+            raise ValidationError(_("That email already exists"))
 
         return email
 
@@ -139,7 +140,7 @@ class RegisterForm(forms.Form):
         password1 = self.cleaned_data["password1"]
 
         if not validate_password(password1):
-            raise ValidationError("The password doesn't meet the conditions")
+            raise ValidationError(_("The password doesn't meet the conditions"))
 
         return password1
 
@@ -150,7 +151,7 @@ class RegisterForm(forms.Form):
         password2 = cleaned_data.get("password2")
 
         if password1 != password2:
-            self.add_error("password2", "Passwords don't match")
+            self.add_error("password2", _("Passwords don't match"))
 
 
     def save(self, commit=True): 
@@ -175,23 +176,25 @@ class LoginForm(forms.Form):
 
 
     username = forms.CharField(
+        label=_("username"),
         min_length=4, 
         max_length=150, 
         widget=TextInput(
             attrs={
                 "class": "form-control", 
                 "id": "floatingUsername", 
-                "placeholder": "Username", 
+                "placeholder": _("Username"), 
                 "autofocus": True}))
 
     password = forms.CharField(
+        label=_("password"),
         min_length=8, 
         max_length=32, 
         widget=PasswordInput(
             attrs={
                 "class": "form-control", 
                 "id": "floatingPassword", 
-                "placeholder": "Password"}))
+                "placeholder": _("Password")}))
 
     remember = forms.CharField(
         required=False,
@@ -219,10 +222,10 @@ class UserForm(ModelForm):
     def clean_first_name(self):
         first_name = self.cleaned_data["first_name"]
 
-        if len(first_name) < 3:
-            raise ValidationError("First name must contain at least 3 letters")       
+        if len(first_name) < 2:
+            raise ValidationError(_("First name must contain at least 2 letters"))       
         elif not validate_string(first_name):
-            raise ValidationError("Name must have only letters")
+            raise ValidationError(_("First name must have only letters"))
 
         return first_name
 
@@ -230,10 +233,10 @@ class UserForm(ModelForm):
     def clean_last_name(self):
         last_name = self.cleaned_data["last_name"]
 
-        if len(last_name) < 3:
-            raise ValidationError("Last name must contain at least 3 letters") 
+        if len(last_name) < 2:
+            raise ValidationError(_("Last name must contain at least 2 letters")) 
         elif not validate_string(last_name):
-            raise ValidationError("Name must have only letters")
+            raise ValidationError(_("Last name must have only letters"))
 
         return last_name
 
@@ -242,14 +245,14 @@ class UserPasswordChangeForm(forms.Form):
 
 
     new_password1 = forms.CharField(
-        label=("New password"),
+        label=_("New password"),
         min_length=8,
         max_length=32,
         widget=forms.PasswordInput(attrs={"class": "col-4 mb-3 form-control bg-body-tertiary", "autofocus": True}),
     )
 
     new_password2 = forms.CharField(
-        label=("New password confirmation"),
+        label=_("New password confirmation"),
         min_length=8,
         max_length=32,
         widget=forms.PasswordInput(attrs={"class": "col-2  mb-4 form-control bg-body-tertiary"}),
@@ -264,7 +267,7 @@ class UserPasswordChangeForm(forms.Form):
     def clean_new_password1(self):
         password1 = self.cleaned_data.get("new_password1")
         if not validate_password(password1):
-            raise ValidationError("The password doesn't meet the conditions")
+            raise ValidationError(_("The password doesn't meet the conditions"))
         return password1
 
 
@@ -272,7 +275,7 @@ class UserPasswordChangeForm(forms.Form):
         password1 = self.cleaned_data.get("new_password1")
         password2 = self.cleaned_data.get("new_password2")
         if password1 != password2:
-            raise ValidationError("Passwords don't match")
+            raise ValidationError(_("Passwords don't match"))
         return password2
 
 
@@ -291,6 +294,11 @@ class ProjectDetailsForm(ModelForm):
         model = Project
         fields = ["name", "key", "starred"]
 
+        labels = {
+            "name": _("name"),
+            "key": _("key"),
+        }
+
         widgets = {
             "name": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
             "key": TextInput(attrs={"required": True, "class": "form-control bg-body-tertiary"}),
@@ -302,7 +310,7 @@ class ProjectDetailsForm(ModelForm):
         name = self.cleaned_data["name"]
 
         if not validate_string(name):
-            raise ValidationError("Project name must have only letters")
+            raise ValidationError(_("Project name must have only letters"))
 
         return name
   
@@ -311,7 +319,7 @@ class ProjectDetailsForm(ModelForm):
         key = self.cleaned_data["key"]
 
         if not validate_string(key):
-            raise ValidationError("Key must have only letters")
+            raise ValidationError(_("Key must have only letters"))
 
         return key
 
@@ -323,12 +331,18 @@ class ProjectModalForm(ModelForm):
         model = Project
         fields = ["author", "name", "key", "type", "starred"]
 
+        labels = {
+            "name": _("name"),
+            "key": _("key"),
+            "type": _("type"),
+        }
+
         widgets = {
             "author": TextInput(),
             "name": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "key": TextInput(attrs={"class": "form-control bg-body-tertiary"}),
             "type": Select(attrs={"class": "form-control bg-body-tertiary"}),
-            "starred": CheckboxInput(attrs={"name": "Favorite", "style": "width:20px; height:20px", "class": "form-check-input"}),
+            "starred": CheckboxInput(attrs={"name": _("Favorite"), "style": "width:20px; height:20px", "class": "form-check-input"}),
         }
 
 
@@ -337,7 +351,7 @@ class ProjectModalForm(ModelForm):
         name = cd["name"].capitalize()
 
         if Project.objects.filter(name=name):
-            raise ValidationError("That project already exists")
+            raise ValidationError(_("That project already exists"))
 
         return name
 
@@ -347,7 +361,7 @@ class ProjectModalForm(ModelForm):
         key = cd["key"].upper()
 
         if Project.objects.filter(key=key):
-            raise ValidationError("Project with that key already exists")
+            raise ValidationError(_("Project with that key already exists"))
 
         return key
 
@@ -358,6 +372,12 @@ class IssueModalForm(ModelForm):
     class Meta:
         model = Issue
         fields = ["project", "type", "priority", "title", "description", "author"]
+        labels = {
+            "type": _("type"),
+            "priority": _("priority"),
+            "title": _("title"),
+            "description": _("description"),
+        }
 
         widgets = {
             "project": Select(),
@@ -373,7 +393,7 @@ class IssueModalForm(ModelForm):
         title = self.cleaned_data["title"].capitalize()
 
         if Issue.objects.filter(title=title):
-            raise ValidationError("Issue with that title already exists")
+            raise ValidationError(_("Issue with that title already exists"))
 
         return title
 
@@ -384,6 +404,14 @@ class IssueDetailsForm(ModelForm):
     class Meta:
         model = Issue
         fields = ["project", "status", "type", "priority", "title", "description", "author"]
+
+        labels = {
+            "status": _("status"),
+            "type": _("type"),
+            "priority": _("priority"),
+            "title": _("title"),
+            "description": _("description"),
+        }
 
         widgets = {
             "project": Select(),
@@ -402,13 +430,14 @@ class UserForgotPasswordForm(PasswordResetForm):
 
     # Change style of field 
     email = forms.CharField(
+        label=_("email"),
         min_length=4, 
         max_length=150, 
         widget=EmailInput(
             attrs={
                 "class": "form-control", 
                 "id": "floatingEmail", 
-                "placeholder": "Email",
+                "placeholder": _("Email"),
                 "autofocus": True}))
 
 
@@ -418,7 +447,7 @@ class UserSetNewPasswordForm(UserPasswordChangeForm):
 
     # Change style of fields:
     new_password1 = forms.CharField(
-        label="New password",
+        label=_("New password"),
         min_length=8,
         max_length=32,
         widget=forms.PasswordInput(
@@ -428,7 +457,7 @@ class UserSetNewPasswordForm(UserPasswordChangeForm):
                 }))
 
     new_password2 = forms.CharField(
-        label="New password confirmation",
+        label=_("New password confirmation"),
         min_length=8,
         max_length=32,
         widget=forms.PasswordInput(

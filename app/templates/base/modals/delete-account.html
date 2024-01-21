@@ -1,23 +1,25 @@
+{% load i18n %}
+
 <div class="modal fade" id="staticBackdropDelete" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
 	aria-labelledby="staticBackdropDelete" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="staticBackdropDelete">Attention</h1>
+				<h1 class="modal-title fs-5" id="staticBackdropDelete">{% translate "Attention" %}</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 			<div class="modal-body">
 				<p class="text-center">
-					Please note, if you delete your account, you will lose access to the application.
+					{% translate "Please note, if you delete your account, you will lose access to the application." %}
 				</p>
-				<p class="text-center">Do you really want to delete account?</p>
+				<p class="text-center">{% translate "Do you really want to delete account?" %}</p>
 			</div>
 			
 			<div class="modal-footer">
 				<a href="{% url 'delete-account' user_id %}">
-					<button type="button" class="btn btn-danger">Delete</button>
+					<button type="button" class="btn btn-danger">{% translate "Delete" %}</button>
 				</a>
 			</div>
 		</div>

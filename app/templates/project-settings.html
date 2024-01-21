@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-
+{% load i18n %}
 {% load static %}
 
-{% block title %} Project settings {% endblock %}
+{% block title %} {% translate "Project settings" %} {% endblock %}
 
 {% block main %}
 	{% include "sidebar.html" %}
@@ -13,7 +13,7 @@
 				<li class="breadcrumb-item">
 					<a class="link-offset-2 link-secondary link-offset-3-hover link-underline 
 						link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'project-settings' project.id %}">
-						Project settings
+						{% translate "Project settings" %}
 					</a>
 				</li></ol></nav>
 	{% endblock breadcrumb %}
@@ -23,7 +23,7 @@
 		<div class="container ms-3 mb-2">
 			<div class="row justify-content-between text-start">
 				<div class="col-sm-4">
-					<h4 class="h4 fw-normal">Details</h4>
+					<h4 class="h4 fw-normal">{% translate "Details" %}</h4>
 				</div>
 			</div>
 		</div>
@@ -34,13 +34,13 @@
 					{% for field in project_form %}
 						{% if field.name == "starred" %}
 							<div class="col-md-6 mb-4">
-								<p class="text-secondary m-0 text-start">Favorite</p>
+								<p class="text-secondary m-0 text-start">{% translate "Favorite" %}</p>
 								{{ field }}
 							</div>
 					
 						{% else %}
 							<div class="col-2 mb-3">
-								<p class=" m-0 text-start">{{ field.name|title }}</p>
+								<label class="form-label m-0" for="{{ field.name }}">{{ field.label }}</label>
 								{{ field }}
 							</div>
 
@@ -58,12 +58,12 @@
 					<a href="#" 
 						class="link-danger link-offset-2-hover link-underline-opacity-0 link-underline-opacity-100-hover"
 						data-bs-toggle="modal" data-bs-target="#DeleteProject">
-						Delete project
+						{% translate "Delete project" %}
 					</a>
 				</div>
 
 				<div class="mt-3">
-					<button class="btn btn-primary" type="submit">Save</button>
+					<button class="btn btn-primary" type="submit">{% translate "Save" %}</button>
 				</div>
 			</form>
 		</div>

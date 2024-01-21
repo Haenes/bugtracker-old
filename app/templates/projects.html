@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
-{% block title %} Projects {% endblock %}
+{% block title %} {% translate "Projects" %} {% endblock %}
 
 
 {% block script %}
@@ -12,7 +13,7 @@
 
 		<div>
 			<div class="ms-auto mt-3">
-				<h4>Projects</h4>
+				<h4>{% translate "Projects" %}</h4>
 			</div>
 		
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
@@ -21,7 +22,7 @@
 <!-- TRIGER CREATE PROJECT MODAL -->
 			<button type="button" class="btn btn-outline-primary rounded-3 mt-2" data-bs-toggle="modal"
 				data-bs-target="#staticBackdropProject">
-				Create new project
+				{% translate "Create new project" %}
 			</button>
 
 <!-- TABLE -->
@@ -31,10 +32,10 @@
 						<tr>
 							<th scope="col">#</th>
 							<th><i class="bi bi-star-fill" style="font-size: 16px; color:grey"></i></th>
-							<th scope="col">Name</th>
-							<th scope="col">Key</th>
-							<th scope="col">Type</th>
-							<th scope="col">Created</th>
+							<th scope="col">{% translate "Name" %}</th>
+							<th scope="col">{% translate "Key" %}</th>
+							<th scope="col">{% translate "Type" %}</th>
+							<th scope="col">{% translate "Created" %}</th>
 						</tr>
 					</thead>
 					<tbody>

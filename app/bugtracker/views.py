@@ -19,6 +19,7 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.translation import gettext as _
 
 from .models import Issue, Project
 from .forms import *
@@ -49,7 +50,7 @@ def projects(request):
                 type = cd["type"],
                 starred = cd["starred"]
             )          
-            messages.success(request, "Project created!")
+            messages.success(request, _("Project created!"))
             return redirect("projects")
         
         context["project_modal_form"] = project_modal_form
@@ -116,7 +117,7 @@ def boards(request, project_id):
                 status = "To do",
                 author_id = user.id
             )          
-            messages.success(request, "Issue created!")
+            messages.success(request, _("Issue created!"))
             return redirect("boards", project.id)
         
         context["issue_modal_form"] = issue_modal_form
@@ -248,7 +249,7 @@ def accounts(request, user_id):
             if password_change_form.is_valid():
                 user = password_change_form.save()
                 update_session_auth_hash(request, user)
-                messages.success(request, "Your password was successfully updated!")
+                messages.success(request, _("Your password was successfully updated!"))
                     
             context["password_change_form"] = password_change_form
 
@@ -283,10 +284,10 @@ def search(request):
         q = q.strip()
     
         if len(q) == 0:
-            messages.error(request,"Please, give a data for search")
+            messages.error(request, _("Please, give a data for search"))
             return redirect(request.META.get("HTTP_REFERER", "/"))
         elif " " in q:
-            messages.error(request,"Please give just one word to search")
+            messages.error(request, _("Please give just one word to search"))
             return redirect(request.META.get("HTTP_REFERER", "/"))
         return redirect("search-results", q)
     
@@ -339,7 +340,7 @@ def login_view(request):
                 login(request, user)
                 return redirect("projects")
             
-        messages.error(request, f"Invalid username and/or password")
+        messages.error(request, _("Invalid username and/or password"))
            
     else: 
         if request.user.is_authenticated:
@@ -361,7 +362,7 @@ def register(request):
             user.save()
 
             current_site = get_current_site(request)
-            mail_subject = "Activation link has been sent to your email" 
+            mail_subject = _("Activation link has been sent to your email")
             token = default_token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
 
@@ -374,7 +375,7 @@ def register(request):
             to_email = register_form.cleaned_data.get("email") 
             email = EmailMessage(mail_subject, message, to=[to_email]) 
             email.send() 
-            messages.success(request, "Almost done! Check your email to confirm it and complete the registration!")
+            messages.success(request, _("Almost done! Check your email to confirm it and complete the registration!"))
 
             return redirect("login")
 
@@ -395,11 +396,11 @@ def register_confirm(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token): 
         user.is_active = True 
         user.save() 
-        messages.success(request, "Email is confirmed, you can log in now!")
+        messages.success(request, _("Email is confirmed, you can log in now!"))
         return redirect("login")
 
     else: 
-        messages.error(request, "Email confirmation is failed!")
+        messages.error(request, _("Email confirmation is failed!"))
         return redirect("login") 
 
 
@@ -456,7 +457,7 @@ def delete_project(request, id):
     project = Project.objects.get(id=id)
     project.delete()
 
-    messages.success(request, "Project deleted!")
+    messages.success(request, _("Project deleted!"))
     
     return redirect("projects")
 
@@ -467,7 +468,7 @@ def delete_issue(request, project_id, issue_id):
     issue = Issue.objects.get(id=issue_id)
     issue.delete() 
 
-    messages.success(request, "Issue deleted!")
+    messages.success(request, _("Issue deleted!"))
 
     return redirect("boards", project_id)
 
@@ -478,6 +479,6 @@ def delete_account(request, user_id):
     user = User.objects.get(id=user_id)
     user.delete()
 
-    messages.success(request, "Account deleted!")
+    messages.success(request, _("Account deleted!"))
 
     return redirect("login")

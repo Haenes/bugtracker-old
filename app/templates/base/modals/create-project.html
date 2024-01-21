@@ -1,10 +1,12 @@
+{% load i18n %}
+
 <div class="modal fade" id="staticBackdropProject" data-bs-backdrop="static" tabindex="-1"
 	aria-labelledby="staticBackdropProject" aria-hidden="true" data-backdrop="static">
 	<div class="modal-dialog  modal-dialog-centered">
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h1 class="modal-title fs-5 text-secondary" id="staticBackdropProject">Create project</h1>
+				<h1 class="modal-title fs-5 text-secondary" id="staticBackdropProject">{% translate "Create project" %}</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
@@ -18,13 +20,13 @@
 
 						{% elif field.name == "starred" %}
 							<div class="col-md-6 mb-4">
-								<p class="text-secondary m-0 text-start">Favorite</p>
+								<p class="text-secondary m-0 text-start">{% translate "Favorite" %}</p>
 								{{ field }}
 							</div>
 
 						{% else %}
 							<div class="col-md-6 mb-3">
-								<p class="text-secondary m-0 text-start">{{ field.name|title }}*</p>
+								<label class="form-label m-0" for="{{ field.name }}">{{ field.label|title }}*</label>
 								{{ field }}
 							</div>
 							
@@ -32,7 +34,7 @@
 					{% endfor %}
 
 					<div class="modal-footer pb-0">
-						<button type="submit" class="btn btn-primary">Create</button>
+						<button type="submit" class="btn btn-primary">{% translate "Create" %}</button>
 					</div>
 				</form>
 			</div>

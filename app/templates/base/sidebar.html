@@ -1,3 +1,4 @@
+{% load i18n %}
 {% block sidebar %}
 
 <!-- SIDEBAR -->
@@ -10,15 +11,15 @@
 						<li class="nav-item">
 							<a href="{% url 'boards' project.id %}" class="nav-link px-0 align-middle text-secondary">
 								<i class="fs-4 bi bi-kanban icon-color"></i>
-								<span class="ms-1 d-none d-sm-inline">Board</span>
+								<span class="ms-1 d-none d-sm-inline">{% translate "Board" %}</span>
 							</a>
 						</li>
 
 						<li>
 							<a href="{% url 'project-settings' project.id %}"
-								class="nav-link px-0 align-middle text-secondary">
+								class="nav-link px-0 align-middle text-secondary text-nowrap">
 								<i class="fs-4 bi bi-gear-wide icon-color"></i>
-								<span class="ms-1 d-none d-sm-inline">Project settings</span>
+								<span class="ms-1 d-none d-sm-inline">{% translate "Project settings" %}</span>
 							</a>
 						</li>
 					</ul>

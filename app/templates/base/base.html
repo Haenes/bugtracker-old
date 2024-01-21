@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
@@ -39,7 +40,7 @@
 
 <!-- RIGTH SIDE -->
 				<form action="{% url 'search' %}" class="col-12 col-lg-3 me-3" role="search">
-					<input type="search" class="form-control" name="q"  placeholder="Search" aria-label="Search">
+					<input type="search" class="form-control" name="q"  placeholder={% translate "Search" %} aria-label="Search">
 				</form>
 
 				<div class="d-flex justify-content-center">
@@ -48,7 +49,7 @@
 
 							<li class="nav-item dropdown m-1 me-3">
 								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
-									data-bs-placement="bottom" title="Toggle color mode" aria-expanded="false"
+									data-bs-placement="bottom" title="{% translate "Toggle color mode" %}" aria-expanded="false"
 									aria-labelledby="bd-theme-text" id="bd-theme">
 									<i class="bi bi-gear-wide" style="font-size: 20px;color: grey;"></i>
 								</a>
@@ -56,31 +57,31 @@
 									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);">
 									<li>
 										<button type="button" class="dropdown-item d-flex align-items-center"
-											data-bs-theme-value="light" aria-pressed="false">Light</button>
+											data-bs-theme-value="light" aria-pressed="false">{% translate "Light" %}</button>
 									</li>
 									<li>
 										<button type="button" class="dropdown-item d-flex align-items-center"
-											data-bs-theme-value="dark" aria-pressed="false">Dark</button>
+											data-bs-theme-value="dark" aria-pressed="false">{% translate "Dark" %}</button>
 									</li>
 									<li>
 										<button type="button" class="dropdown-item d-flex align-items-center"
-											data-bs-theme-value="auto" aria-pressed="false">Auto</button>
+											data-bs-theme-value="auto" aria-pressed="false">{% translate "Auto" %}</button>
 									</li>
 								</ul>
 							</li>
 
 							<li class="nav-item dropdown m-1">
 								<a href="#" role="button" data-bs-toggle="dropdown" data-bs-toggle="tooltip"
-									data-bs-placement="bottom" title="User" aria-expanded="false">
+									data-bs-placement="bottom" title="{% translate "User" %}" aria-expanded="false">
 									<i class="bi bi-person-circle" style="font-size: 20px;color: grey;"></i>
 								</a>
 								<ul class="dropdown-menu text-small shadow"
 									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
 									data-popper-placement="bottom-end">
 
-									<li><a class="dropdown-item" href="{% url 'accounts' user_id %}">Account details</a></li>
+									<li><a class="dropdown-item" href="{% url 'accounts' user_id %}">{% translate "Account details" %}</a></li>
 									<li><hr class="dropdown-divider"></li>
-									<li><a class="dropdown-item" href="{% url 'logout' %}">Sign out</a></li>
+									<li><a class="dropdown-item" href="{% url 'logout' %}">{% translate "Sign out" %}</a></li>
 								</ul>
 							</li>
 

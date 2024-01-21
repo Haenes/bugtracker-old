@@ -1,7 +1,8 @@
 {% extends "base.html" %}
+{% load i18n %}
 {% load static %}
 
-{% block title %}Registration{% endblock %}
+{% block title %} {% translate "Registration" %} {% endblock %}
 {% block navbar %}{% endblock %}
 
 {% block main %}
@@ -9,7 +10,7 @@
 			<form method="post" class="form-register m-auto">
 				{% csrf_token %}
 
-				<h3 class="h3 mb-4 fw-normal">Registration</h3>
+				<h3 class="h3 mb-4 fw-normal">{% translate "Registration" %}</h3>
 
 				<div class="row justify-content-center flex-lg-wrap">
 
@@ -18,14 +19,16 @@
 						{% if field.name == "password1" %}
 							<div class="col-5">
 
-								<label class="form-label" for="{{ field.name }}">Password</label>
+								<label class="form-label" for="{{ field.name }}">{% translate "Password" %}</label>
 								<p data-bs-toggle="popover" data-bs-placement="top" data-bs-custom-class="custom-popover"
-								   data-bs-html="true" data-bs-content="Your password must have:          <br>
-																		1) a 8 - 32 characters.           <br>
-																		2) at least one uppercase letter. <br>
-																		3) at least one lowercase letter. <br>
-																		4) at least one digit.            <br>
-																		5) at least one special character.">
+								   data-bs-html="true" 
+								   data-bs-content={% blocktranslate %}
+								   "Your password must have:         <br>
+								   1) a 8 - 32 characters.           <br>
+								   2) at least one uppercase and lowercase letters. <br>
+								   3) at least one digit.            <br>
+								   4) at least one special character.">
+							   {% endblocktranslate %}
 			
 									{{ field }}
 								</p>
@@ -55,7 +58,7 @@
 				</div>
 
 				<div class="col-12 mt-4">
-					<button class="btn btn-primary" type="submit">Register</button>
+					<button class="btn btn-primary" type="submit">{% translate "Register" %}</button>
 				</div>
 			</form>
 

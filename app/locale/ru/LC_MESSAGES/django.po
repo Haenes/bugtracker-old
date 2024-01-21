@@ -1,0 +1,592 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-21 19:25+1000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
+"(n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+#: bugtracker/forms.py:48
+msgid "First name"
+msgstr "Имя"
+
+#: bugtracker/forms.py:57
+msgid "Last name"
+msgstr "Фамилия"
+
+#: bugtracker/forms.py:66 bugtracker/forms.py:186
+msgid "Username"
+msgstr "Логин"
+
+#: bugtracker/forms.py:75 bugtracker/forms.py:440
+msgid "Email"
+msgstr "Электронная почта"
+
+#: bugtracker/forms.py:83 bugtracker/forms.py:197
+#: templates/registration/register.html:22
+msgid "Password"
+msgstr "Пароль"
+
+#: bugtracker/forms.py:92
+msgid "Password confirmation"
+msgstr "Подтверждение пароля"
+
+#: bugtracker/forms.py:105 bugtracker/forms.py:228
+msgid "First name must have only letters"
+msgstr "Имя должно содержать только буквы"
+
+#: bugtracker/forms.py:114 bugtracker/forms.py:239
+msgid "Last name must have only letters"
+msgstr "Фамилия должна содержать только буквы"
+
+#: bugtracker/forms.py:123
+msgid "Username must have only letters"
+msgstr "Логин должен содержать только буквы"
+
+#: bugtracker/forms.py:125
+msgid "That username already exists"
+msgstr "Этот логин уже занят"
+
+#: bugtracker/forms.py:134
+msgid "That email already exists"
+msgstr "Эта электронная почта уже занята"
+
+#: bugtracker/forms.py:143 bugtracker/forms.py:270
+msgid "The password doesn't meet the conditions"
+msgstr "Пароль не соответствует условиям"
+
+#: bugtracker/forms.py:154 bugtracker/forms.py:278
+msgid "Passwords don't match"
+msgstr "Пароли не совпадают"
+
+#: bugtracker/forms.py:179
+msgid "username"
+msgstr "логин"
+
+#: bugtracker/forms.py:190
+msgid "password"
+msgstr "пароль"
+
+#: bugtracker/forms.py:226
+msgid "First name must contain at least 2 letters"
+msgstr "Поле имени должно содержать не менее 2 букв"
+
+#: bugtracker/forms.py:237
+msgid "Last name must contain at least 2 letters"
+msgstr "Поле фамилии должно содержать не менее 2 букв"
+
+#: bugtracker/forms.py:248 bugtracker/forms.py:450
+msgid "New password"
+msgstr "Новый пароль"
+
+#: bugtracker/forms.py:255 bugtracker/forms.py:460
+msgid "New password confirmation"
+msgstr "Подтверждение пароля"
+
+#: bugtracker/forms.py:298 bugtracker/forms.py:335
+msgid "name"
+msgstr "Название"
+
+#: bugtracker/forms.py:299 bugtracker/forms.py:336
+msgid "key"
+msgstr "Ключ"
+
+#: bugtracker/forms.py:313
+msgid "Project name must have only letters"
+msgstr "Название проекта должно содержать только буквы"
+
+#: bugtracker/forms.py:322
+msgid "Key must have only letters"
+msgstr "Ключ должен содержать только буквы"
+
+#: bugtracker/forms.py:337 bugtracker/forms.py:376 bugtracker/forms.py:410
+msgid "type"
+msgstr "тип"
+
+#: bugtracker/forms.py:345 templates/base/modals/create-project.html:23
+#: templates/project-settings.html:37
+msgid "Favorite"
+msgstr "Избранное"
+
+#: bugtracker/forms.py:354
+msgid "That project already exists"
+msgstr "Этот проект уже существует"
+
+#: bugtracker/forms.py:364
+msgid "Project with that key already exists"
+msgstr "Проект с этим ключом уже существует"
+
+#: bugtracker/forms.py:377 bugtracker/forms.py:411
+msgid "priority"
+msgstr "приоритет"
+
+#: bugtracker/forms.py:378 bugtracker/forms.py:412
+msgid "title"
+msgstr "название"
+
+#: bugtracker/forms.py:379 bugtracker/forms.py:413
+msgid "description"
+msgstr "описание"
+
+#: bugtracker/forms.py:396
+msgid "Issue with that title already exists"
+msgstr "Задача с этим названием уже существует"
+
+#: bugtracker/forms.py:409
+msgid "status"
+msgstr "статус"
+
+#: bugtracker/forms.py:433
+msgid "email"
+msgstr "почта"
+
+#: bugtracker/models.py:21
+msgid "Name field must contain at least 3 letters"
+msgstr "Поле названия должно содержать не менее 3 букв"
+
+#: bugtracker/models.py:23
+msgid "Key field must contain at least 3 letters"
+msgstr "Поле ключа должно содержать не менее 3 букв"
+
+#: bugtracker/models.py:40
+msgid "Bug"
+msgstr "Баг"
+
+#: bugtracker/models.py:41
+msgid "Feature"
+msgstr "Фича"
+
+#: bugtracker/models.py:45
+msgid "Lowest"
+msgstr "Низший"
+
+#: bugtracker/models.py:46
+msgid "Low"
+msgstr "Низкий"
+
+#: bugtracker/models.py:47
+msgid "Medium"
+msgstr "Средний"
+
+#: bugtracker/models.py:48
+msgid "High"
+msgstr "Высокий"
+
+#: bugtracker/models.py:49
+msgid "Highest"
+msgstr "Высочайший"
+
+#: bugtracker/models.py:53
+msgid "To do"
+msgstr "Сделать"
+
+#: bugtracker/models.py:54
+msgid "In progress"
+msgstr "В процессе"
+
+#: bugtracker/models.py:55
+msgid "Done"
+msgstr "Сделано"
+
+#: bugtracker/views.py:53
+msgid "Project created!"
+msgstr "Проект создан!"
+
+#: bugtracker/views.py:120
+msgid "Issue created!"
+msgstr "Задача создана!"
+
+#: bugtracker/views.py:252
+msgid "Your password was successfully updated!"
+msgstr "Ваш пароль был успешно обновлён!"
+
+#: bugtracker/views.py:287
+msgid "Please, give a data for search"
+msgstr "Пожалуйста, предоставьте данные для поиска"
+
+#: bugtracker/views.py:290
+msgid "Please give just one word to search"
+msgstr "Пожалуйста, предоставьте только одно слово для поиска"
+
+#: bugtracker/views.py:343
+msgid "Invalid username and/or password"
+msgstr "Неверный логин и/или пароль"
+
+#: bugtracker/views.py:365
+msgid "Activation link has been sent to your email"
+msgstr "Ссылка для активации была отправлена на ваш электронный адрес"
+
+#: bugtracker/views.py:378
+msgid ""
+"Almost done! Check your email to confirm it and complete the registration!"
+msgstr ""
+"Почти готово! Проверьте свою электронную почту, чтобы подтвердить её и "
+"завершить регистрацию!"
+
+#: bugtracker/views.py:399
+msgid "Email is confirmed, you can log in now!"
+msgstr ""
+"Адрес электронной почты подтвержден, вы можете войти в приложение прямо "
+"сейчас!"
+
+#: bugtracker/views.py:403
+msgid "Email confirmation is failed!"
+msgstr "Ошибка с подтверждением почты!"
+
+#: bugtracker/views.py:460
+msgid "Project deleted!"
+msgstr "Проект удалён!"
+
+#: bugtracker/views.py:471
+msgid "Issue deleted!"
+msgstr "Задача удалена!"
+
+#: bugtracker/views.py:482
+msgid "Account deleted!"
+msgstr "Аккаунт удалён!"
+
+#: templates/accounts.html:5 templates/accounts.html:13
+#: templates/base/base.html:82
+msgid "Account details"
+msgstr "Данные аккаунта"
+
+#: templates/accounts.html:36 templates/base/modals/change-password.html:8
+#: templates/base/modals/change-password.html:42
+msgid "Change password"
+msgstr "Изменить пароль"
+
+#: templates/accounts.html:45
+msgid "Delete account"
+msgstr "Удалить аккаунт"
+
+#: templates/accounts.html:50
+msgid "Update"
+msgstr "Обновить"
+
+#: templates/base/base.html:43
+msgid "Search"
+msgstr "Поиск"
+
+#: templates/base/base.html:52
+msgid "Toggle color mode"
+msgstr "Изменить цветовую гамму"
+
+#: templates/base/base.html:60
+msgid "Light"
+msgstr "Светлая"
+
+#: templates/base/base.html:64
+msgid "Dark"
+msgstr "Тёмная"
+
+#: templates/base/base.html:68
+msgid "Auto"
+msgstr "Авто"
+
+#: templates/base/base.html:75
+msgid "User"
+msgstr "Пользователь"
+
+#: templates/base/base.html:84
+msgid "Sign out"
+msgstr "Выйти"
+
+#: templates/base/breadcrumb.html:9 templates/projects.html:4
+#: templates/projects.html:16
+msgid "Projects"
+msgstr "Проекты"
+
+#: templates/base/modals/change-password.html:22
+msgid ""
+"\n"
+"\t\t\t\t\t\t\t\t\t\t\"Your password must have:         <br>\n"
+"\t\t\t\t\t\t\t\t\t\t1) a 8 - 32 characters.           <br>\n"
+"\t\t\t\t\t\t\t\t\t\t2) at least one uppercase and lowercase letters. <br>\n"
+"\t\t\t\t\t\t\t\t\t\t3) at least one digit.            <br>\n"
+"\t\t\t\t\t\t\t\t\t\t4) at least one special character.\">\n"
+"\t\t\t\t\t\t\t\t\t"
+msgstr ""
+"\n"
+"\t\t\t\t\t\t\t\t\t\t\"Пароль должен иметь:         <br>\n"
+"\t\t\t\t\t\t\t\t\t\t1) 8 - 32 символа в длину.     <br>\n"
+"\t\t\t\t\t\t\t\t\t\t2) хотя бы одну большую и маленькую буквы. <br>\n"
+"\t\t\t\t\t\t\t\t\t\t3) хотя бы одно число.            <br>\n"
+"\t\t\t\t\t\t\t\t\t\t4) хотя бы один специальный символ.\">\n"
+"\t\t\t\t\t\t\t\t\t"
+
+#: templates/base/modals/create-issue.html:9
+msgid "Create issue"
+msgstr "Создать задачу"
+
+#: templates/base/modals/create-issue.html:44
+#: templates/base/modals/create-project.html:37
+msgid "Create"
+msgstr "Создать"
+
+#: templates/base/modals/create-project.html:9
+msgid "Create project"
+msgstr "Создать проект"
+
+#: templates/base/modals/delete-account.html:9
+#: templates/base/modals/delete-issue.html:9
+#: templates/base/modals/delete-project.html:9
+msgid "Attention"
+msgstr "Внимание"
+
+#: templates/base/modals/delete-account.html:15
+msgid ""
+"Please note, if you delete your account, you will lose access to the "
+"application."
+msgstr ""
+"Пожалуйста, обратите внимание, что если вы удалите свой аккаунт, вы "
+"потеряете доступ к приложению"
+
+#: templates/base/modals/delete-account.html:17
+msgid "Do you really want to delete account?"
+msgstr "Вы действительно хотите удалить аккаунт?"
+
+#: templates/base/modals/delete-account.html:22
+#: templates/base/modals/delete-issue.html:22
+#: templates/base/modals/delete-project.html:22
+msgid "Delete"
+msgstr "Удалить"
+
+#: templates/base/modals/delete-issue.html:15
+msgid "Please note, if you delete issue you will not be able to restore it."
+msgstr ""
+"Пожалуйста, обратите внимание, что если вы удалите задачу, вы не сможете ее "
+"восстановить."
+
+#: templates/base/modals/delete-issue.html:17
+msgid "Do you really want to delete issue?"
+msgstr "Вы действительно хотите удалить задачу?"
+
+#: templates/base/modals/delete-project.html:15
+msgid ""
+"Please note, if you delete project you will lose all issues that relate with "
+"it."
+msgstr ""
+"Пожалуйста, обратите внимание, что если вы удалите проект, вы потеряете все "
+"задачи, с ним связанные."
+
+#: templates/base/modals/delete-project.html:17
+msgid "Do you really want to delete project?"
+msgstr "Вы действительно хотите удалить проект?"
+
+#: templates/base/sidebar.html:14 templates/boards.html:5
+msgid "Board"
+msgstr "Доска"
+
+#: templates/base/sidebar.html:22 templates/project-settings.html:5
+#: templates/project-settings.html:16
+msgid "Project settings"
+msgstr "Настройки проекта"
+
+#: templates/boards.html:18
+msgid "Create Issue"
+msgstr "Создать задачу"
+
+#: templates/boards.html:43
+msgid "board"
+msgstr "доска"
+
+#: templates/boards.html:70
+msgid "TO DO"
+msgstr "СДЕЛАТЬ"
+
+#: templates/boards.html:97
+msgid "IN PROGRESS"
+msgstr "В ПРОЦЕССЕ"
+
+#: templates/boards.html:123
+msgid "DONE"
+msgstr "СДЕЛАНО"
+
+#: templates/boards.html:188
+msgid "Status"
+msgstr "Статус"
+
+#: templates/boards.html:189
+msgid "Priority"
+msgstr "Приоритет"
+
+#: templates/boards.html:190 templates/projects.html:37
+msgid "Type"
+msgstr "Тип"
+
+#: templates/boards.html:191
+msgid "Generated"
+msgstr "Создана"
+
+#: templates/boards.html:192
+msgid "Updated"
+msgstr "Обновлёна"
+
+#: templates/boards.html:198
+msgid "Configure"
+msgstr "Изменить"
+
+#: templates/issue-details.html:5 templates/issue-details.html:16
+msgid "Issue details"
+msgstr "Подробности задачи"
+
+#: templates/issue-details.html:29 templates/project-settings.html:26
+msgid "Details"
+msgstr "Подробности"
+
+#: templates/issue-details.html:63
+msgid "Delete issue"
+msgstr "Удалить задачу"
+
+#: templates/issue-details.html:68 templates/project-settings.html:66
+msgid "Save"
+msgstr "Сохранить"
+
+#: templates/login.html:5
+msgid "Login"
+msgstr "Вход"
+
+#: templates/login.html:18
+msgid "Log in"
+msgstr "Вход"
+
+#: templates/login.html:24
+msgid "Remember me"
+msgstr "Запомнить меня"
+
+#: templates/login.html:36
+msgid "Sign in"
+msgstr "Войти в аккаунт"
+
+#: templates/login.html:39 templates/password/password-reset.html:13
+msgid "Can't log in?"
+msgstr "Не можете войти?"
+
+#: templates/login.html:40
+msgid "Create an account"
+msgstr "Создать аккаунт"
+
+#: templates/password/password-reset-confirm.html:5
+#: templates/password/password-reset-confirm.html:16
+#: templates/password/password-reset-confirm.html:39
+msgid "Set a new password"
+msgstr "Установить новый пароль"
+
+#: templates/password/password-reset-confirm.html:22
+msgid ""
+"\n"
+"\t\t\t\t\t\t\t\"Your password must have:         <br>\n"
+"\t\t\t\t\t\t\t1) a 8 - 32 characters.           <br>\n"
+"\t\t\t\t\t\t\t2) at least one uppercase and lowercase letters. <br>\n"
+"\t\t\t\t\t\t\t3) at least one digit.            <br>\n"
+"\t\t\t\t\t\t\t4) at least one special character.\">\n"
+"\t\t\t\t\t\t"
+msgstr ""
+"\n"
+"\t\t\t\t\t\t\t\t\t\t\"Пароль должен иметь:         <br>\n"
+"\t\t\t\t\t\t\t\t\t\t1) 8 - 32 символа в длину.     <br>\n"
+"\t\t\t\t\t\t\t\t\t\t2) хотя бы одну большую и маленькую буквы. <br>\n"
+"\t\t\t\t\t\t\t\t\t\t3) хотя бы одно число.            <br>\n"
+"\t\t\t\t\t\t\t\t\t\t4) хотя бы один специальный символ.\">\n"
+"\t\t\t\t\t\t\t\t\t"
+
+#: templates/password/password-reset-done.html:5
+msgid "Email sent"
+msgstr "Электронное письмо отправлено"
+
+#: templates/password/password-reset-done.html:10
+msgid "Check your inbox!"
+msgstr "Проверьте вашу электронную почту!"
+
+#: templates/password/password-reset-done.html:11
+msgid ""
+"We've emailed you instructions for setting your password. You should receive "
+"the email shortly!"
+msgstr ""
+"Мы отправили вам на электронную почту инструкцию по установке пароля. Вы "
+"должны получить её в ближайшее время!"
+
+#: templates/password/password-reset-done.html:12
+msgid "Back to log in page"
+msgstr "Вернуться на страницу входа"
+
+#: templates/password/password-reset.html:5
+msgid "Password reset"
+msgstr "Сброс пароля"
+
+#: templates/password/password-reset.html:14
+msgid "We'll send a recovery link to"
+msgstr "Мы вышлем ссылку по адресу"
+
+#: templates/password/password-reset.html:23
+msgid "Send"
+msgstr "Отправить"
+
+#: templates/password/password-reset.html:26
+msgid "Return to log in"
+msgstr "Вернуться на страницу входа"
+
+#: templates/project-settings.html:61
+msgid "Delete project"
+msgstr "Удалить проект"
+
+#: templates/projects.html:25
+msgid "Create new project"
+msgstr "Создать новый проект"
+
+#: templates/projects.html:35
+msgid "Name"
+msgstr "Название"
+
+#: templates/projects.html:36
+msgid "Key"
+msgstr "Ключ"
+
+#: templates/projects.html:38
+msgid "Created"
+msgstr "Создан"
+
+#: templates/registration/register.html:5
+#: templates/registration/register.html:13
+msgid "Registration"
+msgstr "Регистрация"
+
+#: templates/registration/register.html:25
+msgid ""
+"\n"
+"\t\t\t\t\t\t\t\t   \"Your password must have:         <br>\n"
+"\t\t\t\t\t\t\t\t   1) a 8 - 32 characters.           <br>\n"
+"\t\t\t\t\t\t\t\t   2) at least one uppercase and lowercase letters. <br>\n"
+"\t\t\t\t\t\t\t\t   3) at least one digit.            <br>\n"
+"\t\t\t\t\t\t\t\t   4) at least one special character.\">\n"
+"\t\t\t\t\t\t\t   "
+msgstr ""
+"\n"
+"\t\t\t\t\t\t\t\t\t\t\"Пароль должен иметь:         <br>\n"
+"\t\t\t\t\t\t\t\t\t\t1) 8 - 32 символа в длину.     <br>\n"
+"\t\t\t\t\t\t\t\t\t\t2) хотя бы одну большую и маленькую буквы. <br>\n"
+"\t\t\t\t\t\t\t\t\t\t3) хотя бы одно число.            <br>\n"
+"\t\t\t\t\t\t\t\t\t\t4) хотя бы один специальный символ.\">\n"
+"\t\t\t\t\t\t\t\t\t"
+
+#: templates/registration/register.html:61
+msgid "Register"
+msgstr "Зарегистрироваться"
+
+#: templates/search-results.html:3
+msgid "Search results"
+msgstr "Результаты поиска"

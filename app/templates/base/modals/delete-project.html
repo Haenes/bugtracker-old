@@ -1,23 +1,25 @@
+{% load i18n %}
+
 <div class="modal fade" id="DeleteProject" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1"
 	aria-labelledby="DeleteProject" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			
 			<div class="modal-header">
-				<h1 class="modal-title fs-5" id="DeleteProject">Attention</h1>
+				<h1 class="modal-title fs-5" id="DeleteProject">{% translate "Attention" %}</h1>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 
 			<div class="modal-body">
 				<p class="text-center">
-					Please note, if you delete project you will lose all issues that relate with it.
+					{% translate "Please note, if you delete project you will lose all issues that relate with it." %}
 				</p>
-				<p class="text-center">Do you really want to delete project?</p>
+				<p class="text-center">{% translate "Do you really want to delete project?" %}</p>
 			</div>
 
 			<div class="modal-footer">
 				<a href="{% url 'delete-project' project.id %}"><button type="button"
-						class="btn btn-danger">Delete</button></a>
+						class="btn btn-danger">{% translate "Delete" %}</button></a>
 			</div>
 		</div>
 	</div>

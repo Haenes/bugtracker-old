@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinLengthValidator
 from django.utils import timezone
+from django.utils.translation import gettext_lazy as _
 
 
 # Make email field in User modal unique (for UserForm)
@@ -12,14 +13,14 @@ class Project(models.Model):
 
 
     PROJECT_TYPE = [
-        ("Fullstack software", "Fullstack software"),
-        ("Front-end software", "Front-end software"),
-        ("Back-end software", "Back-end software"),
+        ("Fullstack", "Fullstack"),
+        ("Front-end", "Front-end"),
+        ("Back-end", "Back-end"),
     ]
 
-    name = models.CharField(max_length=255, unique=True, validators=[MinLengthValidator(3, "Name field must contain at least 3 letters")])
+    name = models.CharField(max_length=255, unique=True, validators=[MinLengthValidator(3, _("Name field must contain at least 3 letters"))])
     description = models.CharField(max_length=255, default="")
-    key = models.CharField(max_length=10, unique=True, validators=[MinLengthValidator(3, "Key field must contain at least 3 letters")])
+    key = models.CharField(max_length=10, unique=True, validators=[MinLengthValidator(3, _("Key field must contain at least 3 letters"))])
     type = models.CharField(max_length=18, choices=PROJECT_TYPE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     starred = models.BooleanField(verbose_name="favorite project", default=False)
@@ -36,22 +37,22 @@ class Issue(models.Model):
 
 
     ISSUE_TYPE = [
-        ("Bug", "Bug"),
-        ("Feature", "Feature"),
+        ("Bug", _("Bug")),
+        ("Feature", _("Feature")),
     ]
 
     ISSUE_PRIORITY = [
-        ("Lowest", "Lowest"),
-        ("Low", "Low"),
-        ("Medium", "Medium"),
-        ("High", "High"),
-        ("Highest", "Highest"),
+        ("Lowest", _("Lowest")),
+        ("Low", _("Low")),
+        ("Medium", _("Medium")),
+        ("High", _("High")),
+        ("Highest", _("Highest")),
     ]
 
     ISSUE_STATUS = [
-        ("To do", "To do"),
-        ("In progress", "In progress"),
-        ("Done", "Done"),
+        ("To do", _("To do")),
+        ("In progress", _("In progress")),
+        ("Done", _("Done")),
     ]
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
