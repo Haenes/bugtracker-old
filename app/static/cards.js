@@ -4,13 +4,13 @@ var url;     // Get url for fetch API
 
 function allowDrop(ev) {
 	ev.preventDefault();
-}
+};
 
 function drag(ev) {
 	ev.dataTransfer.setData("text", ev.target.id);
 	source = ev.target.id;                                   // Issue status (To do, In Progress, Done) ID
 	url = ev.target.getAttribute("data")
-}
+};
 
 function drop(ev) {
 	ev.preventDefault();
@@ -48,4 +48,4 @@ function drop(ev) {
 	else {
 		console.log("Error");
 	}
-}
+};
