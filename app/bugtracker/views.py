@@ -156,7 +156,9 @@ def boards(request, project_id):
             issue.status = target
             issue.save()
 
-            return JsonResponse({"id": issue.id, "source": issue.status})
+            status = _("Status:")
+
+            return JsonResponse({"id": issue.id, "status": status, "source": _(issue.status)})
            
     return render(request, "boards.html", context)
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-21 19:25+1000\n"
+"POT-Creation-Date: 2024-01-22 16:00+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -202,60 +202,64 @@ msgstr "В процессе"
 msgid "Done"
 msgstr "Сделано"
 
-#: bugtracker/views.py:53
+#: bugtracker/views.py:68
 msgid "Project created!"
 msgstr "Проект создан!"
 
-#: bugtracker/views.py:120
+#: bugtracker/views.py:135
 msgid "Issue created!"
 msgstr "Задача создана!"
 
-#: bugtracker/views.py:252
+#: bugtracker/views.py:159
+msgid "Status:"
+msgstr "Статус:"
+
+#: bugtracker/views.py:269
 msgid "Your password was successfully updated!"
 msgstr "Ваш пароль был успешно обновлён!"
 
-#: bugtracker/views.py:287
+#: bugtracker/views.py:304
 msgid "Please, give a data for search"
 msgstr "Пожалуйста, предоставьте данные для поиска"
 
-#: bugtracker/views.py:290
+#: bugtracker/views.py:307
 msgid "Please give just one word to search"
 msgstr "Пожалуйста, предоставьте только одно слово для поиска"
 
-#: bugtracker/views.py:343
+#: bugtracker/views.py:360
 msgid "Invalid username and/or password"
 msgstr "Неверный логин и/или пароль"
 
-#: bugtracker/views.py:365
+#: bugtracker/views.py:382
 msgid "Activation link has been sent to your email"
 msgstr "Ссылка для активации была отправлена на ваш электронный адрес"
 
-#: bugtracker/views.py:378
+#: bugtracker/views.py:395
 msgid ""
 "Almost done! Check your email to confirm it and complete the registration!"
 msgstr ""
 "Почти готово! Проверьте свою электронную почту, чтобы подтвердить её и "
 "завершить регистрацию!"
 
-#: bugtracker/views.py:399
+#: bugtracker/views.py:416
 msgid "Email is confirmed, you can log in now!"
 msgstr ""
 "Адрес электронной почты подтвержден, вы можете войти в приложение прямо "
 "сейчас!"
 
-#: bugtracker/views.py:403
+#: bugtracker/views.py:420
 msgid "Email confirmation is failed!"
 msgstr "Ошибка с подтверждением почты!"
 
-#: bugtracker/views.py:460
+#: bugtracker/views.py:477
 msgid "Project deleted!"
 msgstr "Проект удалён!"
 
-#: bugtracker/views.py:471
+#: bugtracker/views.py:488
 msgid "Issue deleted!"
 msgstr "Задача удалена!"
 
-#: bugtracker/views.py:482
+#: bugtracker/views.py:499
 msgid "Account deleted!"
 msgstr "Аккаунт удалён!"
 

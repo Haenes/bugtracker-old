@@ -42,7 +42,7 @@ function drop(ev) {
 		})
 		.then(data => {                                                                 // Work with received data from views.py (boards view)
 			const issue_modal_status = document.getElementById("status" + data["id"])   // Take an issue modal status text and change it to new (where now card is)
-			issue_modal_status.innerHTML = "Status:" + " " + data["source"];
+			issue_modal_status.innerHTML = data["status"] + " " + data["source"];
 		})
 	}
 	else {
