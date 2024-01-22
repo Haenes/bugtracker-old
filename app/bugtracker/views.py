@@ -25,6 +25,21 @@ from .models import Issue, Project
 from .forms import *
 
 
+common_timezones = {
+    "UTC": "UTC",
+    "Moscow": "Europe/Moscow",
+    "Vladivostok": "Asia/Vladivostok",
+}
+
+
+def set_timezone(request):
+    if request.method == "POST":
+        request.session["django_timezone"] = request.POST["timezone"]
+        return redirect("/")
+    else:
+        return render(request, "template.html", {"timezones": common_timezones})
+
+
 @login_required(login_url="/login/")
 def projects(request):
 

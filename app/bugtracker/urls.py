@@ -5,6 +5,7 @@ from . import views
 
 urlpatterns = [
     path("", views.projects, name="projects"),
+    path("template/", views.set_timezone, name="set_timezone"),
     path("boards/<int:project_id>/", views.boards, name="boards"),
     path("boards/<int:project_id>/project-settings/", views.project_settings, name="project-settings"),
     path("boards/<int:project_id>/<int:issue_id>/issue-details/", views.issue_details, name="issue-details"),
