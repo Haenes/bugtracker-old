@@ -147,10 +147,8 @@ def boards(request, project_id):
 
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         data = json.load(request)
-        target = data["target"] 
-    
-        issue_id = data["data"].removeprefix("card")      
-        issue = Issue.objects.get(id=issue_id)
+        target = data["target"]        
+        issue = Issue.objects.get(id=data["issue_id"])
 
         if issue.status != target:
             issue.status = target
