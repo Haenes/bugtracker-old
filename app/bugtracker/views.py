@@ -383,12 +383,18 @@ def register(request):
             token = default_token_generator.make_token(user)
             uid = urlsafe_base64_encode(force_bytes(user.pk))
 
-            message = render_to_string("register-activate.html", { 
-                "user": user, 
-                "domain": current_site.domain, 
-                "uid": uid, 
-                "token":token
-            }) 
+            if request.LANGUAGE_CODE == "ru":
+                page = "register-activate-ru.html"
+            else:
+                page = "register-activate-en.html"
+
+            message = render_to_string(page, { 
+            "user": user, 
+            "domain": current_site.domain, 
+            "uid": uid, 
+            "token":token
+            })
+
             to_email = register_form.cleaned_data.get("email") 
             email = EmailMessage(mail_subject, message, to=[to_email]) 
             email.send() 
