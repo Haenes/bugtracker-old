@@ -13,7 +13,7 @@
 		<h4 class="h4 mb-3 fw-normal">{% translate "Account details" %}</h4>
 		<form method="post">
 			{% csrf_token %}
-			<div class="col-3">
+			<div class="col-sm-3">
 				{% for field in user_form %}
 					<div class="col-8 mb-3">
 						{{ field.label }}				

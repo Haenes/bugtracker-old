@@ -9,7 +9,7 @@
 <div class="ms-2 mt-3">
     <h4 class="h4 ms-2 fw-normal">{% translate "Settings" %}</h4>
 
-    <div class="vstack col-2 gap-3">
+    <div class="vstack col-sm-4 gap-3">
 
         <div class="p-2 mt-3">
 
@@ -37,13 +37,13 @@
             </div>
         </div>
 
-        <div class="p-2">
+        <div class="p-2 col-6">
             {% get_current_timezone as TIME_ZONE %}
 
             <form action="{% url 'settings' %}" method="POST">
                 {% csrf_token %}
                 <label for="timezone">{% translate "Time zone:" %}</label>
-                <select class="form-select col-4" name="timezone">
+                <select class="form-select" name="timezone">
                     {% for city, tz in timezones.items %}
                         {% if tz == TIME_ZONE %}
                             <option value="{{ tz }}" selected>{{ city }}</option>
@@ -58,12 +58,12 @@
             </form>
         </div>
 
-        <div class="p-2">
+        <div class="p-2 col-6">
 
             <form action="{% url 'set_language' %}" method="post">
                 {% csrf_token %}
                 <label for="language">{% translate "Language:" %}</label>
-                <select class="form-select col-4" name="language">
+                <select class="form-select" name="language">
                     {% get_current_language as LANGUAGE_CODE %}
                     {% get_available_languages as LANGUAGES %}
                     {% get_language_info_list for LANGUAGES as languages %}
