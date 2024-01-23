@@ -24,20 +24,24 @@ from django.utils.translation import gettext as _
 from .models import Issue, Project
 from .forms import *
 
+@login_required(login_url="/login/")
+def settings(request):
+    user = request.user
 
-common_timezones = {
-    "UTC": "UTC",
-    "Moscow": "Europe/Moscow",
-    "Vladivostok": "Asia/Vladivostok",
-}
+    common_timezones = {
+        "UTC": "UTC",
+        _("Moscow"): "Europe/Moscow",
+        _("Vladivostok"): "Asia/Vladivostok",
+    }
+    context = {"user_id": user.id, "timezones": common_timezones}
 
-
-def set_timezone(request):
     if request.method == "POST":
-        request.session["django_timezone"] = request.POST["timezone"]
-        return redirect("/")
+        if "timezone" in request.POST:
+            request.session["django_timezone"] = request.POST["timezone"]
+            return redirect("settings")
+
     else:
-        return render(request, "template.html", {"timezones": common_timezones})
+        return render(request, "settings.html", context=context)
 
 
 @login_required(login_url="/login/")

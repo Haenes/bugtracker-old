@@ -134,7 +134,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGES = [
+    ("en", "English"),
+    ("ru", "Russian"),
+]
 
 USE_I18N = True
 
