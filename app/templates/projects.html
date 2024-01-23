@@ -11,91 +11,91 @@
 {% block main %}
 	<div class="container-fluid">
 
-		<div>
-			<div class="ms-auto mt-3">
-				<h4>{% translate "Projects" %}</h4>
-			</div>
+		<div class="ms-auto mt-3">
+			<h4>{% translate "Projects" %}</h4>
+		</div>
 		
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
-			{% include "messages.html" %}
+		{% include "messages.html" %}
 
 <!-- TRIGER CREATE PROJECT MODAL -->
-			<button type="button" class="btn btn-outline-primary rounded-3 mt-2" data-bs-toggle="modal"
-				data-bs-target="#staticBackdropProject">
-				{% translate "Create new project" %}
-			</button>
+		<button type="button" class="btn btn-outline-primary rounded-3 mt-2" data-bs-toggle="modal"
+			data-bs-target="#staticBackdropProject">
+			{% translate "Create new project" %}
+		</button>
 
 <!-- TABLE -->
-			<div class="table-responsive mt-3 text-center w-auto">
-				<table class="table">
-					<thead>
+		<div class="table-responsive mt-2 text-center w-auto">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th><i class="bi bi-star-fill" style="font-size: 16px; color:grey"></i></th>
+						<th scope="col">{% translate "Name" %}</th>
+						<th scope="col">{% translate "Key" %}</th>
+						<th scope="col">{% translate "Type" %}</th>
+						<th scope="col">{% translate "Created" %}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for project in page_obj %}
 						<tr>
-							<th scope="col">#</th>
-							<th><i class="bi bi-star-fill" style="font-size: 16px; color:grey"></i></th>
-							<th scope="col">{% translate "Name" %}</th>
-							<th scope="col">{% translate "Key" %}</th>
-							<th scope="col">{% translate "Type" %}</th>
-							<th scope="col">{% translate "Created" %}</th>
-						</tr>
-					</thead>
-					<tbody>
-						{% for project in page_obj %}
-							<tr>
-								<th scope="row">{{ forloop.counter }}</th>
+							<th scope="row">{{ forloop.counter }}</th>
 
-								{% if project.starred %}
-									<td>
-										<button type="button" class="btn star-table">
-											<i id="star{{project.id}}" class="fs-6 bi bi-star-fill" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: gold;"></i>
-										</button>
-									</td>						
-								{% else %}
-									<td>
-										<button type="button" class="btn star-table">
-											<i id="star{{project.id}}" class="fs-6 bi bi-star" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: grey;"></i>
-										</button>
-									</td>
-								{% endif %}
-
+							{% if project.starred %}
 								<td>
-									<a class="link-offset-2 link-primary link-offset-3-hover link-underline 
-										link-underline-opacity-0 link-underline-opacity-75-hover"
-										href="{% url 'boards' project.id %}">{{ project.name }}
-									</a>
-								</td>
-										
-								<td>{{ project.key }}</td>
-								<td>{{ project.type }}</td>
-								<td>{{ project.created }}</td> 
-							</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
-
-<!-- PAGINATION -->
-			<nav aria-label="Page navigation">
-				<ul class="pagination pagination-sm mb-0 justify-content-center">				
-					{% if page_obj.paginator.num_pages == 1 %}
-					{% else %}
-						{% for page_number in page_obj.paginator.page_range %}	
-
-							{% if page_number == page_obj.number %}
-								<li class="page-item active">
-									<a href="?page={{ page_number }}" class="page-link">{{ page_number }}</a>
-								</li>
+									<button type="button" class="btn star-table">
+										<i id="star{{project.id}}" class="fs-6 bi bi-star-fill" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: gold;"></i>
+									</button>
+								</td>						
 							{% else %}
-								<li class="page-item">
-									<a href="?page={{ page_number }}" class="page-link">{{ page_number }}</a>
-								</li>
-							{% endif %}				
+								<td>
+									<button type="button" class="btn star-table">
+										<i id="star{{project.id}}" class="fs-6 bi bi-star" onclick="changeIcon(this)" data="{% url 'projects' %}"  style="color: grey;"></i>
+									</button>
+								</td>
+							{% endif %}
 
-						{% endfor %}
-					{% endif %}
-				</ul>
-			</nav>
+							<td>
+								<a class="link-offset-2 link-primary link-offset-3-hover link-underline 
+									link-underline-opacity-0 link-underline-opacity-75-hover"
+									href="{% url 'boards' project.id %}">{{ project.name }}
+								</a>
+							</td>
+									
+							<td>{{ project.key }}</td>
+							<td>{{ project.type }}</td>
+							<td>{{ project.created }}</td> 
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
 	</div>
+
+<!-- PAGINATION -->
+	<footer class="footer mt-auto">
+		<nav aria-label="Page navigation">
+			<ul class="pagination pagination-sm mb-3 justify-content-center">				
+				{% if page_obj.paginator.num_pages == 1 %}
+				{% else %}
+					{% for page_number in page_obj.paginator.page_range %}	
+
+						{% if page_number == page_obj.number %}
+							<li class="page-item active">
+								<a href="?page={{ page_number }}" class="page-link">{{ page_number }}</a>
+							</li>
+						{% else %}
+							<li class="page-item">
+								<a href="?page={{ page_number }}" class="page-link">{{ page_number }}</a>
+							</li>
+						{% endif %}				
+
+					{% endfor %}
+				{% endif %}
+			</ul>
+		</nav>
+	</footer>
 
 
 <!-- CREATE PROJECT MODAL -->
