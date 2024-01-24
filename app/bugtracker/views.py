@@ -306,8 +306,12 @@ def search(request):
             messages.error(request, _("Please, give a data for search"))
             return redirect(request.META.get("HTTP_REFERER", "/"))
         elif " " in q:
-            messages.error(request, _("Please give just one word to search"))
+            messages.error(request, _("Please, give just one word to search"))
             return redirect(request.META.get("HTTP_REFERER", "/"))
+        elif not validate_string(q):
+            messages.error(request, _("Please, don't use special symbols in search"))
+            return redirect(request.META.get("HTTP_REFERER", "/"))
+
         return redirect("search-results", q)
     
     return redirect(request.META.get("HTTP_REFERER", "/"))
@@ -320,8 +324,8 @@ def search_results(request, q):
     user = request.user
 
     if query is not None:
-        lookups_projects = Q(name__icontains=query) | Q(key__icontains=query) | Q(id__icontains=query)
-        lookups_issues = Q(title__icontains=query) | Q(type__icontains=query) | Q(status__icontains=query) | Q(priority__icontains=query) | Q(id__icontains=query)
+        lookups_projects = Q(id__icontains=query) | Q(name__icontains=query) | Q(key__icontains=query) | Q(type__icontains=query)
+        lookups_issues = Q(id__icontains=query) | Q(title__icontains=query) | Q(description__icontains=query) | Q(type__icontains=query) | Q(priority__icontains=query) | Q(status__icontains=query)
 
         results_projects = Project.objects.filter(lookups_projects).distinct()
         results_issues = Issue.objects.filter(lookups_issues).distinct()

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-23 00:51+0000\n"
+"POT-Creation-Date: 2024-01-24 14:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -210,64 +210,68 @@ msgstr "Москва"
 msgid "Vladivostok"
 msgstr "Владивосток"
 
-#: bugtracker/views.py:71
+#: bugtracker/views.py:72
 msgid "Project created!"
 msgstr "Проект создан!"
 
-#: bugtracker/views.py:138
+#: bugtracker/views.py:139
 msgid "Issue created!"
 msgstr "Задача создана!"
 
-#: bugtracker/views.py:160
+#: bugtracker/views.py:161
 msgid "Status:"
 msgstr "Статус:"
 
-#: bugtracker/views.py:270
+#: bugtracker/views.py:271
 msgid "Your password was successfully updated!"
 msgstr "Ваш пароль был успешно обновлён!"
 
-#: bugtracker/views.py:305
+#: bugtracker/views.py:306
 msgid "Please, give a data for search"
 msgstr "Пожалуйста, предоставьте данные для поиска"
 
-#: bugtracker/views.py:308
-msgid "Please give just one word to search"
+#: bugtracker/views.py:309
+msgid "Please, give just one word to search"
 msgstr "Пожалуйста, предоставьте только одно слово для поиска"
 
-#: bugtracker/views.py:361
+#: bugtracker/views.py:312
+msgid "Please, don't use special symbols in search"
+msgstr "Пожалуйста, не используйте специальные символы при поиске"
+
+#: bugtracker/views.py:366
 msgid "Invalid username and/or password"
 msgstr "Неверный логин и/или пароль"
 
-#: bugtracker/views.py:383
+#: bugtracker/views.py:388
 msgid "Activation link has been sent to your email"
 msgstr "Ссылка для активации была отправлена на ваш электронный адрес"
 
-#: bugtracker/views.py:402
+#: bugtracker/views.py:407
 msgid ""
 "Almost done! Check your email to confirm it and complete the registration!"
 msgstr ""
 "Почти готово! Проверьте свою электронную почту, чтобы подтвердить её и "
 "завершить регистрацию!"
 
-#: bugtracker/views.py:423
+#: bugtracker/views.py:428
 msgid "Email is confirmed, you can log in now!"
 msgstr ""
 "Адрес электронной почты подтвержден, вы можете войти в приложение прямо "
 "сейчас!"
 
-#: bugtracker/views.py:427
+#: bugtracker/views.py:432
 msgid "Email confirmation is failed!"
 msgstr "Ошибка с подтверждением почты!"
 
-#: bugtracker/views.py:484
+#: bugtracker/views.py:489
 msgid "Project deleted!"
 msgstr "Проект удалён!"
 
-#: bugtracker/views.py:495
+#: bugtracker/views.py:500
 msgid "Issue deleted!"
 msgstr "Задача удалена!"
 
-#: bugtracker/views.py:506
+#: bugtracker/views.py:511
 msgid "Account deleted!"
 msgstr "Аккаунт удалён!"
 
@@ -298,7 +302,7 @@ msgid "Sign out"
 msgstr "Выйти"
 
 #: templates/base/breadcrumb.html:9 templates/projects.html:4
-#: templates/projects.html:16
+#: templates/projects.html:15 templates/search-results.html:23
 msgid "Projects"
 msgstr "Проекты"
 
@@ -392,43 +396,43 @@ msgstr "Настройки проекта"
 msgid "Create Issue"
 msgstr "Создать задачу"
 
-#: templates/boards.html:43
+#: templates/boards.html:40
 msgid "board"
 msgstr "доска"
 
-#: templates/boards.html:68
+#: templates/boards.html:64
 msgid "TO DO"
 msgstr "СДЕЛАТЬ"
 
-#: templates/boards.html:94
+#: templates/boards.html:90
 msgid "IN PROGRESS"
 msgstr "В ПРОЦЕССЕ"
 
-#: templates/boards.html:119
+#: templates/boards.html:115
 msgid "DONE"
 msgstr "СДЕЛАНО"
 
-#: templates/boards.html:185
+#: templates/boards.html:181
 msgid "Status"
 msgstr "Статус"
 
-#: templates/boards.html:186
+#: templates/boards.html:182
 msgid "Priority"
 msgstr "Приоритет"
 
-#: templates/boards.html:187 templates/projects.html:37
+#: templates/boards.html:183 templates/projects.html:36
 msgid "Type"
 msgstr "Тип"
 
-#: templates/boards.html:188
+#: templates/boards.html:184
 msgid "Generated"
 msgstr "Создана"
 
-#: templates/boards.html:189
+#: templates/boards.html:185
 msgid "Updated"
 msgstr "Обновлёна"
 
-#: templates/boards.html:195
+#: templates/boards.html:191
 msgid "Configure"
 msgstr "Изменить"
 
@@ -440,11 +444,11 @@ msgstr "Подробности задачи"
 msgid "Details"
 msgstr "Подробности"
 
-#: templates/issue-details.html:63
+#: templates/issue-details.html:62
 msgid "Delete issue"
 msgstr "Удалить задачу"
 
-#: templates/issue-details.html:68 templates/project-settings.html:66
+#: templates/issue-details.html:67 templates/project-settings.html:66
 msgid "Save"
 msgstr "Сохранить"
 
@@ -536,19 +540,19 @@ msgstr "Вернуться на страницу входа"
 msgid "Delete project"
 msgstr "Удалить проект"
 
-#: templates/projects.html:25
+#: templates/projects.html:24
 msgid "Create new project"
 msgstr "Создать новый проект"
 
-#: templates/projects.html:35
+#: templates/projects.html:34
 msgid "Name"
 msgstr "Название"
 
-#: templates/projects.html:36
+#: templates/projects.html:35
 msgid "Key"
 msgstr "Ключ"
 
-#: templates/projects.html:38
+#: templates/projects.html:37
 msgid "Created"
 msgstr "Создан"
 
@@ -583,6 +587,22 @@ msgstr "Зарегистрироваться"
 msgid "Search results"
 msgstr "Результаты поиска"
 
+#: templates/search-results.html:10
+msgid "You were looking for a"
+msgstr "Вы искали"
+
+#: templates/search-results.html:11
+msgid ", unfortunately, the search did not give any results"
+msgstr ", к сожалению, поиск не дал результатов"
+
+#: templates/search-results.html:12
+msgid ", the results are listed below:"
+msgstr ", результаты приведены ниже:"
+
+#: templates/search-results.html:34
+msgid "Issues"
+msgstr "Задачи"
+
 #: templates/settings.html:5
 msgid "App settings"
 msgstr "Настройки приложения"
@@ -611,10 +631,10 @@ msgstr "Авто"
 msgid "Time zone:"
 msgstr "Часовой пояс:"
 
-#: templates/settings.html:56 templates/settings.html:85
+#: templates/settings.html:56 templates/settings.html:84
 msgid "Change"
 msgstr "Изменить"
 
-#: templates/settings.html:66
+#: templates/settings.html:65
 msgid "Language:"
 msgstr "Язык"
