@@ -107,15 +107,11 @@ EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
 
 
 DATABASES = {
-	'default': {
-    	'ENGINE': 'django.db.backends.mysql',
-    	'NAME': 'bugtracker',
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'PORT': os.environ.get('DATABASE_PORT'),
-        'HOST': os.environ.get('DATABASE_HOST'),
-	}
-}
+    'default': {
+      'ENGINE': 'django.db.backends.sqlite3',
+      'NAME': BASE_DIR / 'db.sqlite3',
+    }
+ }
 
 
 AUTH_PASSWORD_VALIDATORS = [
