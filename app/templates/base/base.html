@@ -33,7 +33,7 @@
 <!-- NAVBAR -->
 <!-- LEFT SIDE -->
 	{% block navbar %}
-		<nav class="navbar navbar-expand-md bg-body-tertiary border-bottom">
+		<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
 			<div class="container-fluid">
 
 				<a class="navbar-brand" href="{% url 'projects' %}">BugTracker</a>
@@ -45,18 +45,18 @@
 
 <!-- TRIGER ISSUE MODAL-->
 
-				<div class="collapse navbar-collapse" id="navbarText">
+				<div class="collapse navbar-collapse mb-0" id="navbarText">
 					<ul class="navbar-nav me-auto">
 						{% block issue_modal %}{% endblock %}
 					</ul>
 
 <!-- RIGTH SIDE -->
-				<form action="{% url 'search' %}" class="col-12 col-lg-3 me-3" role="search">
+				<form action="{% url 'search' %}" class="col-5 col-lg-3 me-3  mb-2 mb-lg-0" role="search">
 					<input type="search" class="form-control" name="q"  placeholder={% translate "Search" %} aria-label="Search">
 				</form>
 
-				<div class="d-flex justify-content-center">
-					<ul class="navbar-expand p-0 mb-0 mb-lg-0">
+				<div class="d-flex justify-content-start">
+					<ul class="navbar-expand p-0 mb-0">
 						<ul class="navbar-nav">
 
 							<li class="nav-item m-1 me-3">
@@ -69,9 +69,7 @@
 								<a href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 									<i class="bi bi-person-circle" style="font-size: 20px;color: grey;"></i>
 								</a>
-								<ul class="dropdown-menu text-small shadow"
-									style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate(0px, 34px);"
-									data-popper-placement="bottom-end">
+								<ul class="dropdown-menu dropdown-menu-lg-end dropdown-menu-start text-small shadow">
 
 									<li><a class="dropdown-item" href="{% url 'accounts' user_id %}">{% translate "Account details" %}</a></li>
 									<li><hr class="dropdown-divider"></li>
