@@ -2,13 +2,13 @@
 	{% for message in messages %}
 
 		{% if message.tags == 'error' %}
-			<div class="position-absolute top-25 start-50 translate-middle alert alert-dismissible alert-danger">
+			<div class="position-absolute top-25 start-50 translate-middle alert alert-dismissible alert-danger w-70">
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				{{ message|striptags }}
 			</div>
 
 		{% else %}
-			<div class="position-absolute top-25 start-50 translate-middle alert alert-dismissible alert-success">
+			<div class="position-absolute top-25 start-50 translate-middle alert alert-dismissible alert-success w-70">
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				{{ message }}
 			</div>		

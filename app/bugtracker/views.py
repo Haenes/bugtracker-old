@@ -468,6 +468,7 @@ def password_reset_confirm(request, uidb64, token):
 
         if set_password_form.is_valid():
             set_password_form.save()
+            messages.success(request, _("Your password was successfully updated!"))
             return redirect("login")
 
         for field in set_password_form.errors:

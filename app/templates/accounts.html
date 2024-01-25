@@ -6,10 +6,11 @@
 
 {% block main %}
 
-<!-- SHOWS SUCCESS/ERROR MESSAGES  -->
-	{% include "messages.html" %}
-
 	<div class="ms-3 mt-3">
+
+		<!-- SHOWS SUCCESS/ERROR MESSAGES  -->
+		{% include "messages.html" %}
+
 		<h4 class="h4 mb-3 fw-normal">{% translate "Account details" %}</h4>
 		<form method="post">
 			{% csrf_token %}
