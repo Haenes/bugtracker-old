@@ -2,20 +2,16 @@
 	{% for message in messages %}
 
 		{% if message.tags == 'error' %}
-			<div class="offset-4 justify-content-center">
-				<div class="col-6 align-self-center alert alert-dismissible alert-danger text-center">
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-					{{ message|striptags }}
-				</div>
+			<div class="position-absolute top-25 start-50 translate-middle alert alert-dismissible alert-danger">
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				{{ message|striptags }}
 			</div>
 
 		{% else %}
-			<div class="offset-4 justify-content-center">
-				<div class="col-6 align-self-center alert alert-dismissible alert-success text-center">
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-					{{ message }}
-				</div>
-			</div>			
+			<div class="position-absolute top-25 start-50 translate-middle alert alert-dismissible alert-success">
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				{{ message }}
+			</div>		
 		{% endif %}
 		
 	{% endfor %}
