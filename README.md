@@ -7,7 +7,7 @@ This is the light version of bug tracker, that have:
   5) Ability to create/edit/delete <b>Issues</b> related to one of your projects;
   6) Drag'n'Drop for Issue cards;
   7) Ability to search Projects and Issues via search bar;
-  8) Ability to change color mode.
+  8) Ability to change color mode/language/time zone.
 
 <h2>Installation</h2>
 
