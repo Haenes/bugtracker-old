@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage
 from django.core.paginator import Paginator
@@ -17,6 +18,7 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.views.decorators.cache import cache_control
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.translation import gettext as _
@@ -43,12 +45,12 @@ def settings(request):
     else:
         return render(request, "settings.html", context=context)
 
-
+# @cache_control(private=True)
 @login_required(login_url="/login/")
 def projects(request):
 
     user = request.user
-    projects_list = Project.objects.filter(author_id=user.id)
+    projects_list = cache.get_or_set(f"projects_list_{user.id}", Project.objects.filter(author_id=user.id))
 
     paginator = Paginator(projects_list, 9)
     page_number = request.GET.get("page")
@@ -103,9 +105,9 @@ def projects(request):
 @login_required(login_url="/login/")
 def boards(request, project_id):  
 
-    project = Project.objects.get(id=project_id)
-    all_issues = Issue.objects.filter(project_id=project.id)
     user = request.user
+    project = Project.objects.get(id=project_id)
+    all_issues = cache.get_or_set(f"all_issues_{user.id}", Issue.objects.filter(project_id=project.id))
      
     context = {
         "project": project,
@@ -352,11 +354,11 @@ def login_view(request):
             
             if user:
                 # Set the session expiration time.
-                # If the user hasn't checked the "Remember me" checkbox - the session will last 30 min.
+                # If the user hasn't checked the "Remember me" checkbox - the session will last 60 min.
                 # Otherwise - 1 month.  
 
                 if not request.POST.get("remember", None):
-                    request.session.set_expiry(60 * 30)
+                    request.session.set_expiry(60 * 60)
                 else:
                     request.session.set_expiry(60 * 60 * 24 * 30)
 
