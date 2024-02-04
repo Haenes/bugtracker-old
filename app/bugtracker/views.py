@@ -107,7 +107,7 @@ def boards(request, project_id):
 
     user = request.user
     project = Project.objects.get(id=project_id)
-    all_issues = cache.get_or_set(f"all_issues_{user.id}", Issue.objects.filter(project_id=project.id))
+    all_issues = cache.get_or_set(f"all_issues_{project_id}", Issue.objects.filter(project_id=project.id))
      
     context = {
         "project": project,
