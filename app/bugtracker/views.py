@@ -18,13 +18,13 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.http import JsonResponse
-from django.views.decorators.cache import cache_control
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.translation import gettext as _
 
 from .models import Issue, Project
 from .forms import *
+
 
 @login_required(login_url="/login/")
 def settings(request):
@@ -45,7 +45,7 @@ def settings(request):
     else:
         return render(request, "settings.html", context=context)
 
-# @cache_control(private=True)
+
 @login_required(login_url="/login/")
 def projects(request):
 
