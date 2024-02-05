@@ -18,7 +18,7 @@ from django.utils.translation import gettext_lazy as _
 from bugtracker.models import Project, Issue
 
 
-def validate_string(string):
+def validate_string(string: str):
     """  Returns True if the string consists of only letters  """
 
     pattern = re.compile("^([a-zA-Z]+$)")   
@@ -26,7 +26,7 @@ def validate_string(string):
         return True
 
 
-def validate_password(password):
+def validate_password(password: str):
     """ 
     Returns True if the password is:
     1) a 8+ characters                 {8,};
