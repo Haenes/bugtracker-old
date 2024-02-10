@@ -7,32 +7,42 @@ from bugtracker.models import Project, Issue
 
 class ProjectTestCase(TestCase):
 
-
     def setUp(self):
-        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")      
-        self.project1 = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=self.user.id)
-        self.project2 = Project.objects.create(name="Testing2", description="Test project2", key="TEST2", type="Fullstack software", author_id=self.user.id)
-        self.project3 = Project.objects.create(name="Testing3", description="Test project3", key="TEST3", type="Fullstack software", starred=1, author_id=self.user.id)
-
+        self.user = User.objects.create_user(
+            first_name="Test", last_name="Test", username="testing",
+            email="testemail@gmail.com", password="Password123#"
+            )
+        self.project1 = Project.objects.create(
+            name="Testing1", key="TEST1",
+            type="Fullstack", author_id=self.user.id
+            )
+        self.project2 = Project.objects.create(
+            name="Testing2", description="Test project2", key="TEST2",
+            type="Fullstack", author_id=self.user.id
+            )
+        self.project3 = Project.objects.create(
+            name="Testing3", description="Test project3", key="TEST3",
+            type="Fullstack", starred=1, author_id=self.user.id
+            )
 
     def test_model_validation(self):
         try:
-            project = Project.objects.create(name="Te", description="Description for test project", key="TE", type="Fullstack software", author_id=self.user.id)
+            project = Project.objects.create(
+                name="Te", description="Description for test project",
+                key="TE", type="Fullstack", author_id=self.user.id
+                )
             project.full_clean()
         except ValidationError as e:
-           self.assertEqual(
+            self.assertEqual(
                {
                    "name": ["Name field must contain at least 3 letters"],
                    "key": ["Key field must contain at least 3 letters"]
-                }, 
-                e.message_dict
-            )
-
+                   }, e.message_dict
+                )
 
     def test_description(self):
         self.assertEqual(self.project1.description, "")
         self.assertNotEqual(self.project2.description, "")
-
 
     def test_starred(self):
         self.assertEqual(self.project1.starred, 0)
@@ -41,19 +51,24 @@ class ProjectTestCase(TestCase):
 
 class IssueTestCase(TestCase):
 
-
     def setUp(self):
-        self.user = User.objects.create_user(first_name="Test", last_name="Test", username="testing", email="testemail@gmail.com", password="Password123#")      
-        self.project = Project.objects.create(name="Testing1", key="TEST1", type="Fullstack software", author_id=self.user.id)
+        self.user = User.objects.create_user(
+            first_name="Test", last_name="Test", username="testing",
+            email="testemail@gmail.com", password="Password123#"
+            )
+        self.project = Project.objects.create(
+            name="Testing1", key="TEST1",
+            type="Fullstack", author_id=self.user.id
+            )
         self.issue = Issue.objects.create(
-            project_id = self.project.id,
-            title = "Issue", 
-            description = "Big Socks Just Big Socks", 
-            type = "Feature",
-            priority = "Medium", 
-            status = "To do", 
-            author_id = self.user.id)
-
+            project_id=self.project.id,
+            title="Issue",
+            description="Big Socks Just Big Socks",
+            type="Feature",
+            priority="Medium",
+            status="To do",
+            author_id=self.user.id
+            )
 
     def test_description(self):
         self.assertNotEqual(self.issue.description, "")

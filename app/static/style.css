@@ -12,18 +12,12 @@
 	padding-bottom: 0px;
 }
 
-
 html,
-body {
-	height: 98%;
-	
-}
+body { height: 98%; }
 
 
 /* SIDEBAR HEIGHT (TRY TO PREVENT UNNECESSARY SCROLLBAR) */
-.fill {
-	min-height: 91.2vh;
-}
+.fill { min-height: 91.2vh; }
 
 
 /* LOGIN, PASSWORD RESET AND PASSWORD CONFIRM PAGES */

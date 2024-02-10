@@ -1,14 +1,13 @@
 import os
 from dotenv import load_dotenv
-
-load_dotenv()
-
 from pathlib import Path
 
 
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-tsb092-zzs192^lq$5#eat$elmw=wtl2amg)$js&+rs$4!6#wu'
+SECRET_KEY = 'django-insecure-tsb092-zzs192^lq$5#eat$elmw=wtl2amg)$js&+rs$4!6#'
 
 DEBUG = True
 
@@ -32,7 +31,7 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    ),   
+    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.TokenAuthentication',
     ),
@@ -42,7 +41,8 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'user': '1000/day'
     },
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
 
@@ -106,35 +106,39 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
-SERVER_EMAIL= EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
 
 
 DATABASES = {
-	'default': {
-    	'ENGINE': 'django.db.backends.mysql',
-    	'NAME': 'bugtracker',
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bugtracker',
         'USER': os.environ.get('DATABASE_USER'),
         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
         'PORT': os.environ.get('DATABASE_PORT'),
         'HOST': os.environ.get('DATABASE_HOST'),
-	}
+        }
 }
 
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'NAME': 'django.contrib.auth.password_validation'
+                '.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'NAME': 'django.contrib.auth.password_validation'
+        '.MinimumLengthValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation'
+        '.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'django.contrib.auth.password_validation'
+        '.NumericPasswordValidator',
     },
 ]
 
@@ -148,7 +152,7 @@ USE_I18N = True
 
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
-    ]
+]
 
 USE_TZ = True
 
@@ -159,7 +163,7 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    ]
+]
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
