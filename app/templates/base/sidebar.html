@@ -1,9 +1,15 @@
 {% load i18n %}
+{% load cache %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
 {% block sidebar %}
 
 <!-- SIDEBAR -->
+{% cache None sidebar LANGUAGE_CODE %}
 	<div class="container-fluid">
 		<div class="row flex-nowrap">
+			
 			<div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-body-tertiary border-end">
 				<div class="d-flex flex-column align-items-center align-items-sm-start px-2 pt-2 fill">
 
@@ -28,6 +34,7 @@
 
 <!-- MAIN PART -->
 			<div class="col py-3 mx-1" style="text-align: justify;">
+{% endcache %}
 
 <!-- BREADCRUMB -->
 {% block breadcrumb %}{% endblock %}

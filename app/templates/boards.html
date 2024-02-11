@@ -22,12 +22,12 @@
 	</ul>
 {% endblock issue_modal %}
 
+{% block sidebar %} {% include "sidebar.html" %} {% endblock sidebar %}
+
 {% block main %}
-	{% include "sidebar.html" %}
 
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
 	{% include "messages.html" %}
-
 
 <!-- BREADCRUMB -->
 	{% block breadcrumb %}
@@ -57,8 +57,8 @@
 
 
 <!-- ISSUE CARDS -->
-<!-- TO DO -->
 	<div class="row mt-2">
+<!-- TO DO -->
 		<div class="col-sm-4 mb-3">
 			<div class="card bg-body-tertiary">
 				<div class="card-header" name="To do">{% translate "TO DO" %}</div>

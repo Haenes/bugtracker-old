@@ -5,6 +5,15 @@
 /* NAVBAR DROPDOWNS */
 .text-small { font-size: 85%; }
 
+/* Remove toggle from dropdown "Color mode" button in settings.html */
+.caret-off::before {
+	display: none !important;
+}
+  
+.caret-off::after {
+	display: none !important;
+}
+
 
 /* PROJECTS.HTML */
 .star-table {
