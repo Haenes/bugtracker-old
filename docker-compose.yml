@@ -2,6 +2,7 @@ version: '3'
 
 services:
   web:
+    container_name: web
     build: .
     ports:
       - '8000:8000'
@@ -10,11 +11,12 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
     restart: always
   
   db:
+    container_name: db
     image: mysql:8.0
     ports:
       - '3366:3306'
@@ -22,9 +24,15 @@ services:
       - .env
     volumes:
       - ./deploy/db:/var/lib/mysql
+    healthcheck:
+      test: "mysql -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
+      interval: 5s
+      timeout: 5s
+      retries: 100
     restart: always
   
   redis:
+    container_name: redis
     build: deploy/redis
     command: redis-server redis.conf
     ports:
@@ -34,6 +42,7 @@ services:
     restart: always
   
   nginx: 
+    container_name: nginx
     build: deploy/nginx
     ports:
       - '80:80'

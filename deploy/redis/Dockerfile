@@ -2,4 +2,4 @@
 
 FROM redis:7.2-alpine
 
-COPY redis.conf .
+COPY ./redis.conf .
