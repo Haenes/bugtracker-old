@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    ports:
+      - '8000:8000'
+    volumes:
+      - static:/app/static
+    env_file:
+      - .env
+    depends_on:
+      - db
+      - redis
+    restart: always
+  
+  db:
+    image: mysql:8.0
+    ports:
+      - '3366:3306'
+    env_file: 
+      - .env
+    volumes:
+      - ./deploy/db:/var/lib/mysql
+    restart: always
+  
+  redis:
+    build: deploy/redis
+    command: redis-server redis.conf
+    ports:
+      - '6400:6379'
+    volumes:
+      - ./deploy/redis:/data
+    restart: always
+  
+  nginx: 
+    build: deploy/nginx
+    ports:
+      - '80:80'
+    volumes:
+      - static:/static
+    depends_on:
+      - web
+    restart: always
+
+volumes:
+  static:
+  db:
+  redis:

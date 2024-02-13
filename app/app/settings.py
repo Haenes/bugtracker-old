@@ -7,11 +7,11 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-tsb092-zzs192^lq$5#eat$elmw=wtl2amg)$js&+rs$4!6#'
+SECRET_KEY = os.environ.get('DJANGO_SECRET')
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 INSTALLED_APPS = [
@@ -46,14 +46,13 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+redis_user = os.environ.get("REDIS_USER")
+redis_password = os.environ.get("REDIS_PASSWORD")
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379",
+        'LOCATION': f'redis://{redis_user}:{redis_password}@redis/1',
         "TIMEOUT": 60 * 10,
-        "OPTIONS": {
-            "db": "1",
-        },
     }
 }
 
@@ -114,11 +113,11 @@ EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bugtracker',
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'PORT': os.environ.get('DATABASE_PORT'),
-        'HOST': os.environ.get('DATABASE_HOST'),
+        'NAME': os.environ.get('MYSQL_DATABASE'),
+        'USER': os.environ.get('MYSQL_USER'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
+        'PORT': os.environ.get('MYSQL_PORT'),
+        'HOST': os.environ.get('MYSQL_HOST'),
         }
 }
 
@@ -158,7 +157,7 @@ USE_TZ = True
 
 TIME_ZONE = "UTC"
 
-
+STATIC_ROOT = '/app/static/'
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [

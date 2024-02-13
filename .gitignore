@@ -1,4 +1,6 @@
 **/__pycache__
 /.venv
+*/db
+dump.rdb
 db.sqlite3
 .env
