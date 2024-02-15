@@ -1,58 +1,58 @@
 version: '3'
 
 services:
-  web:
-    container_name: web
-    build: .
-    ports:
-      - '8000:8000'
-    volumes:
-      - static:/app/static
-    env_file:
-      - .env
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: always
+    web:
+        container_name: web
+        build: .
+        ports:
+          - '8000:8000'
+        volumes:
+          - static:/app/static
+        env_file:
+          - .env
+        depends_on:
+          db:
+            condition: service_healthy
+        restart: always
   
-  db:
-    container_name: db
-    image: mysql:8.0
-    ports:
-      - '3366:3306'
-    env_file: 
-      - .env
-    volumes:
-      - ./deploy/db:/var/lib/mysql
-    healthcheck:
-      test: "mysql -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
-      interval: 5s
-      timeout: 5s
-      retries: 100
-    restart: always
-  
-  redis:
-    container_name: redis
-    build: deploy/redis
-    command: redis-server redis.conf
-    ports:
-      - '6400:6379'
-    volumes:
-      - ./deploy/redis:/data
-    restart: always
-  
-  nginx: 
-    container_name: nginx
-    build: deploy/nginx
-    ports:
-      - '80:80'
-    volumes:
-      - static:/static
-    depends_on:
-      - web
-    restart: always
+    db:
+        container_name: db
+        image: mysql:8.0
+        ports:
+          - '3366:3306'
+        env_file: 
+          - .env
+        volumes:
+          - ./deploy/db:/var/lib/mysql
+        healthcheck:
+          test: "mysql -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
+          interval: 5s
+          timeout: 5s
+          retries: 100
+        restart: always
+    
+    redis:
+        container_name: redis
+        build: deploy/redis
+        command: redis-server redis.conf
+        ports:
+          - '6400:6379'
+        volumes:
+          - ./deploy/redis:/data
+        restart: always
+    
+    nginx: 
+        container_name: nginx
+        build: deploy/nginx
+        ports:
+          - '80:80'
+        volumes:
+          - static:/static
+        depends_on:
+          - web
+        restart: always
 
 volumes:
-  static:
-  db:
-  redis:
+    static:
+    db:
+    redis:

@@ -23,10 +23,10 @@ def object_project_save_handler(sender, instance, **kwargs):
 @receiver(post_delete, sender=Issue, dispatch_uid="issue_deleted")
 def object_issue_delete_handler(sender, instance, **kwargs):
     cache.delete(f"all_issues_{instance.project.id}")
-    cache.delete(f"issue_query_{instance.project.id}")
+    cache.delete(f"issue_query_{instance.author_id}")
 
 
 @receiver(post_save, sender=Issue, dispatch_uid="issues_updated")
 def object_issue_save_handler(sender, instance, **kwargs):
     cache.delete(f"all_issues_{instance.project.id}")
-    cache.delete(f"issue_query_{instance.project.id}")
+    cache.delete(f"issue_query_{instance.author_id}")
