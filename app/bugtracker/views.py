@@ -3,9 +3,10 @@ import json
 from dotenv import load_dotenv
 
 from django.contrib import messages
-from django.contrib.auth import (authenticate, login, logout,
-                                 update_session_auth_hash
-                                 )
+from django.contrib.auth import (
+    authenticate, login, logout,
+    update_session_auth_hash
+    )
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
