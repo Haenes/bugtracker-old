@@ -44,12 +44,12 @@
 			{% if project.starred %}
 				<button type="button" class="btn p-0" data-text="add" data-bs-toggle="tooltip" data-bs-placement="bottom"
 					title="Favorite project">
-					<i id="star{{project.id}}" class="fs-5 bi bi-star-fill" onclick="changeIcon(this)" data="{% url 'projects' %}" style="color: gold;"></i>
+					<i id="star{{project_id}}" class="fs-5 bi bi-star-fill" onclick="changeIcon(this)" data="{% url 'projects' %}" style="color: gold;"></i>
 				</button>
 			{% else %}
 				<button type="button" class="btn p-0" data-text="remove" data-bs-toggle="tooltip" data-bs-placement="bottom"
 					title="Favorite project">
-					<i id="star{{project.id}}" class="fs-5 bi bi-star icon-color" onclick="changeIcon(this)" data="{% url 'projects' %}"></i>
+					<i id="star{{project_id}}" class="fs-5 bi bi-star icon-color" onclick="changeIcon(this)" data="{% url 'projects' %}"></i>
 				</button>
 			{% endif %}
 		</div>
@@ -67,7 +67,7 @@
 					{% for issue in issues_list %}
 					
 						{% if issue.status == "To do" %}
-							<div class="card mb-2" draggable="true" id="card{{issue.id}}" data="{% url 'boards' project.id %}">
+							<div class="card mb-2" draggable="true" id="card{{issue.id}}" data="{% url 'boards' project_id %}">
 								<div class="card-body">
 									{{ issue.title }}
 								</div>
@@ -92,7 +92,7 @@
 
 					{% for issue in issues_list %}
 						{% if issue.status == "In progress" %}
-							<div class="card mb-2" draggable="true" id="card{{issue.id}}" data="{% url 'boards' project.id %}">
+							<div class="card mb-2" draggable="true" id="card{{issue.id}}" data="{% url 'boards' project_id %}">
 								<div class="card-body">
 									{{ issue.title }}
 								</div>
@@ -117,7 +117,7 @@
 
 					{% for issue in issues_list %}
 						{% if issue.status == "Done" %}			
-							<div class="card mb-2" draggable="true" id="card{{issue.id}}" data="{% url 'boards' project.id %}">
+							<div class="card mb-2" draggable="true" id="card{{issue.id}}" data="{% url 'boards' project_id %}">
 								<div class="card-body">
 									{{ issue.title }}
 								</div>
@@ -185,7 +185,7 @@
 										<div class="p-2 fw-normal">{% translate "Updated" %}: {{ issue.updated }}</div>
 										<hr>
 										<div class="align-self-end">
-											<a href="{% url 'issue-details' project.id issue.id %}"
+											<a href="{% url 'issue-details' project_id issue.id %}"
 												class="nav-link px-0 text-end text-secondary">
 												<i class="fs-5 bi bi-gear-wide icon-color"></i>
 												<span class="ms-1 d-none d-sm-inline">{% translate "Configure" %}</span>

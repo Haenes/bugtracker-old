@@ -36,7 +36,7 @@ urlpatterns = [
          views.password_reset_confirm, name="password_reset_confirm"
          ),
 
-    path("delete-project/<int:id>/", views.delete_project,
+    path("delete-project/<int:project_id>/", views.delete_project,
          name="delete-project"
          ),
     path("delete-issue/<int:project_id>/<int:issue_id>/", views.delete_issue,

@@ -44,14 +44,14 @@ load_dotenv()
 
 @login_required(login_url="/login/")
 def settings(request):
-    user = request.user
+    user_id = request.user.id
 
     common_timezones = {
         "UTC": "UTC",
         _("Moscow"): "Europe/Moscow",
         _("Vladivostok"): "Asia/Vladivostok",
         }
-    context = {"user_id": user.id, "timezones": common_timezones}
+    context = {"user_id": user_id, "timezones": common_timezones}
 
     if request.method == "POST":
         if "timezone" in request.POST:
@@ -65,17 +65,17 @@ def settings(request):
 @login_required(login_url="/login/")
 def projects(request):
 
-    user = request.user
+    user_id = request.user.id
     projects_list = cache.get_or_set(
-        f"projects_list_{user.id}",
-        Project.objects.filter(author_id=user.id)
+        f"projects_list_{user_id}",
+        Project.objects.filter(author_id=user_id)
         )
 
     paginator = Paginator(projects_list, 9)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context = {"user_id": user.id, "page_obj": page_obj}
+    context = {"user_id": user_id, "page_obj": page_obj}
 
     if request.method == "POST":
         project_modal_form = ProjectModalForm(request.POST or None)
@@ -84,7 +84,7 @@ def projects(request):
             cd = project_modal_form.cleaned_data
 
             Project.objects.create(
-                author_id=user.id,
+                author_id=user_id,
                 name=cd["name"].capitalize(),
                 key=cd["key"].upper(),
                 type=cd["type"],
@@ -100,7 +100,7 @@ def projects(request):
                 messages.error(request, project_modal_form.errors[field])
 
     else:
-        project_modal_form = ProjectModalForm(initial={"author": user.id})
+        project_modal_form = ProjectModalForm(initial={"author": user_id})
         context["project_modal_form"] = project_modal_form
 
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
@@ -124,17 +124,17 @@ def projects(request):
 @login_required(login_url="/login/")
 def boards(request, project_id):
 
-    user = request.user
+    user_id = request.user.id
     project = Project.objects.get(id=project_id)
     all_issues = cache.get_or_set(
         f"all_issues_{project_id}",
-        Issue.objects.filter(project_id=project.id)
+        Issue.objects.filter(project_id=project_id)
         )
 
     context = {
         "project": project,
-        "user_id": user.id,
-        "project_id": project.id,
+        "user_id": user_id,
+        "project_id": project_id,
         "issues_list": all_issues,
         }
 
@@ -147,9 +147,10 @@ def boards(request, project_id):
         # Take the key of the last issue to use it
         # to set the key for the next one
             try:
-                latest_key = (Issue.objects.filter(project_id=project.id)
-                              .latest("key").key
-                              )
+                latest_key = (
+                    Issue.objects.filter(project_id=project_id)
+                    .latest("key").key
+                    )
             except ObjectDoesNotExist:
                 latest_key = 0
 
@@ -161,10 +162,10 @@ def boards(request, project_id):
                 type=cd["type"],
                 priority=cd["priority"],
                 status="To do",
-                author_id=user.id
+                author_id=user_id
                 )
             messages.success(request, _("Issue created!"))
-            return redirect("boards", project.id)
+            return redirect("boards", project_id)
 
         context["issue_modal_form"] = issue_modal_form
 
@@ -174,7 +175,7 @@ def boards(request, project_id):
 
     else:
         issue_modal_form = IssueModalForm(
-            initial={"project": project.id, "author": user.id}
+            initial={"project": project_id, "author": user_id}
             )
         context["issue_modal_form"] = issue_modal_form
 
@@ -199,14 +200,16 @@ def boards(request, project_id):
 @login_required(login_url="/login/")
 def issue_details(request, project_id, issue_id):
 
-    user = request.user
+    user_id = request.user.id
     project = Project.objects.get(id=project_id)
     issue = Issue.objects.get(id=issue_id)
 
     context = {
-        "user_id": user.id,
+        "user_id": user_id,
         "project": project,
-        "issue": issue
+        "project_id": project_id,
+        "issue": issue,
+        "issue_id": issue_id
         }
 
     if request.method == "POST":
@@ -226,7 +229,7 @@ def issue_details(request, project_id, issue_id):
     else:
         issue_details_form = IssueDetailsForm(
             initial={
-                "project": project.id,
+                "project": project_id,
                 "status": issue.status,
                 "type": issue.type,
                 "priority": issue.priority,
@@ -243,13 +246,13 @@ def issue_details(request, project_id, issue_id):
 @login_required(login_url="/login/")
 def project_settings(request, project_id):
 
-    user = request.user
+    user_id = request.user.id
     project = Project.objects.get(id=project_id)
 
     context = {
         "project": project,
-        "project_id": project.id,
-        "user_id": user.id
+        "project_id": project_id,
+        "user_id": user_id
         }
 
     if request.method == "POST":
@@ -281,7 +284,7 @@ def accounts(request, user_id):
 
     user = User.objects.get(id=user_id)
 
-    context = {"user": user, "user_id": user.id}
+    context = {"user": user, "user_id": user_id}
 
     if request.method == "POST":
 
@@ -299,7 +302,7 @@ def accounts(request, user_id):
 
         elif "change_password" in request.POST:
             password_change_form = UserPasswordChangeForm(
-                request.user, request.POST or None
+                user, request.POST or None
                 )
 
             if password_change_form.is_valid():
@@ -315,7 +318,7 @@ def accounts(request, user_id):
                 if password_change_form.errors[field]:
                     messages.error(request, password_change_form.errors[field])
 
-        return redirect("accounts", user.id)
+        return redirect("accounts", user_id)
 
     else:
         user_form = UserForm(
@@ -326,7 +329,7 @@ def accounts(request, user_id):
                 "email": user.email,
                 }
             )
-        password_change_form = UserPasswordChangeForm(request.user)
+        password_change_form = UserPasswordChangeForm(user)
 
         context["user_form"] = user_form
         context["password_change_form"] = password_change_form
@@ -362,7 +365,7 @@ def search(request):
 def search_results(request, q):
 
     query = q
-    user = request.user
+    user_id = request.user.id
 
     if query is not None:
         lookups_projects = (
@@ -382,7 +385,7 @@ def search_results(request, q):
             "query": query,
             "results_projects": results_projects,
             "results_issues": results_issues,
-            "user_id": user.id
+            "user_id": user_id
             }
 
     return render(request, "search-results.html", context)
@@ -546,9 +549,9 @@ def password_reset_confirm(request, uidb64, token):
 
 
 @login_required(login_url="/login/")
-def delete_project(request, id):
+def delete_project(request, project_id):
 
-    project = Project.objects.get(id=id)
+    project = Project.objects.get(id=project_id)
     project.delete()
 
     messages.success(request, _("Project deleted!"))

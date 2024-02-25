@@ -1,12 +1,10 @@
 {% load i18n %}
-{% load cache %}
 
 {% get_current_language as LANGUAGE_CODE %}
 
 {% block sidebar %}
 
 <!-- SIDEBAR -->
-{% cache None sidebar LANGUAGE_CODE %}
 	<div class="container-fluid">
 		<div class="row flex-nowrap">
 			
@@ -15,14 +13,14 @@
 
 					<ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start">
 						<li class="nav-item">
-							<a href="{% url 'boards' project.id %}" class="nav-link px-0 align-middle text-secondary">
+							<a href="{% url 'boards' project_id %}" class="nav-link px-0 align-middle text-secondary">
 								<i class="fs-4 bi bi-kanban icon-color"></i>
 								<span class="ms-1 d-none d-sm-inline">{% translate "Board" %}</span>
 							</a>
 						</li>
 
 						<li>
-							<a href="{% url 'project-settings' project.id %}"
+							<a href="{% url 'project-settings' project_id %}"
 								class="nav-link px-0 align-middle text-secondary text-nowrap">
 								<i class="fs-4 bi bi-gear-wide icon-color"></i>
 								<span class="ms-1 d-none d-sm-inline">{% translate "Project settings" %}</span>
@@ -34,7 +32,6 @@
 
 <!-- MAIN PART -->
 			<div class="col py-3 mx-1" style="text-align: justify;">
-{% endcache %}
 
 <!-- BREADCRUMB -->
 {% block breadcrumb %}{% endblock %}

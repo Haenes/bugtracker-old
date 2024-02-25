@@ -23,7 +23,7 @@
 						{% translate "Projects" %}:
 						{% for project in results_projects %}
 							<li class="ms-5">
-								<a href="{% url 'boards' project.id%}">{{ project }}</a>
+								<a href="{% url 'boards' project.id %}">{{ project }}</a>
 							</li>
 						{% endfor %}
 					{% endif %}
@@ -34,10 +34,10 @@
 					{% translate "Issues" %}:
 						{% for issue in results_issues %}
 							<li class="ms-5">
-								<a href="{% url 'issue-details' issue.project_id issue.id%}">{{ issue }}</a>
+								<a href="{% url 'issue-details' issue.project_id issue.id %}">{{ issue }}</a>
 							</li>
 						{% endfor %}
-					{% endif%}
+					{% endif %}
 				</ul>
 			</div>
 				{% endif %}

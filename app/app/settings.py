@@ -5,14 +5,14 @@ from pathlib import Path
 
 load_dotenv()
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
-
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -46,13 +46,15 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
 redis_user = os.environ.get("REDIS_USER")
 redis_password = os.environ.get("REDIS_PASSWORD")
 CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
         'LOCATION': f'redis://{redis_user}:{redis_password}@redis/1',
-        "TIMEOUT": 60 * 10,
+        'TIMEOUT': 60 * 10,
     }
 }
 
@@ -63,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -109,7 +112,6 @@ SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -120,7 +122,6 @@ DATABASES = {
         'HOST': os.environ.get('MYSQL_HOST'),
         }
 }
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -141,10 +142,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGES = [
-    ("en", "English"),
-    ("ru", "Russian"),
+    ('en', 'English'),
+    ('ru', 'Russian'),
 ]
 
 USE_I18N = True
@@ -155,7 +155,7 @@ LOCALE_PATHS = [
 
 USE_TZ = True
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'UTC'
 
 STATIC_ROOT = '/app/static/'
 STATIC_URL = 'static/'
@@ -163,6 +163,5 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
