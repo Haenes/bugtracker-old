@@ -214,7 +214,8 @@ def issue_details(request, project_id, issue_id):
 
     if request.method == "POST":
         issue_details_form = IssueDetailsForm(
-            request.POST or None, instance=issue
+            request.POST or None,
+            instance=issue
             )
 
         if issue_details_form.is_valid():
@@ -257,7 +258,8 @@ def project_settings(request, project_id):
 
     if request.method == "POST":
         project_form = ProjectDetailsForm(
-            request.POST or None, instance=project
+            request.POST or None,
+            instance=project
             )
 
         if project_form.is_valid():
@@ -309,7 +311,8 @@ def accounts(request, user_id):
                 user = password_change_form.save()
                 update_session_auth_hash(request, user)
                 messages.success(
-                    request, _("Your password was successfully updated!")
+                    request,
+                    _("Your password was successfully updated!")
                     )
 
             context["password_change_form"] = password_change_form
@@ -352,7 +355,8 @@ def search(request):
             return redirect(request.META.get("HTTP_REFERER", "/"))
         elif not validate_string(q):
             messages.error(
-                request, _("Please, don't use special symbols in search")
+                request,
+                _("Please, don't use special symbols in search")
                 )
             return redirect(request.META.get("HTTP_REFERER", "/"))
 
@@ -500,7 +504,8 @@ def password_reset(request):
 
         if reset_password_form.is_valid():
             reset_password_form.save(
-                from_email=os.environ.get("EMAIL_HOST_USER"), request=request
+                from_email=os.environ.get("EMAIL_HOST_USER"),
+                request=request
                 )
 
             return redirect("password-reset-done")
@@ -530,7 +535,8 @@ def password_reset_confirm(request, uidb64, token):
         if set_password_form.is_valid():
             set_password_form.save()
             messages.success(
-                request, _("Your password was successfully updated!")
+                request,
+                _("Your password was successfully updated!")
                 )
             return redirect("login")
 
