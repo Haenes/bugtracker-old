@@ -68,7 +68,9 @@ def projects(request):
     user_id = request.user.id
     projects_list = cache.get_or_set(
         f"projects_list_{user_id}",
-        Project.objects.filter(author_id=user_id)
+        Project.objects.filter(author_id=user_id).only(
+            "id", "name", "key", "type", "starred", "created"
+            )
         )
 
     paginator = Paginator(projects_list, 9)
@@ -109,7 +111,7 @@ def projects(request):
         icon_id = data["icon_id"].removeprefix("star")
         icon_color = data["icon_color"]
 
-        project = Project.objects.get(id=icon_id)
+        project = Project.objects.only("starred").get(id=icon_id)
 
         if icon_color == "grey":
             project.starred = 0
@@ -125,10 +127,13 @@ def projects(request):
 def boards(request, project_id):
 
     user_id = request.user.id
-    project = Project.objects.get(id=project_id)
+    project = Project.objects.only("name", "key", "starred").get(id=project_id)
     all_issues = cache.get_or_set(
         f"all_issues_{project_id}",
-        Issue.objects.filter(project_id=project_id)
+        Issue.objects.filter(project_id=project_id).only(
+            "id", "key", "title", "description", "type",
+            "priority", "status", "created", "updated"
+            )
         )
 
     context = {
@@ -148,8 +153,9 @@ def boards(request, project_id):
         # to set the key for the next one
             try:
                 latest_key = (
-                    Issue.objects.filter(project_id=project_id)
-                    .latest("key").key
+                    Issue.objects.filter(project_id=project_id).only(
+                        "key"
+                        ).latest("key").key
                     )
             except ObjectDoesNotExist:
                 latest_key = 0
@@ -182,7 +188,7 @@ def boards(request, project_id):
     if request.headers.get("x-requested-with") == "XMLHttpRequest":
         data = json.load(request)
         target = data["target"]
-        issue = Issue.objects.get(id=data["issue_id"])
+        issue = Issue.objects.only("id", "status").get(id=data["issue_id"])
 
         if issue.status != target:
             issue.status = target
@@ -201,12 +207,14 @@ def boards(request, project_id):
 def issue_details(request, project_id, issue_id):
 
     user_id = request.user.id
-    project = Project.objects.get(id=project_id)
-    issue = Issue.objects.get(id=issue_id)
+    project_name = Project.objects.only("name").get(id=project_id)
+    issue = Issue.objects.only(
+        "status", "type", "priority", "title", "description"
+        ).get(id=issue_id)
 
     context = {
         "user_id": user_id,
-        "project": project,
+        "project": project_name,
         "project_id": project_id,
         "issue": issue,
         "issue_id": issue_id
@@ -236,7 +244,7 @@ def issue_details(request, project_id, issue_id):
                 "priority": issue.priority,
                 "title": issue.title,
                 "description": issue.description,
-                "author": issue.author
+                "author": user_id
                 }
             )
         context["issue_details_form"] = issue_details_form
@@ -248,7 +256,7 @@ def issue_details(request, project_id, issue_id):
 def project_settings(request, project_id):
 
     user_id = request.user.id
-    project = Project.objects.get(id=project_id)
+    project = Project.objects.only("name", "key", "starred").get(id=project_id)
 
     context = {
         "project": project,
@@ -284,7 +292,9 @@ def project_settings(request, project_id):
 @login_required(login_url="/login/")
 def accounts(request, user_id):
 
-    user = User.objects.get(id=user_id)
+    user = User.objects.only(
+        "first_name", "last_name", "username", "email"
+        ).get(id=user_id)
 
     context = {"user": user, "user_id": user_id}
 

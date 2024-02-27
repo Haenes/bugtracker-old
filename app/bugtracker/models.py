@@ -42,6 +42,7 @@ class Project(models.Model):
 
     class Meta:
         ordering = ["-starred", "created"]
+        indexes = [models.Index(fields=["author"], name="author_idx")]
 
 
 class Issue(models.Model):
@@ -78,3 +79,6 @@ class Issue(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        indexes = [models.Index(fields=["project"], name="project_idx")]
