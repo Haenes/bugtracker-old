@@ -52,7 +52,8 @@ class RegisterForm(forms.Form):
         widget=TextInput(
             attrs={
                 "required": True,
-                "class": "form-control mb-2"
+                "class": "form-control mb-2",
+                "autocomplete": "given-name"
                 }
             )
         )
@@ -64,7 +65,8 @@ class RegisterForm(forms.Form):
         widget=TextInput(
             attrs={
                 "required": True,
-                "class": "form-control mb-2"
+                "class": "form-control mb-2",
+                "autocomplete": "family-name"
                 }
             )
         )
@@ -76,7 +78,8 @@ class RegisterForm(forms.Form):
         widget=TextInput(
             attrs={
                 "required": True,
-                "class": "form-control mb-2"
+                "class": "form-control mb-2",
+                "autocomplete": "username"
                 }
             )
         )
@@ -87,7 +90,8 @@ class RegisterForm(forms.Form):
         widget=TextInput(
             attrs={
                 "required": True,
-                "class": "form-control mb-2"
+                "class": "form-control mb-2",
+                "autocomplete": "email"
                 }
             )
         )
@@ -99,7 +103,8 @@ class RegisterForm(forms.Form):
         widget=PasswordInput(
             attrs={
                 "required": True,
-                "class": "form-control mb-2"
+                "class": "form-control mb-2",
+                "autocomplete": "new-password"
                 }
             )
         )
@@ -111,7 +116,8 @@ class RegisterForm(forms.Form):
         widget=PasswordInput(
             attrs={
                 "required": True,
-                "class": "form-control mb-2"
+                "class": "form-control mb-2",
+                "autocomplete": "new-password"
                 }
             )
         )
@@ -197,7 +203,8 @@ class LoginForm(forms.Form):
                 "class": "form-control",
                 "id": "floatingUsername",
                 "placeholder": _("Username"),
-                "autofocus": True
+                "autofocus": True,
+                "autocomplete": "username"
                 }
             )
         )
@@ -210,7 +217,8 @@ class LoginForm(forms.Form):
             attrs={
                 "class": "form-control",
                 "id": "floatingPassword",
-                "placeholder": _("Password")
+                "placeholder": _("Password"),
+                "autocomplete": "current-password"
                 }
             )
         )

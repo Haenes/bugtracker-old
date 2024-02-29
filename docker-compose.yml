@@ -17,15 +17,15 @@ services:
   
     db:
         container_name: db
-        image: mysql:8.0
-        ports:
-          - '3366:3306'
-        env_file: 
+        image: postgres:16-alpine
+        env_file:
           - .env
+        ports:
+          - '5400:5432'
         volumes:
-          - ./deploy/db:/var/lib/mysql
+          - ./deploy/db:/var/lib/postgresql/data
         healthcheck:
-          test: "mysql -u$$MYSQL_USER -p$$MYSQL_PASSWORD -e 'SELECT 1;'"
+          test: ["CMD-SHELL", "pg_isready -U$$POSTGRES_USER -d$$POSTGRES_DB"]
           interval: 5s
           timeout: 5s
           retries: 100

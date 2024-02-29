@@ -112,14 +112,14 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('MYSQL_DATABASE'),
-        'USER': os.environ.get('MYSQL_USER'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD'),
-        'PORT': os.environ.get('MYSQL_PORT'),
-        'HOST': os.environ.get('MYSQL_HOST'),
-        }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get('POSTGRES_DB'),
+        "USER": os.environ.get('POSTGRES_USER'),
+        "PASSWORD": os.environ.get('POSTGRES_PASSWORD'),
+        "HOST": os.environ.get('POSTGRES_HOST'),
+        "PORT": os.environ.get('POSTGRES_PORT'),
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [

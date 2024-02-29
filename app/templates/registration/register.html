@@ -19,7 +19,7 @@
 						{% if field.name == "password1" %}
 							<div class="col-5">
 
-								<label class="form-label" for="{{ field.name }}">{% translate "Password" %}</label>
+								<label class="form-label" for="id_{{ field.name }}">{% translate "Password" %}</label>
 								<p data-bs-toggle="popover" data-bs-placement="top" data-bs-custom-class="custom-popover"
 								   data-bs-html="true" 
 								   data-bs-content={% blocktranslate %}
@@ -43,7 +43,7 @@
 						{% else %}
 							<div class="col-5">
 				
-								<label class="form-label" for="{{ field.name }}">{{ field.label }}</label>
+								<label class="form-label" for="id_{{ field.name }}">{{ field.label }}</label>
 								{{ field }}
 
 								{% if field.errors %}

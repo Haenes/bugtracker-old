@@ -9,10 +9,7 @@ WORKDIR /app
 
 COPY requirements.txt entrypoint.sh ./
 
-RUN apk update && apk add --virtual build-deps gcc python3-dev musl-dev \
-    && apk add --no-cache mariadb-dev \
-    && pip install --no-cache-dir -r requirements.txt \
-    && apk del build-deps
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 

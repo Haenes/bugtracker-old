@@ -38,7 +38,7 @@
 
 					{% if field.name == "title" or field.name == "description" %}
 						<div class="col mb-3">
-							<label class="form-label m-0" for="{{ field.name }}">{{ field.label|title }}</label>
+							<label class="form-label m-0" for="id_{{ field.name }}">{{ field.label|title }}</label>
 							{{ field }}
 						</div>
 					
@@ -47,7 +47,7 @@
 
 					{% else %}
 						<div class="col-7 mb-3">
-							<label class="form-label m-0" for="{{ field.name }}">{{ field.label|title }}</label>
+							<label class="form-label m-0" for="id_{{ field.name }}">{{ field.label|title }}</label>
 							{{ field }}
 						</div>
 

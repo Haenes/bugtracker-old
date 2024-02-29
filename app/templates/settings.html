@@ -42,8 +42,8 @@
 
             <form action="{% url 'settings' %}" method="POST">
                 {% csrf_token %}
-                <label for="timezone">{% translate "Time zone:" %}</label>
-                <select class="form-select" name="timezone">
+                <label for="id_timezone">{% translate "Time zone:" %}</label>
+                <select class="form-select" name="timezone" id="id_timezone">
                     {% for city, tz in timezones.items %}
                         {% if tz == TIME_ZONE %}
                             <option value="{{ tz }}" selected>{{ city }}</option>
@@ -62,8 +62,8 @@
 
             <form action="{% url 'set_language' %}" method="post">
                 {% csrf_token %}
-                <label for="language">{% translate "Language:" %}</label>
-                <select class="form-select" name="language">
+                <label for="id_language">{% translate "Language:" %}</label>
+                <select class="form-select" name="language" id="id_language">
                     {% get_current_language as LANGUAGE_CODE %}
                     {% get_available_languages as LANGUAGES %}
                     {% get_language_info_list for LANGUAGES as languages %}
