@@ -32,9 +32,10 @@ class Project(models.Model):
         )
     type = models.CharField(max_length=18, choices=PROJECT_TYPE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    starred = models.BooleanField(verbose_name="favorite project",
-                                  default=False
-                                  )
+    starred = models.BooleanField(
+        verbose_name="favorite project",
+        default=False
+        )
     created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):

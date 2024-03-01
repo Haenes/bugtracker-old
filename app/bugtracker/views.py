@@ -238,6 +238,8 @@ def issue_details(request, project_id, issue_id):
 
         if issue_details_form.is_valid():
             issue_details_form.save()
+            issue = Issue.objects.get(id=issue_id)
+            issue.save()
 
         context["issue_details_form"] = issue_details_form
 
