@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
+{% load cache %}
 
 {% block title %} {% translate "Board" %} {% endblock %}
 
@@ -29,6 +30,7 @@
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
 	{% include "messages.html" %}
 
+{% cache 600 boards cache_key %}
 <!-- BREADCRUMB -->
 	{% block breadcrumb %}
 		{{ block.super }}</ol></nav>
@@ -163,10 +165,10 @@
 								<div class="col-6">
 									<div class="form-outline mb-3">
 										{% if issue.description %}
-											<textarea class="form-control w-100 bg-body-tertiary" id="textArea" rows="8"
+											<textarea class="form-control w-100 bg-body-tertiary" id="textArea_{{ issue.id }}" rows="8"
 												placeholder="{{ issue.description }}" disabled></textarea>
 										{% else %}
-											<textarea class="form-control w-100 bg-body-tertiary" id="textArea" rows="8" 
+											<textarea class="form-control w-100 bg-body-tertiary" id="textArea_{{ issue.id }}" rows="8" 
 												placeholder="Description is empty" disabled></textarea>
 										{% endif %}
 									</div>
@@ -200,5 +202,5 @@
 			</div>
 		</div>
 	{% endfor %}
-	
+	{% endcache %}
 {% endblock main %}

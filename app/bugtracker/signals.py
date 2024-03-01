@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.core.cache import cache
+from django.core.cache.utils import make_template_fragment_key
 from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 
@@ -10,23 +12,55 @@ from .models import Project, Issue
 
 @receiver(post_delete, sender=Project, dispatch_uid="project_deleted")
 def object_project_delete_handler(sender, instance, **kwargs):
-    cache.delete(f"projects_list_{instance.author_id}")
-    cache.delete(f"project_query_{instance.author_id}")
+    cache.delete_many(
+        keys=(
+            f"projects_list_{instance.author_id}",
+            f"project_query_{instance.author_id}"
+        )
+    )
 
 
-@receiver(post_save, sender=Project, dispatch_uid="projects_updated")
+@receiver(post_save, sender=Project, dispatch_uid="project_updated")
 def object_project_save_handler(sender, instance, **kwargs):
-    cache.delete(f"projects_list_{instance.author_id}")
-    cache.delete(f"project_query_{instance.author_id}")
+    cache.delete_many(
+        keys=(
+            f"projects_list_{instance.author_id}",
+            f"project_query_{instance.author_id}"
+        )
+    )
 
 
 @receiver(post_delete, sender=Issue, dispatch_uid="issue_deleted")
 def object_issue_delete_handler(sender, instance, **kwargs):
-    cache.delete(f"all_issues_{instance.project.id}")
-    cache.delete(f"issue_query_{instance.author_id}")
+    template_en, template_ru = [
+        make_template_fragment_key(
+            fragment_name="boards",
+            vary_on=[f"{instance.project_id}{lang[0]}"]
+            ) for lang in settings.LANGUAGES
+        ]
+    cache.delete_many(
+        keys=[
+            f"all_issues_{instance.project_id}",
+            f"issue_query_{instance.author_id}",
+            template_en,
+            template_ru
+        ]
+    )
 
 
-@receiver(post_save, sender=Issue, dispatch_uid="issues_updated")
+@receiver(post_save, sender=Issue, dispatch_uid="issue_updated")
 def object_issue_save_handler(sender, instance, **kwargs):
-    cache.delete(f"all_issues_{instance.project.id}")
-    cache.delete(f"issue_query_{instance.author_id}")
+    template_en, template_ru = [
+        make_template_fragment_key(
+            fragment_name="boards",
+            vary_on=[f"{instance.project_id}{lang[0]}"]
+            ) for lang in settings.LANGUAGES
+        ]
+    cache.delete_many(
+        keys=[
+            f"all_issues_{instance.project_id}",
+            f"issue_query_{instance.author_id}",
+            template_en,
+            template_ru
+        ]
+    )

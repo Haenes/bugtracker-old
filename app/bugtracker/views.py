@@ -135,12 +135,14 @@ def boards(request, project_id):
             "priority", "status", "created", "updated"
             )
         )
+    template_cache_key = f"{project_id}{request.LANGUAGE_CODE}"
 
     context = {
         "project": project,
         "user_id": user_id,
         "project_id": project_id,
         "issues_list": all_issues,
+        "cache_key": template_cache_key
         }
 
     if request.method == "POST":
