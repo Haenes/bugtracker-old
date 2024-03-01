@@ -12,22 +12,38 @@ from .models import Project, Issue
 
 @receiver(post_delete, sender=Project, dispatch_uid="project_deleted")
 def object_project_delete_handler(sender, instance, **kwargs):
+    template_en, template_ru = [
+        make_template_fragment_key(
+            fragment_name="projects",
+            vary_on=[f"{instance.author_id}{lang[0]}"]
+            ) for lang in settings.LANGUAGES
+        ]
     cache.delete_many(
-        keys=(
+        keys=[
             f"projects_list_{instance.author_id}",
-            f"project_query_{instance.author_id}"
+            f"project_query_{instance.author_id}",
+            template_en,
+            template_ru
+            ]
         )
-    )
 
 
 @receiver(post_save, sender=Project, dispatch_uid="project_updated")
 def object_project_save_handler(sender, instance, **kwargs):
+    template_en, template_ru = [
+        make_template_fragment_key(
+            fragment_name="projects",
+            vary_on=[f"{instance.author_id}{lang[0]}"]
+            ) for lang in settings.LANGUAGES
+        ]
     cache.delete_many(
-        keys=(
+        keys=[
             f"projects_list_{instance.author_id}",
-            f"project_query_{instance.author_id}"
+            f"project_query_{instance.author_id}",
+            template_en,
+            template_ru
+            ]
         )
-    )
 
 
 @receiver(post_delete, sender=Issue, dispatch_uid="issue_deleted")
@@ -44,8 +60,8 @@ def object_issue_delete_handler(sender, instance, **kwargs):
             f"issue_query_{instance.author_id}",
             template_en,
             template_ru
-        ]
-    )
+            ]
+        )
 
 
 @receiver(post_save, sender=Issue, dispatch_uid="issue_updated")
@@ -62,5 +78,5 @@ def object_issue_save_handler(sender, instance, **kwargs):
             f"issue_query_{instance.author_id}",
             template_en,
             template_ru
-        ]
-    )
+            ]
+        )

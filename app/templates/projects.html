@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
-{% block title %} {% translate "Projects" %} {% endblock %}
+{% load cache %}
 
+{% block title %} {% translate "Projects" %} {% endblock %}
 
 {% block script %}
 <script type="text/javascript" src="{% static 'favorite.js' %}"></script>  
@@ -18,6 +19,7 @@
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
 		{% include "messages.html" %}
 
+{% cache 600 projects cache_key %}
 <!-- TRIGER CREATE PROJECT MODAL -->
 		<button type="button" class="btn btn-outline-primary rounded-3 mt-2" data-bs-toggle="modal"
 			data-bs-target="#staticBackdropProject">
@@ -100,4 +102,5 @@
 
 <!-- CREATE PROJECT MODAL -->
 	{% include "create-project.html" %}
+{% endcache %}
 {% endblock main %}

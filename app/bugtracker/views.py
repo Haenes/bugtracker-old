@@ -22,6 +22,7 @@ from django.http import JsonResponse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.translation import gettext as _
+from django.views.decorators.cache import cache_control
 
 from .models import Issue, Project
 from .forms import (
@@ -62,6 +63,7 @@ def settings(request):
         return render(request, "settings.html", context=context)
 
 
+@cache_control(private=True)
 @login_required(login_url="/login/")
 def projects(request):
 
@@ -72,12 +74,17 @@ def projects(request):
             "id", "name", "key", "type", "starred", "created"
             )
         )
+    template_cache_key = f"{user_id}{request.LANGUAGE_CODE}"
 
     paginator = Paginator(projects_list, 9)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context = {"user_id": user_id, "page_obj": page_obj}
+    context = {
+        "user_id": user_id,
+        "page_obj": page_obj,
+        "cache_key": template_cache_key
+        }
 
     if request.method == "POST":
         project_modal_form = ProjectModalForm(request.POST or None)
@@ -123,6 +130,7 @@ def projects(request):
     return render(request, "projects.html", context)
 
 
+@cache_control(private=True)
 @login_required(login_url="/login/")
 def boards(request, project_id):
 
