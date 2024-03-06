@@ -25,6 +25,7 @@ from django.utils.translation import gettext as _
 from django.views.decorators.cache import cache_control
 
 from .models import Issue, Project
+from .signals import template_key
 from .forms import (
     validate_string,
     RegisterForm,
@@ -57,6 +58,45 @@ def settings(request):
     if request.method == "POST":
         if "timezone" in request.POST:
             request.session["django_timezone"] = request.POST["timezone"]
+
+            # All this block is to invalidate cached templates
+            results = {}
+
+            projects_en, projects_ru = template_key(
+                "projects",
+                author_id=user_id
+                )
+            results[f"projects_{user_id}_en"] = projects_en
+            results[f"projects_{user_id}_ru"] = projects_ru
+
+            issues = Issue.objects.filter(
+                author_id=user_id
+                ).only("project_id").all()
+
+            for issue in issues:
+                project_id = issue.project_id
+                en, ru = template_key("boards", project_id=project_id)
+
+                # Check if the key is already in the results dict.
+                # If it's True - skip to the next issue.
+                # If it's False - check if such a key is in the cache,
+                # and if it's True - add to the results, otherwise skip.
+                if (
+                      results.get(f"boards_{project_id}_en")
+                      and
+                      results.get(f"boards_{project_id}_ru")
+                      ):
+                    continue
+                else:
+                    if cache.get(en) is not None:
+                        results[f"boards_{project_id}_en"] = en
+                    elif cache.get(ru) is not None:
+                        results[f"boards_{project_id}_ru"] = ru
+                    continue
+
+            cache.delete_many(
+                keys=list(results.values())
+            )
             return redirect("settings")
 
     else:

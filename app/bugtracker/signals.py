@@ -10,6 +10,24 @@ from .models import Project, Issue
 # Signals for cache invalidation
 
 
+def template_key(view_name: str, **kwargs: int) -> tuple[str]:
+    """ Return keys for cached templates to invalidate them """
+
+    if kwargs:
+        try:
+            vary = kwargs["author_id"]
+        except KeyError:
+            vary = kwargs["project_id"]
+
+    template_en, template_ru = [
+        make_template_fragment_key(
+            fragment_name=f"{view_name}",
+            vary_on=[f"{vary}{lang[0]}"]
+            ) for lang in settings.LANGUAGES
+        ]
+    return template_en, template_ru
+
+
 @receiver(post_delete, sender=Project, dispatch_uid="project_deleted")
 def object_project_delete_handler(sender, instance, **kwargs):
     template_en, template_ru = [
