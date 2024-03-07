@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.core.cache import cache
 
 from rest_framework import viewsets
@@ -17,10 +16,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user_id = Token.objects.get(key=self.request.auth.key).user_id
-        user = User.objects.get(id=user_id)
         queryset = cache.get_or_set(
             f"project_query_{user_id}",
-            Project.objects.filter(author=user)
+            Project.objects.filter(author_id=user_id)
             .order_by('-starred', '-created'))
 
         return queryset
@@ -34,9 +32,8 @@ class IssueViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user_id = Token.objects.get(key=self.request.auth.key).user_id
-        user = User.objects.get(id=user_id)
         queryset = cache.get_or_set(
             f"issue_query_{user_id}",
-            Issue.objects.filter(author=user).order_by('project'))
+            Issue.objects.filter(author_id=user_id).order_by('project'))
 
         return queryset
