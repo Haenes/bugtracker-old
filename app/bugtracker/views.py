@@ -19,13 +19,12 @@ from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.http import JsonResponse
+from django.views.decorators.http import condition
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.translation import gettext as _
-from django.views.decorators.cache import cache_control
 
 from .models import Issue, Project
-from .signals import template_key
 from .forms import (
     validate_string,
     RegisterForm,
@@ -44,6 +43,22 @@ from .forms import (
 load_dotenv()
 
 
+def last_modified_issue_of_project(request, project_id):
+    return Issue.objects.filter(
+        project_id=project_id
+        ).only("updated").latest("updated").updated
+
+
+def last_created_project(request):
+    return Project.objects.filter(
+        author_id=request.user.id
+        ).only("created").latest("created").created
+
+
+def last_update_of_issue(request, project_id, issue_id):
+    return Issue.objects.only("updated").get(id=issue_id).updated
+
+
 @login_required(login_url="/login/")
 def settings(request):
     user_id = request.user.id
@@ -58,52 +73,12 @@ def settings(request):
     if request.method == "POST":
         if "timezone" in request.POST:
             request.session["django_timezone"] = request.POST["timezone"]
-
-            # All this block is to invalidate cached templates
-            results = {}
-
-            projects_en, projects_ru = template_key(
-                "projects",
-                author_id=user_id
-                )
-            results[f"projects_{user_id}_en"] = projects_en
-            results[f"projects_{user_id}_ru"] = projects_ru
-
-            issues = Issue.objects.filter(
-                author_id=user_id
-                ).only("project_id").all()
-
-            for issue in issues:
-                project_id = issue.project_id
-                en, ru = template_key("boards", project_id=project_id)
-
-                # Check if the key is already in the results dict.
-                # If it's True - skip to the next issue.
-                # If it's False - check if such a key is in the cache,
-                # and if it's True - add to the results, otherwise skip.
-                if (
-                      results.get(f"boards_{project_id}_en")
-                      and
-                      results.get(f"boards_{project_id}_ru")
-                      ):
-                    continue
-                else:
-                    if cache.get(en) is not None:
-                        results[f"boards_{project_id}_en"] = en
-                    elif cache.get(ru) is not None:
-                        results[f"boards_{project_id}_ru"] = ru
-                    continue
-
-            cache.delete_many(
-                keys=list(results.values())
-            )
             return redirect("settings")
-
     else:
         return render(request, "settings.html", context=context)
 
 
-@cache_control(private=True)
+@condition(last_modified_func=last_created_project)
 @login_required(login_url="/login/")
 def projects(request):
 
@@ -114,7 +89,6 @@ def projects(request):
             "id", "name", "key", "type", "starred", "created"
             )
         )
-    template_cache_key = f"{user_id}{request.LANGUAGE_CODE}"
 
     paginator = Paginator(projects_list, 9)
     page_number = request.GET.get("page")
@@ -122,8 +96,7 @@ def projects(request):
 
     context = {
         "user_id": user_id,
-        "page_obj": page_obj,
-        "cache_key": template_cache_key
+        "page_obj": page_obj
         }
 
     if request.method == "POST":
@@ -148,11 +121,7 @@ def projects(request):
             if project_modal_form.errors[field]:
                 messages.error(request, project_modal_form.errors[field])
 
-    else:
-        project_modal_form = ProjectModalForm(initial={"author": user_id})
-        context["project_modal_form"] = project_modal_form
-
-    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+    elif request.headers.get("x-requested-with") == "XMLHttpRequest":
         data = json.load(request)
 
         icon_id = data["icon_id"].removeprefix("star")
@@ -166,11 +135,14 @@ def projects(request):
         else:
             project.starred = 1
             project.save()
+    else:
+        project_modal_form = ProjectModalForm(initial={"author": user_id})
+        context["project_modal_form"] = project_modal_form
 
     return render(request, "projects.html", context)
 
 
-@cache_control(private=True)
+@condition(last_modified_func=last_modified_issue_of_project)
 @login_required(login_url="/login/")
 def boards(request, project_id):
 
@@ -183,14 +155,12 @@ def boards(request, project_id):
             "priority", "status", "created", "updated"
             )
         )
-    template_cache_key = f"{project_id}{request.LANGUAGE_CODE}"
 
     context = {
         "project": project,
         "user_id": user_id,
         "project_id": project_id,
-        "issues_list": all_issues,
-        "cache_key": template_cache_key
+        "issues_list": all_issues
         }
 
     if request.method == "POST":
@@ -229,13 +199,7 @@ def boards(request, project_id):
             if issue_modal_form.errors[field]:
                 messages.error(request, issue_modal_form.errors[field])
 
-    else:
-        issue_modal_form = IssueModalForm(
-            initial={"project": project_id, "author": user_id}
-            )
-        context["issue_modal_form"] = issue_modal_form
-
-    if request.headers.get("x-requested-with") == "XMLHttpRequest":
+    elif request.headers.get("x-requested-with") == "XMLHttpRequest":
         data = json.load(request)
         target = data["target"]
         issue = Issue.objects.only("id", "status").get(id=data["issue_id"])
@@ -250,9 +214,16 @@ def boards(request, project_id):
                 {"id": issue.id, "status": status, "source": _(issue.status)}
                 )
 
+    else:
+        issue_modal_form = IssueModalForm(
+            initial={"project": project_id, "author": user_id}
+            )
+        context["issue_modal_form"] = issue_modal_form
+
     return render(request, "boards.html", context)
 
 
+@condition(last_modified_func=last_update_of_issue)
 @login_required(login_url="/login/")
 def issue_details(request, project_id, issue_id):
 

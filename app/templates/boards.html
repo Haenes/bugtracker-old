@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 {% load static %}
-{% load cache %}
+
 
 {% block title %} {% translate "Board" %} {% endblock %}
 
@@ -30,7 +30,6 @@
 <!-- SHOWS SUCCESS/ERROR MESSAGES  -->
 	{% include "messages.html" %}
 
-{% cache 600 boards cache_key %}
 <!-- BREADCRUMB -->
 	{% block breadcrumb %}
 		{{ block.super }}</ol></nav>
@@ -202,5 +201,4 @@
 			</div>
 		</div>
 	{% endfor %}
-	{% endcache %}
 {% endblock main %}
