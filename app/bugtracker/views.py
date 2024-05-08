@@ -44,15 +44,21 @@ load_dotenv()
 
 
 def last_modified_issue_of_project(request, project_id):
-    return Issue.objects.filter(
-        project_id=project_id
-        ).only("updated").latest("updated").updated
+    try:
+        return Issue.objects.filter(
+            project_id=project_id
+            ).only("updated").latest("updated").updated
+    except ObjectDoesNotExist:
+        return None
 
 
 def last_created_project(request):
-    return Project.objects.filter(
-        author_id=request.user.id
-        ).only("created").latest("created").created
+    try:
+        return Project.objects.filter(
+            author_id=request.user.id
+            ).only("created").latest("created").created
+    except ObjectDoesNotExist:
+        return None
 
 
 def last_update_of_issue(request, project_id, issue_id):
