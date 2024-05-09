@@ -127,7 +127,7 @@ def projects(request):
             if project_modal_form.errors[field]:
                 messages.error(request, project_modal_form.errors[field])
 
-    elif request.headers.get("x-requested-with") == "XMLHttpRequest":
+    elif request.method == "PUT":
         data = json.load(request)
 
         icon_id = data["icon_id"].removeprefix("star")
@@ -205,7 +205,7 @@ def boards(request, project_id):
             if issue_modal_form.errors[field]:
                 messages.error(request, issue_modal_form.errors[field])
 
-    elif request.headers.get("x-requested-with") == "XMLHttpRequest":
+    elif request.method == "PUT":
         data = json.load(request)
         target = data["target"]
         issue = Issue.objects.only("id", "status").get(id=data["issue_id"])

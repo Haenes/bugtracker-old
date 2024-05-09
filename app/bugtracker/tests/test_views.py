@@ -1,4 +1,5 @@
 import re
+import json
 
 from django.test import RequestFactory, TestCase
 from django.contrib.auth.models import User
@@ -48,9 +49,9 @@ class ETagTestCase(TestCase):
             )
         request = self.factory.get(reverse("boards", args=[project.id]))
         request.user = self.user
-        r = last_modified_issue_of_project(request, project.id)
+        response = last_modified_issue_of_project(request, project.id)
 
-        self.assertIsNotNone(r)
+        self.assertIsNotNone(response)
 
     def test_last_modified_issue_of_project_none(self):
         project = Project.objects.create(
@@ -59,9 +60,9 @@ class ETagTestCase(TestCase):
             )
         request = self.factory.get(reverse("boards", args=[project.id]))
         request.user = self.user
-        r = last_modified_issue_of_project(request, project.id)
+        response = last_modified_issue_of_project(request, project.id)
 
-        self.assertIsNone(r)
+        self.assertIsNone(response)
 
     def test_last_created_project_datetime(self):
         Project.objects.create(
@@ -70,16 +71,16 @@ class ETagTestCase(TestCase):
             )
         request = self.factory.get(reverse("projects"))
         request.user = self.user
-        r = last_created_project(request)
+        response = last_created_project(request)
 
-        self.assertIsNotNone(r)
+        self.assertIsNotNone(response)
 
     def test_last_created_project_none(self):
         request = self.factory.get(reverse("projects"))
         request.user = self.user
-        r = last_created_project(request)
+        response = last_created_project(request)
 
-        self.assertIsNone(r)
+        self.assertIsNone(response)
 
     def test_last_update_of_issue_datetime(self):
         project = Project.objects.create(
@@ -99,9 +100,9 @@ class ETagTestCase(TestCase):
             reverse("issue-details", args=[project.id, issue.id])
             )
         request.user = self.user
-        r = last_update_of_issue(request, project.id, issue.id)
+        response = last_update_of_issue(request, project.id, issue.id)
 
-        self.assertIsNotNone(r)
+        self.assertIsNotNone(response)
 
 
 class SettingsTestCase(TestCase):
@@ -114,40 +115,45 @@ class SettingsTestCase(TestCase):
             )
 
     def test_call_view_anon(self):
-        r = self.client.get(reverse("settings"))
-        self.assertRedirects(r, expected_url="/login/?next=/settings/")
+        response = self.client.get(reverse("settings"))
+        self.assertRedirects(response, expected_url="/login/?next=/settings/")
 
     def test_call_view_logged_in(self):
         self.client.force_login(self.user)
-        r = self.client.get(reverse("settings"))
+        response = self.client.get(reverse("settings"))
 
-        self.assertEqual(r.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_change_timezone(self):
         self.client.force_login(self.user)
         data = {"timezone": "UTC"}
-        r = self.client.post(reverse("settings"), data=data)
+        response = self.client.post(reverse("settings"), data=data)
 
-        self.assertRedirects(r, "/settings/")
+        self.assertRedirects(response, "/settings/")
 
     def test_change_language(self):
         self.client.force_login(self.user)
         data = {"language": "ru"}
-        r = self.client.post("/settings/setlang/", data=data)
+        response = self.client.post("/settings/setlang/", data=data)
 
-        self.assertRedirects(r, "/")
+        self.assertRedirects(response, "/")
 
 
 class ProjectsTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
-        self.project = Project.objects.create(
+        cls.project = Project.objects.create(
             name="Testing", key="TEST", type="Fullstack",
-            starred=1, author_id=self.user.id
+            starred=1, author_id=cls.user.id
+            )
+        cls.project2 = Project.objects.create(
+            name="TestO", key="TESTO", type="Back-end",
+            starred=0, author_id=cls.user.id
             )
 
     def test_call_view_anonymous(self):
@@ -156,7 +162,6 @@ class ProjectsTestCase(TestCase):
 
     def test_call_view_logged_in(self):
         self.client.force_login(self.user)
-
         response = self.client.get(reverse("projects"))
 
         self.assertEqual(response.status_code, 200)
@@ -200,26 +205,51 @@ class ProjectsTestCase(TestCase):
                          "Project with that key already exists"
                          )
 
+    def test_put_unfavorite(self):
+        self.client.force_login(self.user)
+        data = {"icon_id": f"star{self.project.id}", "icon_color": "grey"}
+
+        response = self.client.put(reverse("projects"), data=json.dumps(data))
+        project_starred = Project.objects.only(
+            "starred"
+            ).get(id=self.project.id).starred
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(project_starred, 0)
+
+    def test_put_favorite(self):
+        self.client.force_login(self.user)
+        data = {"icon_id": f"star{self.project2.id}", "icon_color": "gold"}
+
+        response = self.client.put(reverse("projects"), data=json.dumps(data))
+        project_starred = Project.objects.only(
+            "starred"
+            ).get(id=self.project2.id).starred
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(project_starred, 1)
+
 
 class BoardsTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
-        self.project = Project.objects.create(
+        cls.project = Project.objects.create(
             name="Testing1", key="TEST1",
-            type="Fullstack", author_id=self.user.id
+            type="Fullstack", author_id=cls.user.id
             )
-        self.issue = Issue.objects.create(
-            project_id=self.project.id,
+        cls.issue = Issue.objects.create(
+            project_id=cls.project.id,
             title="Issue",
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
             status="To do",
-            author_id=self.user.id
+            author_id=cls.user.id
             )
 
     def test_call_view_anonymous(self):
@@ -281,6 +311,20 @@ class BoardsTestCase(TestCase):
         self.assertEqual(remove_html(str(messages[0])),
                          "Issue with that title already exists"
                          )
+
+    def test_put_status(self):
+        self.client.force_login(self.user)
+        data = {"target": "In Progress", "issue_id": self.issue.id}
+
+        response = self.client.put(
+            reverse("boards", args=[self.project.id]), data=json.dumps(data)
+            )
+        issue_status = Issue.objects.only(
+            "status"
+            ).get(id=self.issue.id).status
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(issue_status, "In Progress")
 
 
 class IssueDetailsTestCase(TestCase):
