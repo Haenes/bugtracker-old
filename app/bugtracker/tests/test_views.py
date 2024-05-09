@@ -104,6 +104,40 @@ class ETagTestCase(TestCase):
         self.assertIsNotNone(r)
 
 
+class SettingsTestCase(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
+            first_name="Test", last_name="Test", username="testing",
+            email="testemail@gmail.com", password="Password123#"
+            )
+
+    def test_call_view_anon(self):
+        r = self.client.get(reverse("settings"))
+        self.assertRedirects(r, expected_url="/login/?next=/settings/")
+
+    def test_call_view_logged_in(self):
+        self.client.force_login(self.user)
+        r = self.client.get(reverse("settings"))
+
+        self.assertEqual(r.status_code, 200)
+
+    def test_change_timezone(self):
+        self.client.force_login(self.user)
+        data = {"timezone": "UTC"}
+        r = self.client.post(reverse("settings"), data=data)
+
+        self.assertRedirects(r, "/settings/")
+
+    def test_change_language(self):
+        self.client.force_login(self.user)
+        data = {"language": "ru"}
+        r = self.client.post("/settings/setlang/", data=data)
+
+        self.assertRedirects(r, "/")
+
+
 class ProjectsTestCase(TestCase):
 
     def setUp(self):
