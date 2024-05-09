@@ -1,6 +1,6 @@
 import re
 
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages import get_messages
@@ -9,6 +9,10 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
 from bugtracker.models import Project, Issue
+from bugtracker.views import (
+    last_modified_issue_of_project, last_created_project,
+    last_update_of_issue
+    )
 
 
 def remove_html(string: str) -> str:
@@ -17,6 +21,87 @@ def remove_html(string: str) -> str:
     clean = re.sub(pattern, "", string)
 
     return clean
+
+
+class ETagTestCase(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(
+            first_name="Test", last_name="Test", username="testing",
+            email="testemail@gmail.com", password="Password123#"
+            )
+        self.factory = RequestFactory()
+
+    def test_last_modified_issue_of_project_datetime(self):
+        project = Project.objects.create(
+            name="Testing", key="TEST", type="Fullstack",
+            starred=1, author_id=self.user.id
+            )
+        Issue.objects.create(
+            project_id=project.id,
+            title="Issue",
+            description="Big Socks Just Big Socks",
+            type="Feature",
+            priority="Medium",
+            status="To do",
+            author_id=self.user.id
+            )
+        request = self.factory.get(reverse("boards", args=[project.id]))
+        request.user = self.user
+        r = last_modified_issue_of_project(request, project.id)
+
+        self.assertIsNotNone(r)
+
+    def test_last_modified_issue_of_project_none(self):
+        project = Project.objects.create(
+            name="Testing", key="TEST", type="Fullstack",
+            starred=1, author_id=self.user.id
+            )
+        request = self.factory.get(reverse("boards", args=[project.id]))
+        request.user = self.user
+        r = last_modified_issue_of_project(request, project.id)
+
+        self.assertIsNone(r)
+
+    def test_last_created_project_datetime(self):
+        Project.objects.create(
+            name="Testing", key="TEST", type="Fullstack",
+            starred=1, author_id=self.user.id
+            )
+        request = self.factory.get(reverse("projects"))
+        request.user = self.user
+        r = last_created_project(request)
+
+        self.assertIsNotNone(r)
+
+    def test_last_created_project_none(self):
+        request = self.factory.get(reverse("projects"))
+        request.user = self.user
+        r = last_created_project(request)
+
+        self.assertIsNone(r)
+
+    def test_last_update_of_issue_datetime(self):
+        project = Project.objects.create(
+            name="Testing", key="TEST", type="Fullstack",
+            starred=1, author_id=self.user.id
+            )
+        issue = Issue.objects.create(
+            project_id=project.id,
+            title="Issue",
+            description="Big Socks Just Big Socks",
+            type="Feature",
+            priority="Medium",
+            status="To do",
+            author_id=self.user.id
+            )
+        request = self.factory.get(
+            reverse("issue-details", args=[project.id, issue.id])
+            )
+        request.user = self.user
+        r = last_update_of_issue(request, project.id, issue.id)
+
+        self.assertIsNotNone(r)
 
 
 class ProjectsTestCase(TestCase):

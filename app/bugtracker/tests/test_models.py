@@ -48,6 +48,9 @@ class ProjectTestCase(TestCase):
         self.assertEqual(self.project1.starred, 0)
         self.assertEqual(self.project3.starred, 1)
 
+    def test_str(self):
+        self.assertEqual(str(self.project1), "Testing1")
+
 
 class IssueTestCase(TestCase):
 
@@ -73,3 +76,6 @@ class IssueTestCase(TestCase):
     def test_description(self):
         self.assertNotEqual(self.issue.description, "")
         self.assertEqual(self.issue.description, "Big Socks Just Big Socks")
+
+    def test_str(self):
+        self.assertEqual(str(self.issue), "Issue")
