@@ -29,12 +29,13 @@ def remove_html(string: str) -> str:
 
 class ETagTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
-        self.factory = RequestFactory()
+        cls.factory = RequestFactory()
 
     def test_last_modified_issue_of_project_datetime(self):
         project = Project.objects.create(
@@ -336,34 +337,35 @@ class BoardsTestCase(TestCase):
 
 class IssueDetailsTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
-        self.project = Project.objects.create(
+        cls.project = Project.objects.create(
             name="Testing", key="TEST",
-            type="Fullstack", author_id=self.user.id
+            type="Fullstack", author_id=cls.user.id
             )
 
-        self.issue1 = Issue.objects.create(
-            project_id=self.project.id,
+        cls.issue1 = Issue.objects.create(
+            project_id=cls.project.id,
             title="Issue",
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
             status="To do",
-            author_id=self.user.id
+            author_id=cls.user.id
             )
 
-        self.issue2 = Issue.objects.create(
-            project_id=self.project.id,
+        cls.issue2 = Issue.objects.create(
+            project_id=cls.project.id,
             title="Issue2",
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
             status="To do",
-            author_id=self.user.id
+            author_id=cls.user.id
             )
 
     def test_call_view_anonymous(self):
@@ -431,18 +433,19 @@ class IssueDetailsTestCase(TestCase):
 
 class ProjectSettingsTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
-        self.project1 = Project.objects.create(
+        cls.project1 = Project.objects.create(
             name="TestingI", key="TEST",
-            type="Fullstack", author_id=self.user.id
+            type="Fullstack", author_id=cls.user.id
             )
-        self.project2 = Project.objects.create(
+        cls.project2 = Project.objects.create(
             name="TestingII", key="TESTII",
-            type="Fullstack", author_id=self.user.id
+            type="Fullstack", author_id=cls.user.id
             )
 
     def test_call_view_anonymous(self):
@@ -496,12 +499,13 @@ class ProjectSettingsTestCase(TestCase):
 
 class AccountsTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
-        self.user2 = User.objects.create_user(
+        cls.user2 = User.objects.create_user(
             first_name="Test", last_name="Test", username="testingII",
             email="testemail2@gmail.com", password="Password123#"
             )
@@ -605,8 +609,9 @@ class AccountsTestCase(TestCase):
 
 class SearchTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
@@ -671,8 +676,9 @@ class SearchTestCase(TestCase):
 
 class SearchResultsTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
@@ -695,8 +701,9 @@ class SearchResultsTestCase(TestCase):
 
 class LoginTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
@@ -757,8 +764,9 @@ class LoginTestCase(TestCase):
 
 class RegisterTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
@@ -836,20 +844,39 @@ class RegisterTestCase(TestCase):
 
 class RegisterConfirmTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
 
-    def test_call_view(self):
+    def test_call_view_success(self):
         uid = urlsafe_base64_encode(force_bytes(self.user.pk))
         token = default_token_generator.make_token(self.user)
 
         response = self.client.get(
             path=reverse("register_confirm", args=[uid, token])
             )
+        messages = list(get_messages(response.wsgi_request))
 
+        self.assertEqual(
+            str(messages[0]),
+            "Email is confirmed, you can log in now!"
+            )
+        self.assertEqual(response.status_code, 302)
+
+    def test_call_view_fail(self):
+        fake_user_id = 451
+        fake_uid = urlsafe_base64_encode(force_bytes(fake_user_id))
+        token = default_token_generator.make_token(self.user)
+
+        response = self.client.get(
+            path=reverse("register_confirm", args=[fake_uid, token])
+            )
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertEqual(str(messages[0]), "Email confirmation is failed!")
         self.assertEqual(response.status_code, 302)
 
 
@@ -900,8 +927,9 @@ class PasswordResetDoneTestCase(TestCase):
 
 class PasswordResetConfirmTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
@@ -957,14 +985,15 @@ class PasswordResetConfirmTestCase(TestCase):
 
 class DeleteProjectTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
-        self.project = Project.objects.create(
+        cls.project = Project.objects.create(
             name="Testing1", key="TEST1",
-            type="Fullstack", author_id=self.user.id
+            type="Fullstack", author_id=cls.user.id
             )
 
     def test_call_view_anonymous(self):
@@ -992,23 +1021,24 @@ class DeleteProjectTestCase(TestCase):
 
 class DeleteIssueTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
-        self.project = Project.objects.create(
+        cls.project = Project.objects.create(
             name="Testing1", key="TEST1",
-            type="Fullstack", author_id=self.user.id
+            type="Fullstack", author_id=cls.user.id
             )
-        self.issue = Issue.objects.create(
-            project_id=self.project.id,
+        cls.issue = Issue.objects.create(
+            project_id=cls.project.id,
             title="Issue",
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
             status="To do",
-            author_id=self.user.id)
+            author_id=cls.user.id)
 
     def test_call_view_anonymous(self):
         response = self.client.get(
@@ -1034,8 +1064,9 @@ class DeleteIssueTestCase(TestCase):
 
 class DeleteAccountTestCase(TestCase):
 
-    def setUp(self):
-        self.user = User.objects.create_user(
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = User.objects.create_user(
             first_name="Test", last_name="Test", username="testing",
             email="testemail@gmail.com", password="Password123#"
             )
