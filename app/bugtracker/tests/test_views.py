@@ -1,11 +1,14 @@
 import re
 import json
 
-from django.test import RequestFactory, TestCase
+from django.core import mail
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.messages import get_messages
+from django.test import RequestFactory, TestCase
 from django.urls import reverse
+from django.utils import translation
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
@@ -134,9 +137,13 @@ class SettingsTestCase(TestCase):
     def test_change_language(self):
         self.client.force_login(self.user)
         data = {"language": "ru"}
-        response = self.client.post("/settings/setlang/", data=data)
+        response = self.client.post(
+            path="/settings/setlang/",
+            data=data, follow=True
+            )
 
         self.assertRedirects(response, "/")
+        self.assertEqual(response.headers["Content-Language"], "ru")
 
 
 class ProjectsTestCase(TestCase):
@@ -700,13 +707,36 @@ class LoginTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
 
+    def test_call_view_already_logged_in(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("login"))
+
+        self.assertRedirects(response, reverse("projects"))
+
     def test_post_success(self):
         data = {"username": "testing", "password": "Password123#"}
 
         self.client.login(username=data["username"], password=data["password"])
         response = self.client.post(reverse("login"), data=data, follow=True)
+        cookies = dict(self.client.cookies.get("sessionid"))
 
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(cookies["max-age"], 3600)
+        self.assertTemplateUsed(response, "projects.html")
+
+    def test_post_success_remember_me(self):
+        data = {
+            "username": "testing",
+            "password": "Password123#",
+            "remember": True
+            }
+
+        self.client.login(username=data["username"], password=data["password"])
+        response = self.client.post(reverse("login"), data=data, follow=True)
+        cookies = dict(self.client.cookies.get("sessionid"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(cookies["max-age"], 2592000)
         self.assertTemplateUsed(response, "projects.html")
 
     def test_post_fail(self):
@@ -719,9 +749,10 @@ class LoginTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
         self.assertEqual(len(messages), 1)
-        self.assertEqual(remove_html(str(messages[0])),
-                         "Invalid username and/or password"
-                         )
+        self.assertEqual(
+            remove_html(str(messages[0])),
+            "Invalid username and/or password"
+            )
 
 
 class RegisterTestCase(TestCase):
@@ -760,6 +791,30 @@ class RegisterTestCase(TestCase):
             "Check your email to confirm it and complete the registration!"
             )
         self.assertTemplateUsed(response, "login.html")
+
+    def test_post_success_rus(self):
+        data = {
+            "first_name": "Second",
+            "last_name": "PreLast",
+            "username": "nameuser",
+            "email": "liaem@gmail.com",
+            "password1": "Test123#",
+            "password2": "Test123#"
+            }
+
+        response = self.client.post(
+            path=reverse("register"), data=data, follow=True,
+            headers={"accept-language": "ru"}
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(
+            mail.outbox[0].subject,
+            "Ссылка для активации была отправлена на ваш электронный адрес"
+            )
+        self.assertTemplateUsed(response, "login.html")
+        translation.activate(settings.LANGUAGE_CODE)
 
     def test_post_fail(self):
         data = {
