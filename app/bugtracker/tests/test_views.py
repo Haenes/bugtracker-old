@@ -265,7 +265,7 @@ class BoardsTestCase(TestCase):
 
         response = self.client.get(reverse("boards", args=[self.project.id]))
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "boards.html")
 
     def test_post_success(self):
@@ -377,7 +377,7 @@ class IssueDetailsTestCase(TestCase):
             reverse("issue-details", args=[self.project.id, self.issue1.id])
             )
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "issue-details.html")
 
     def test_post_success(self):
@@ -455,7 +455,7 @@ class ProjectSettingsTestCase(TestCase):
             path=reverse("project-settings", args=[self.project1.id])
             )
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "project-settings.html")
 
     def test_post_success(self):
@@ -501,19 +501,20 @@ class AccountsTestCase(TestCase):
 
     def test_call_view_anonymous(self):
         response = self.client.get(reverse("accounts", args=[self.user.id]))
-        self.assertRedirects(response,
-                             f"/login/?next=/accounts/{self.user.id}/"
-                             )
+        self.assertRedirects(
+            response,
+            f"/login/?next=/accounts/{self.user.id}/"
+            )
 
     def test_call_view_logged_in(self):
         self.client.force_login(self.user)
 
         response = self.client.get(reverse("accounts", args=[self.user.id]))
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "accounts.html")
 
-    def test_post_success(self):
+    def test_post_user_success(self):
         self.client.force_login(self.user)
         data = {
             "user_details": True,
@@ -529,7 +530,7 @@ class AccountsTestCase(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    def test_post_fail(self):
+    def test_post_user_fail(self):
         self.client.force_login(self.user)
         data = {
             "user_details": True,
@@ -553,6 +554,47 @@ class AccountsTestCase(TestCase):
                          "User with this Email address already exists."
                          )
 
+    def test_post_password_success(self):
+        self.client.force_login(self.user)
+        data = {
+            "change_password": True,
+            "new_password1": "pASSword123#",
+            "new_password2": "pASSword123#",
+            }
+
+        response = self.client.post(
+            path=reverse("accounts", args=[self.user.id]),
+            data=data, follow=True
+            )
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertEqual(len(messages), 1)
+        self.assertContains(
+            response,
+            "Your password was successfully updated!"
+            )
+
+    def test_post_password_fail(self):
+        self.client.force_login(self.user)
+        data = {
+            "change_password": True,
+            "new_password1": "pASSword",
+            "new_password2": "pASS123#",
+            }
+
+        response = self.client.post(
+            path=reverse("accounts", args=[self.user.id]),
+            data=data, follow=True
+            )
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertEqual(len(messages), 2)
+        self.assertContains(
+            response,
+            "The password doesn&#x27;t meet the conditions",
+            )
+        self.assertContains(response, "Passwords don&#x27;t match")
+
 
 class SearchTestCase(TestCase):
 
@@ -571,7 +613,53 @@ class SearchTestCase(TestCase):
 
         response = self.client.get(reverse("search"))
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
+
+    def test_search_success(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse("search"), {"q": "Issue"})
+
+        self.assertRedirects(
+            response,
+            reverse("search-results", args=["Issue"])
+            )
+
+    def test_search_empty(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("search"), {"q": " "})
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertRedirects(response, "/")
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "Please, give a data for search")
+
+    def test_search_many_words(self):
+        self.client.force_login(self.user)
+        data = {"q": "Hi there! I'm testing you."}
+
+        response = self.client.get(reverse("search"), data)
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertRedirects(response, "/")
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(
+            str(messages[0]),
+            "Please, give just one word to search"
+            )
+
+    def test_search_special_symbols(self):
+        self.client.force_login(self.user)
+
+        response = self.client.get(reverse("search"), {"q": "!"})
+        messages = list(get_messages(response.wsgi_request))
+
+        self.assertRedirects(response, "/")
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(
+            str(messages[0]),
+            "Please, don't use special symbols in search"
+            )
 
 
 class SearchResultsTestCase(TestCase):
@@ -594,7 +682,7 @@ class SearchResultsTestCase(TestCase):
 
         response = self.client.get(reverse("search-results", args=[q]))
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "search-results.html")
 
 
@@ -609,7 +697,7 @@ class LoginTestCase(TestCase):
     def test_call_view(self):
         response = self.client.get(reverse("login"))
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "login.html")
 
     def test_post_success(self):
@@ -647,7 +735,7 @@ class RegisterTestCase(TestCase):
     def test_call_view(self):
         response = self.client.get(reverse("register"))
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "register.html")
 
     def test_post_success(self):
@@ -707,7 +795,7 @@ class RegisterConfirmTestCase(TestCase):
             path=reverse("register_confirm", args=[uid, token])
             )
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
 
 class LogoutTestCase(TestCase):
@@ -723,7 +811,7 @@ class LogoutTestCase(TestCase):
 
         response = self.client.get(reverse("logout"))
 
-        self.assertTrue(response.status_code, 301)
+        self.assertEqual(response.status_code, 302)
 
 
 class PasswordResetTestCase(TestCase):
@@ -731,7 +819,7 @@ class PasswordResetTestCase(TestCase):
     def test_call_view(self):
         response = self.client.get(reverse("password-reset"))
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "password-reset.html")
 
     def test_post(self):
@@ -751,7 +839,7 @@ class PasswordResetDoneTestCase(TestCase):
     def test_call_view(self):
         response = self.client.get(reverse("password-reset-done"))
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "password-reset-done.html")
 
 
@@ -770,7 +858,7 @@ class PasswordResetConfirmTestCase(TestCase):
         response = self.client.get(
             path=reverse("password_reset_confirm", args=[uid, token]))
 
-        self.assertTrue(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "password-reset-confirm.html")
 
     def test_post_success(self):
@@ -842,7 +930,7 @@ class DeleteProjectTestCase(TestCase):
             )
         messages = list(get_messages(response.wsgi_request))
 
-        self.assertTrue(response.status_code, 301)
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(len(messages), 1)
         self.assertEqual(remove_html(str(messages[0])), "Project deleted!")
 
@@ -884,7 +972,7 @@ class DeleteIssueTestCase(TestCase):
             )
         messages = list(get_messages(response.wsgi_request))
 
-        self.assertTrue(response.status_code, 301)
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(len(messages), 1)
         self.assertEqual(remove_html(str(messages[0])), "Issue deleted!")
 
@@ -915,6 +1003,6 @@ class DeleteAccountTestCase(TestCase):
             )
         messages = list(get_messages(response.wsgi_request))
 
-        self.assertTrue(response.status_code, 301)
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(len(messages), 1)
         self.assertEqual(remove_html(str(messages[0])), "Account deleted!")
