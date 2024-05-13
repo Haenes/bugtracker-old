@@ -1,0 +1,36 @@
+name: default
+
+run-name: Run the tests
+
+on: [push, workflow_dispatch]
+
+jobs:
+
+  test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure .env file
+        run: |
+          cat << EOF > .env
+          DJANGO_SECRET = ${{ secrets.DJANGO_SECRET }}
+          POSTGRES_DB =  ${{ secrets.POSTGRES_DB }}
+          POSTGRES_HOST = ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PASSWORD = ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_PORT = ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_USER = ${{ secrets.POSTGRES_USER }}
+          PGDATA = ${{ secrets.PGDATA }}
+          REDIS_USER = ${{ secrets.REDIS_USER }}
+          REDIS_PASSWORD = ${{ secrets.REDIS_PASSWORD }}
+          EOF
+
+      - name: Start containers
+        run: docker compose up -d
+
+      - name: Run tests
+        run: docker compose exec web app/manage.py test app/bugtracker/tests/ --keepdb --parallel
