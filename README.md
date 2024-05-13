@@ -1,3 +1,9 @@
+[![default](https://github.com/Haenes/bugtracker/actions/workflows/default.yml/badge.svg)](https://github.com/Haenes/bugtracker/actions/workflows/default.yml)
+![release](https://img.shields.io/github/v/release/Haenes/bugtracker)
+![license](https://img.shields.io/github/license/Haenes/bugtracker)
+
+
+
 # BugTracker
 This is the light version of bug tracker, that have:
   1) Ability to account registration with email confirmation, edit account details and delete it;
