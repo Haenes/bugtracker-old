@@ -1,8 +1,8 @@
-name: default
+name: testing
 
 run-name: Run the tests
 
-on: [push, workflow_dispatch]
+on: workflow_dispatch
 
 jobs:
 
