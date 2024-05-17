@@ -1,4 +1,4 @@
-[![default](https://github.com/Haenes/bugtracker/actions/workflows/default.yml/badge.svg)](https://github.com/Haenes/bugtracker/actions/workflows/default.yml)
+[![testing](https://github.com/Haenes/bugtracker/actions/workflows/testing.yml/badge.svg)](https://github.com/Haenes/bugtracker/actions/workflows/testing.yml)
 ![release](https://img.shields.io/github/v/release/Haenes/bugtracker)
 ![license](https://img.shields.io/github/license/Haenes/bugtracker)
 
