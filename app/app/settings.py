@@ -43,7 +43,8 @@ REST_FRAMEWORK = {
     },
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'NUM_PROXIES': 1
 }
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
