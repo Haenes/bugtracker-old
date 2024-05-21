@@ -6,8 +6,7 @@
 {% block title %} {% translate "Board" %} {% endblock %}
 
 {% block script %}
-	<script type="text/javascript" defer src="{% static 'favorite.js' %}"></script>
-	<script type="text/javascript" defer src="{% static 'cards.js' %}" ></script>
+	<script defer src="{% static 'minify/boards.min.js' %}"></script>
 {% endblock script %}
 
 {% block issue_modal %}
@@ -45,12 +44,20 @@
 			{% if project.starred %}
 				<button type="button" class="btn p-0" data-text="add" data-bs-toggle="tooltip" data-bs-placement="bottom"
 					title="Favorite project">
-					<i id="star{{project_id}}" class="fs-5 bi bi-star-fill" onclick="changeIcon(this)" data="{% url 'projects' %}" style="color: gold;"></i>
+					<i>
+						<svg id="star{{project_id}}" onclick="changeIcon(this)" data="{% url 'projects' %}" style="color: gold;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="fs-5 bi bi-star-fill" viewBox="0 0 16 16">
+							<path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+						</svg>
+					</i>
 				</button>
 			{% else %}
 				<button type="button" class="btn p-0" data-text="remove" data-bs-toggle="tooltip" data-bs-placement="bottom"
 					title="Favorite project">
-					<i id="star{{project_id}}" class="fs-5 bi bi-star icon-color" onclick="changeIcon(this)" data="{% url 'projects' %}"></i>
+					<i>
+						<svg id="star{{project_id}}" onclick="changeIcon(this)" data="{% url 'projects' %}"  xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="fs-5 icon-color bi bi-star" viewBox="0 0 16 16">
+							<path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
+						</svg>
+					</i>
 				</button>
 			{% endif %}
 		</div>
@@ -188,7 +195,11 @@
 										<div class="align-self-end">
 											<a href="{% url 'issue-details' project_id issue.id %}"
 												class="nav-link px-0 text-end text-secondary">
-												<i class="fs-5 bi bi-gear-wide icon-color"></i>
+												<i class="fs-5 icon-color">
+													<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-gear-wide" viewBox="0 0 16 16">
+														<path d="M8.932.727c-.243-.97-1.62-.97-1.864 0l-.071.286a.96.96 0 0 1-1.622.434l-.205-.211c-.695-.719-1.888-.03-1.613.931l.08.284a.96.96 0 0 1-1.186 1.187l-.284-.081c-.96-.275-1.65.918-.931 1.613l.211.205a.96.96 0 0 1-.434 1.622l-.286.071c-.97.243-.97 1.62 0 1.864l.286.071a.96.96 0 0 1 .434 1.622l-.211.205c-.719.695-.03 1.888.931 1.613l.284-.08a.96.96 0 0 1 1.187 1.187l-.081.283c-.275.96.918 1.65 1.613.931l.205-.211a.96.96 0 0 1 1.622.434l.071.286c.243.97 1.62.97 1.864 0l.071-.286a.96.96 0 0 1 1.622-.434l.205.211c.695.719 1.888.03 1.613-.931l-.08-.284a.96.96 0 0 1 1.187-1.187l.283.081c.96.275 1.65-.918.931-1.613l-.211-.205a.96.96 0 0 1 .434-1.622l.286-.071c.97-.243.97-1.62 0-1.864l-.286-.071a.96.96 0 0 1-.434-1.622l.211-.205c.719-.695.03-1.888-.931-1.613l-.284.08a.96.96 0 0 1-1.187-1.186l.081-.284c.275-.96-.918-1.65-1.613-.931l-.205.211a.96.96 0 0 1-1.622-.434zM8 12.997a4.998 4.998 0 1 1 0-9.995 4.998 4.998 0 0 1 0 9.996z"/>
+													</svg>
+												</i>
 												<span class="ms-1 d-none d-sm-inline">{% translate "Configure" %}</span>
 											</a>
 										</div>
