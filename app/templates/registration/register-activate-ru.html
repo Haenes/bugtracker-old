@@ -1,5 +1,5 @@
 {% autoescape off %} 
 	Здравствуйте, {{ user.first_name }}, 
 	Пожалуйста, перейдите по ссылке ниже для подтверждения вашей электронной почты: 
-	http://{{ domain }}{% url "register_confirm" uidb64=uid token=token %} 
+	https://{{ domain }}{% url "register_confirm" uidb64=uid token=token %} 
 {% endautoescape %} 

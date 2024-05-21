@@ -38,4 +38,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           source: "*"
-          target: BugTracker/
+          target: bugtracker/
