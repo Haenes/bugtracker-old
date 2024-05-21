@@ -10,7 +10,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>{% block title %}{% endblock %}</title>
 
-		<link href="{% static 'minify/style.min.css' %}" rel="stylesheet">
+		<link href="{% static 'mini/style.min.css' %}" rel="stylesheet">
 
 		<link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
 		<link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
@@ -23,7 +23,7 @@
 		<meta name="msapplication-TileImage" content="{% static 'favicon/mstile-144x144.png' %}">
 		<meta name="theme-color" content="#ffffff">
 
-		<script src="{% static 'minify/color-mode.min.js' %}"></script>
+		<script src="{% static 'mini/color-mode.min.js' %}"></script>
 		{% block script %}{% endblock %}
 	</head>
 
@@ -91,7 +91,7 @@
 	{% endblock navbar %}
 
 		{% block sidebar %}{% endblock %}
-		<script src="{% static 'minify/bootstrap.bundle.min.js' %}"></script>
+		<script src="{% static 'mini/bootstrap.bundle.min.js' %}"></script>
 		{% block main %}
 
 			{% block breadcrumb %}
