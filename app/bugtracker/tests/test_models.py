@@ -14,22 +14,22 @@ class ProjectTestCase(TestCase):
             )
         self.project1 = Project.objects.create(
             name="Testing1", key="TEST1",
-            type="Fullstack", author_id=self.user.id
+            type="FULLSTACK", author_id=self.user.id
             )
         self.project2 = Project.objects.create(
             name="Testing2", description="Test project2", key="TEST2",
-            type="Fullstack", author_id=self.user.id
+            type="FULLSTACK", author_id=self.user.id
             )
         self.project3 = Project.objects.create(
             name="Testing3", description="Test project3", key="TEST3",
-            type="Fullstack", starred=1, author_id=self.user.id
+            type="FULLSTACK", starred=1, author_id=self.user.id
             )
 
     def test_model_validation(self):
         try:
             project = Project.objects.create(
                 name="Te", description="Description for test project",
-                key="TE", type="Fullstack", author_id=self.user.id
+                key="TE", type="FULLSTACK", author_id=self.user.id
                 )
             project.full_clean()
         except ValidationError as e:
@@ -61,7 +61,7 @@ class IssueTestCase(TestCase):
             )
         self.project = Project.objects.create(
             name="Testing1", key="TEST1",
-            type="Fullstack", author_id=self.user.id
+            type="FULLSTACK", author_id=self.user.id
             )
         self.issue = Issue.objects.create(
             project_id=self.project.id,
@@ -69,7 +69,7 @@ class IssueTestCase(TestCase):
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
-            status="To do",
+            status="TO_DO",
             author_id=self.user.id
             )
 

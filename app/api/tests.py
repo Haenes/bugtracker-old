@@ -16,7 +16,7 @@ class ViewsTestCase(APITestCase):
             )
         self.project = Project.objects.create(
             name="Testing1", key="TEST1",
-            type="Fullstack", author_id=self.user.id
+            type="FULLSTACK", author_id=self.user.id
             )
         self.issue = Issue.objects.create(
             project_id=self.project.id,
@@ -24,7 +24,7 @@ class ViewsTestCase(APITestCase):
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
-            status="To do",
+            status="TO_DO",
             author_id=self.user.id
             )
         self.project_url = f"http://testserver/api/projects/{self.project.id}/"
@@ -53,7 +53,7 @@ class ViewsTestCase(APITestCase):
         data = {
             "name": "Testing",
             "key": "TEST",
-            "type": "Fullstack",
+            "type": "FULLSTACK",
             "starred": 1,
             "author_id": self.user.id
         }
@@ -90,7 +90,7 @@ class ViewsTestCase(APITestCase):
         data = {
             "name": "Testing",
             "key": "TEST",
-            "type": "Back-end",
+            "type": "BACKEND",
             "starred": 1
         }
         r = self.client.put(
@@ -137,7 +137,7 @@ class ViewsTestCase(APITestCase):
             "title": "Title issue",
             "type": "Feature",
             "priority": "Medium",
-            "status": "To do",
+            "status": "TO_DO",
             "author": self.user.id
         }
         r = self.client.post(reverse("issue-list"), data=data)
@@ -148,7 +148,7 @@ class ViewsTestCase(APITestCase):
             "project": self.project_url,
             "title": "Title issue",
             "priority": "Medium",
-            "status": "To do",
+            "status": "TO_DO",
             "author": self.user.id
         }
         r = self.client.post(reverse("issue-list"), data=data)
@@ -170,7 +170,7 @@ class ViewsTestCase(APITestCase):
             "title": "Test title",
             "type": "Bug",
             "priority": "Highest",
-            "status": "In progress",
+            "status": "IN_PROGRESS",
         }
         r = self.client.put(
             reverse("issue-detail", args=[self.issue.id]),
@@ -183,7 +183,7 @@ class ViewsTestCase(APITestCase):
             "project": self.project_url,
             "title": "Test title",
             "priority": "Highest",
-            "status": "In progress",
+            "status": "IN_PROGRESS",
         }
         r = self.client.put(
             reverse("issue-detail", args=[self.issue.id]),
