@@ -12,9 +12,9 @@ User._meta.get_field("email")._unique = True
 class Project(models.Model):
 
     PROJECT_TYPE = [
-        ("FULLSTACK", "Fullstack"),
-        ("FRONTEND", "Front-end"),
-        ("BACKEND", "Back-end"),
+        ("Fullstack", "Fullstack"),
+        ("Front-end", "Front-end"),
+        ("Back-end", "Back-end"),
     ]
 
     name = models.CharField(
@@ -62,9 +62,9 @@ class Issue(models.Model):
     ]
 
     ISSUE_STATUS = [
-        ("TO_DO", _("To do")),
-        ("IN_PROGRESS", _("In progress")),
-        ("DONE", _("Done")),
+        ("To do", _("To do")),
+        ("In progress", _("In progress")),
+        ("Done", _("Done")),
     ]
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)

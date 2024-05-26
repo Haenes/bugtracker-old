@@ -351,7 +351,7 @@ class ProjectDetailsFormTestCase(TestCase):
             email="testemail@gmail.com", password="Password123#"
             )
         self.project = Project.objects.create(
-            name="Testing", key="TEST", type="FULLSTACK",
+            name="Testing", key="TEST", type="Fullstack",
             starred=1, author_id=self.user.id
             )
 
@@ -388,17 +388,17 @@ class ProjectModalFormTestCase(TestCase):
             email="testemail@gmail.com", password="Password123#"
             )
         self.project = Project.objects.create(
-            name="Testing", key="TEST", type="FULLSTACK",
+            name="Testing", key="TEST", type="Fullstack",
             starred=1, author_id=self.user.id
             )
 
     def test_name_field(self):
         data_invalid = {
             "author": self.user.id, "name": "Testing", "key": "TESTI",
-            "type": "FULLSTACK", "starred": 1
+            "type": "Fullstack", "starred": 1
             }
         data_valid = {"author": self.user.id, "name": "Test", "key": "TESTII",
-                      "type": "FULLSTACK", "starred": 1
+                      "type": "Fullstack", "starred": 1
                       }
 
         form_invalid = ProjectModalForm(data_invalid)
@@ -412,11 +412,11 @@ class ProjectModalFormTestCase(TestCase):
     def test_key_field(self):
         data_invalid = {
             "author": self.user.id, "name": "Test", "key": "TEST",
-            "type": "FULLSTACK", "starred": 1
+            "type": "Fullstack", "starred": 1
             }
         data_valid = {
             "author": self.user.id, "name": "Test", "key": "TESTII",
-            "type": "FULLSTACK", "starred": 1
+            "type": "Fullstack", "starred": 1
             }
 
         form_invalid = ProjectModalForm(data_invalid,
@@ -440,7 +440,7 @@ class IssueModalFormTestCase(TestCase):
             email="testemail@gmail.com", password="Password123#"
             )
         self.project = Project.objects.create(
-            name="Testing", key="TEST", type="FULLSTACK",
+            name="Testing", key="TEST", type="Fullstack",
             starred=1, author_id=self.user.id
             )
         self.issue = Issue.objects.create(
@@ -449,7 +449,7 @@ class IssueModalFormTestCase(TestCase):
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
-            status="TO_DO",
+            status="To do",
             author_id=self.user.id
             )
 
@@ -461,7 +461,7 @@ class IssueModalFormTestCase(TestCase):
             "description": "Test",
             "type": "Feature",
             "priority": "Medium",
-            "status": "TO_DO"
+            "status": "To do"
             }
 
         data_valid = {
@@ -471,7 +471,7 @@ class IssueModalFormTestCase(TestCase):
             "description": "Test",
             "type": "Feature",
             "priority": "Medium",
-            "status": "TO_DO"
+            "status": "To do"
             }
 
         form_invalid = IssueModalForm(data_invalid)

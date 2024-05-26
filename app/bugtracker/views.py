@@ -193,7 +193,7 @@ def boards(request, project_id):
                 description=cd["description"],
                 type=cd["type"],
                 priority=cd["priority"],
-                status="TO_DO",
+                status="To do",
                 author_id=user_id
                 )
             messages.success(request, _("Issue created!"))
@@ -217,10 +217,7 @@ def boards(request, project_id):
             status = _("Status:")
 
             return JsonResponse(
-                {
-                    "id": issue.id, "status": status,
-                    "source": _(issue.get_status_display())
-                    }
+                {"id": issue.id, "status": status, "source": _(issue.status)}
                 )
 
     else:

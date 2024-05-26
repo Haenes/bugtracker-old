@@ -39,7 +39,7 @@ class ETagTestCase(TestCase):
 
     def test_last_modified_issue_of_project_datetime(self):
         project = Project.objects.create(
-            name="Testing", key="TEST", type="FULLSTACK",
+            name="Testing", key="TEST", type="Fullstack",
             starred=1, author_id=self.user.id
             )
         Issue.objects.create(
@@ -48,7 +48,7 @@ class ETagTestCase(TestCase):
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
-            status="TO_DO",
+            status="To do",
             author_id=self.user.id
             )
         request = self.factory.get(reverse("boards", args=[project.id]))
@@ -59,7 +59,7 @@ class ETagTestCase(TestCase):
 
     def test_last_modified_issue_of_project_none(self):
         project = Project.objects.create(
-            name="Testing", key="TEST", type="FULLSTACK",
+            name="Testing", key="TEST", type="Fullstack",
             starred=1, author_id=self.user.id
             )
         request = self.factory.get(reverse("boards", args=[project.id]))
@@ -70,7 +70,7 @@ class ETagTestCase(TestCase):
 
     def test_last_created_project_datetime(self):
         Project.objects.create(
-            name="Testing", key="TEST", type="FULLSTACK",
+            name="Testing", key="TEST", type="Fullstack",
             starred=1, author_id=self.user.id
             )
         request = self.factory.get(reverse("projects"))
@@ -88,7 +88,7 @@ class ETagTestCase(TestCase):
 
     def test_last_update_of_issue_datetime(self):
         project = Project.objects.create(
-            name="Testing", key="TEST", type="FULLSTACK",
+            name="Testing", key="TEST", type="Fullstack",
             starred=1, author_id=self.user.id
             )
         issue = Issue.objects.create(
@@ -97,7 +97,7 @@ class ETagTestCase(TestCase):
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
-            status="TO_DO",
+            status="To do",
             author_id=self.user.id
             )
         request = self.factory.get(
@@ -156,11 +156,11 @@ class ProjectsTestCase(TestCase):
             email="testemail@gmail.com", password="Password123#"
             )
         cls.project = Project.objects.create(
-            name="Testing", key="TEST", type="FULLSTACK",
+            name="Testing", key="TEST", type="Fullstack",
             starred=1, author_id=cls.user.id
             )
         cls.project2 = Project.objects.create(
-            name="TestO", key="TESTO", type="BACKEND",
+            name="TestO", key="TESTO", type="Back-end",
             starred=0, author_id=cls.user.id
             )
 
@@ -181,7 +181,7 @@ class ProjectsTestCase(TestCase):
             "author": self.user.id,
             "name": "Test",
             "key": "TESTII",
-            "type": "FULLSTACK",
+            "type": "Fullstack",
             "starred": 1
             }
 
@@ -197,7 +197,7 @@ class ProjectsTestCase(TestCase):
             "author": self.user.id,
             "name": "Testing",
             "key": "TEST",
-            "type": "FULLSTACK",
+            "type": "Fullstack",
             "starred": 1
             }
 
@@ -248,7 +248,7 @@ class BoardsTestCase(TestCase):
             )
         cls.project = Project.objects.create(
             name="Testing1", key="TEST1",
-            type="FULLSTACK", author_id=cls.user.id
+            type="Fullstack", author_id=cls.user.id
             )
         cls.issue = Issue.objects.create(
             project_id=cls.project.id,
@@ -256,7 +256,7 @@ class BoardsTestCase(TestCase):
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
-            status="TO_DO",
+            status="To do",
             author_id=cls.user.id
             )
 
@@ -285,7 +285,7 @@ class BoardsTestCase(TestCase):
             "description": "Testing test",
             "type": "Feature",
             "priority": "Medium",
-            "status": "TO_DO",
+            "status": "To do",
             "author": self.user.id
             }
 
@@ -305,7 +305,7 @@ class BoardsTestCase(TestCase):
             "description": "Testing test",
             "type": "Feature",
             "priority": "Medium",
-            "status": "TO_DO",
+            "status": "To do",
             "author": self.user.id
             }
 
@@ -345,7 +345,7 @@ class IssueDetailsTestCase(TestCase):
             )
         cls.project = Project.objects.create(
             name="Testing", key="TEST",
-            type="FULLSTACK", author_id=cls.user.id
+            type="Fullstack", author_id=cls.user.id
             )
 
         cls.issue1 = Issue.objects.create(
@@ -354,7 +354,7 @@ class IssueDetailsTestCase(TestCase):
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
-            status="TO_DO",
+            status="To do",
             author_id=cls.user.id
             )
 
@@ -364,7 +364,7 @@ class IssueDetailsTestCase(TestCase):
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
-            status="TO_DO",
+            status="To do",
             author_id=cls.user.id
             )
 
@@ -396,7 +396,7 @@ class IssueDetailsTestCase(TestCase):
             "title": "Title issue",
             "type": "Feature",
             "priority": "Medium",
-            "status": "TO_DO",
+            "status": "To do",
             "author": self.user.id
         }
 
@@ -414,7 +414,7 @@ class IssueDetailsTestCase(TestCase):
             "title": "Issue2",
             "type": "Feature",
             "priority": "Medium",
-            "status": "TO_DO",
+            "status": "To do",
             "author": self.user.id
             }
 
@@ -441,11 +441,11 @@ class ProjectSettingsTestCase(TestCase):
             )
         cls.project1 = Project.objects.create(
             name="TestingI", key="TEST",
-            type="FULLSTACK", author_id=cls.user.id
+            type="Fullstack", author_id=cls.user.id
             )
         cls.project2 = Project.objects.create(
             name="TestingII", key="TESTII",
-            type="FULLSTACK", author_id=cls.user.id
+            type="Fullstack", author_id=cls.user.id
             )
 
     def test_call_view_anonymous(self):
@@ -993,7 +993,7 @@ class DeleteProjectTestCase(TestCase):
             )
         cls.project = Project.objects.create(
             name="Testing1", key="TEST1",
-            type="FULLSTACK", author_id=cls.user.id
+            type="Fullstack", author_id=cls.user.id
             )
 
     def test_call_view_anonymous(self):
@@ -1029,7 +1029,7 @@ class DeleteIssueTestCase(TestCase):
             )
         cls.project = Project.objects.create(
             name="Testing1", key="TEST1",
-            type="FULLSTACK", author_id=cls.user.id
+            type="Fullstack", author_id=cls.user.id
             )
         cls.issue = Issue.objects.create(
             project_id=cls.project.id,
@@ -1037,7 +1037,7 @@ class DeleteIssueTestCase(TestCase):
             description="Big Socks Just Big Socks",
             type="Feature",
             priority="Medium",
-            status="TO_DO",
+            status="To do",
             author_id=cls.user.id)
 
     def test_call_view_anonymous(self):

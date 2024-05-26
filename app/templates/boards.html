@@ -70,11 +70,11 @@
 		<div class="col-sm-4 mb-3">
 			<div class="card bg-body-tertiary">
 				<div class="card-header" name="To do">{% translate "TO DO" %}</div>
-				<div id="TO_DO" class="card-body droppable">
+				<div id="To do" class="card-body droppable">
 
 					{% for issue in issues_list %}
 					
-						{% if issue.status == "TO_DO" %}
+						{% if issue.status == "To do" %}
 							<div class="card mb-2" draggable="true" id="card{{issue.id}}" data="{% url 'boards' project_id %}">
 								<div class="card-body">
 									{{ issue.title }}
@@ -96,10 +96,10 @@
 		<div class="col-sm-4 mb-3">			
 			<div class="card bg-body-tertiary">
 				<div class="card-header" name="In progress">{% translate "IN PROGRESS" %}</div>
-				<div id="IN_PROGRESS" class="card-body droppable">
+				<div id="In progress" class="card-body droppable">
 
 					{% for issue in issues_list %}
-						{% if issue.status == "IN_PROGRESS" %}
+						{% if issue.status == "In progress" %}
 							<div class="card mb-2" draggable="true" id="card{{issue.id}}" data="{% url 'boards' project_id %}">
 								<div class="card-body">
 									{{ issue.title }}
@@ -121,10 +121,10 @@
 		<div class="col-sm-4">
 			<div class="card bg-body-tertiary">
 				<div class="card-header" name="Done">{% translate "DONE" %}</div>
-				<div id="DONE" class="card-body droppable">
+				<div id="Done" class="card-body droppable">
 
 					{% for issue in issues_list %}
-						{% if issue.status == "DONE" %}			
+						{% if issue.status == "Done" %}			
 							<div class="card mb-2" draggable="true" id="card{{issue.id}}" data="{% url 'boards' project_id %}">
 								<div class="card-body">
 									{{ issue.title }}
@@ -186,7 +186,7 @@
 
 								<div class="col-5">
 									<div class="d-flex flex-column">
-										<div class="p-2 fw-normal" id="status{{ issue.id }}">{% translate "Status" %}: {{ issue.get_status_display }}</div>
+										<div class="p-2 fw-normal" id="status{{ issue.id }}">{% translate "Status" %}: {{ status }}</div>
 										<div class="p-2 fw-normal">{% translate "Priority" %}: {{ priority }}</div>
 										<div class="p-2 fw-normal">{% translate "Type" %}: {{ type }}</div>
 										<div class="p-2 fw-normal">{% translate "Generated" %}: {{ issue.created }}</div>
