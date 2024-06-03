@@ -33,6 +33,11 @@ services:
           - ./deploy/redis:/data
         restart: always
     
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3.13.2-alpine
+        restart: always
+    
     nginx: 
         container_name: nginx
         build: deploy/nginx

@@ -112,6 +112,8 @@ SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
 
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
