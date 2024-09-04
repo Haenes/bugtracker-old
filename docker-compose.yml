@@ -1,55 +1,84 @@
 services:
-    web:
-        container_name: web
-        build: .
-        volumes:
-          - static:/app/static
-        env_file:
-          - .env
-        depends_on:
-          db:
-            condition: service_healthy
-        restart: always
-  
-    db:
-        container_name: db
-        image: postgres:16.3-alpine
-        env_file:
-          - .env
-        volumes:
-          - ./deploy/db:/var/lib/postgresql/data
-        healthcheck:
-          test: ["CMD-SHELL", "pg_isready -U$$POSTGRES_USER -d$$POSTGRES_DB"]
-          interval: 5s
-          timeout: 5s
-          retries: 100
-        restart: always
-    
-    redis:
-        container_name: redis
-        build: deploy/redis
-        command: redis-server redis.conf
-        volumes:
-          - ./deploy/redis:/data
-        restart: always
-    
-    rabbitmq:
-        container_name: rabbitmq
-        image: rabbitmq:3.13.2-alpine
-        restart: always
-    
-    nginx: 
-        container_name: nginx
-        build: deploy/nginx
-        ports:
-          - '80:80'
-        volumes:
-          - static:/static
-        depends_on:
-          - web
-        restart: always
+  web:
+    container_name: web
+    build: .
+    entrypoint: sh ./entrypoint.sh
+    volumes:
+      - static:/app/static
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+      celery:
+        condition: service_started
+      redis:
+        condition: service_healthy
+    restart: always
+
+  celery:
+    container_name: celery
+    build: .
+    command: sh -c "cd app && celery -A app.celery worker -l INFO"
+    env_file:
+      - .env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    restart: always
+
+  db:
+    container_name: db
+    image: postgres:16.3-alpine
+    env_file:
+      - .env
+    volumes:
+      - ./deploy/db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U$$POSTGRES_USER -d$$POSTGRES_DB"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    restart: always
+
+  nginx: 
+    container_name: nginx
+    build: deploy/nginx
+    ports:
+      - '80:80'
+    volumes:
+      - static:/static
+    depends_on:
+      - web
+    restart: always
+
+  redis:
+    container_name: redis
+    build: deploy/redis
+    command: redis-server redis.conf
+    env_file:
+      - .env
+    volumes:
+      - ./deploy/redis:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    restart: always
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.13.2-alpine
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q status"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    restart: always
+
 
 volumes:
-    static:
-    db:
-    redis:
+  static:
+  db:
+  redis:

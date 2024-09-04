@@ -1,7 +1,7 @@
 import re
 import json
 
-from django.core import mail
+# from django.core import mail
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
@@ -814,13 +814,14 @@ class RegisterTestCase(TestCase):
             path=reverse("register"), data=data, follow=True,
             headers={"accept-language": "ru"}
             )
+        messages = list(get_messages(response.wsgi_request))
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(
-            mail.outbox[0].subject,
-            "Ссылка для активации была отправлена на ваш электронный адрес"
-            )
+            remove_html(str(messages[0])),
+            "Почти готово! Проверьте свою электронную почту, "
+            "чтобы подтвердить её и завершить регистрацию!"
+        )
         self.assertTemplateUsed(response, "login.html")
         translation.activate(settings.LANGUAGE_CODE)
 
