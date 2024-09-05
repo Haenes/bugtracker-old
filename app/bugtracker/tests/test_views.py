@@ -660,7 +660,7 @@ class SearchTestCase(TestCase):
         self.assertEqual(len(messages), 1)
         self.assertEqual(
             str(messages[0]),
-            "Please, don't use the '/'  character in the search query"
+            "Please, don't use the '/' character in the search query"
             )
 
 
