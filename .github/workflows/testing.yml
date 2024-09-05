@@ -14,6 +14,9 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - name: Configure Redis config
+        run: sed -i 's/Testing/${{ secrets.REDIS_PASSWORD }}/' deploy/redis/redis.conf
 
       - name: Configure .env file
         run: |
@@ -27,6 +30,10 @@ jobs:
           PGDATA = ${{ secrets.PGDATA }}
           REDIS_USER = ${{ secrets.REDIS_USER }}
           REDIS_PASSWORD = ${{ secrets.REDIS_PASSWORD }}
+          EMAIL_HOST_USER = ${{ secrets.EMAIL_HOST_USER }}
+          EMAIL_HOST_PASSWORD = ${{ secrets.EMAIL_HOST_PASSWORD }}
+          EMAIL_ADMIN = ${{ secrets.EMAIL_ADMIN }}
+          CELERY_BROKER_URL = ${{ secrets.CELERY_BROKER_URL }}
           EOF
 
       - name: Start containers
