@@ -29,7 +29,7 @@ REDIS_PASSWORD = "Testing"
 ```
 3) Startup: `docker compose up`
 >If you have permission denied error - add sudo to the beginning of the command. 
-4) To log in, go to the [login page](http://0.0.0.0) and use this credentialls: `Username - test, Password - Test123#` after the following input:
+4) To log in, go to [this](http://0.0.0.0) or [this](http://localhost) login page and use this credentialls: `Username - test, Password - Test123#` after the following input:
 ```web    | ----------- Run -----------
 web    | [2024-02-15 06:38:41 +0000] [12] [INFO] Starting gunicorn 21.2.0
 web    | [2024-02-15 06:38:41 +0000] [12] [INFO] Listening at: http://0.0.0.0:8000 (12)
