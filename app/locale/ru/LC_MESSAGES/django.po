@@ -1,16 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Copyright (C) 2024 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Haenes <Physeex@gmail.com>, 2024.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-24 14:21+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2024-09-05 11:47+0000\n"
+"PO-Revision-Date: 2024-09-05 11:27+ZONE\n"
+"Last-Translator: Haenes <Physeex@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -20,289 +20,285 @@ msgstr ""
 "n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || "
 "(n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: bugtracker/forms.py:48
+#: bugtracker/forms.py:49
 msgid "First name"
 msgstr "Имя"
 
-#: bugtracker/forms.py:57
+#: bugtracker/forms.py:62
 msgid "Last name"
 msgstr "Фамилия"
 
-#: bugtracker/forms.py:66 bugtracker/forms.py:186
+#: bugtracker/forms.py:75 bugtracker/forms.py:205
 msgid "Username"
 msgstr "Логин"
 
-#: bugtracker/forms.py:75 bugtracker/forms.py:440
+#: bugtracker/forms.py:88 bugtracker/forms.py:529
 msgid "Email"
 msgstr "Электронная почта"
 
-#: bugtracker/forms.py:83 bugtracker/forms.py:197
+#: bugtracker/forms.py:100 bugtracker/forms.py:220
 #: templates/registration/register.html:22
 msgid "Password"
 msgstr "Пароль"
 
-#: bugtracker/forms.py:92
+#: bugtracker/forms.py:113
 msgid "Password confirmation"
 msgstr "Подтверждение пароля"
 
-#: bugtracker/forms.py:105 bugtracker/forms.py:228
+#: bugtracker/forms.py:129 bugtracker/forms.py:278
 msgid "First name must have only letters"
 msgstr "Имя должно содержать только буквы"
 
-#: bugtracker/forms.py:114 bugtracker/forms.py:239
+#: bugtracker/forms.py:137 bugtracker/forms.py:290
 msgid "Last name must have only letters"
 msgstr "Фамилия должна содержать только буквы"
 
-#: bugtracker/forms.py:123
+#: bugtracker/forms.py:145
 msgid "Username must have only letters"
 msgstr "Логин должен содержать только буквы"
 
-#: bugtracker/forms.py:125
+#: bugtracker/forms.py:147
 msgid "That username already exists"
 msgstr "Этот логин уже занят"
 
-#: bugtracker/forms.py:134
+#: bugtracker/forms.py:155
 msgid "That email already exists"
 msgstr "Эта электронная почта уже занята"
 
-#: bugtracker/forms.py:143 bugtracker/forms.py:270
+#: bugtracker/forms.py:164 bugtracker/forms.py:326
 msgid "The password doesn't meet the conditions"
 msgstr "Пароль не соответствует условиям"
 
-#: bugtracker/forms.py:154 bugtracker/forms.py:278
+#: bugtracker/forms.py:175 bugtracker/forms.py:334
 msgid "Passwords don't match"
 msgstr "Пароли не совпадают"
 
-#: bugtracker/forms.py:179
+#: bugtracker/forms.py:198
 msgid "username"
 msgstr "логин"
 
-#: bugtracker/forms.py:190
+#: bugtracker/forms.py:213
 msgid "password"
 msgstr "пароль"
 
-#: bugtracker/forms.py:226
+#: bugtracker/forms.py:275
 msgid "First name must contain at least 2 letters"
 msgstr "Поле имени должно содержать не менее 2 букв"
 
-#: bugtracker/forms.py:237
+#: bugtracker/forms.py:287
 msgid "Last name must contain at least 2 letters"
 msgstr "Поле фамилии должно содержать не менее 2 букв"
 
-#: bugtracker/forms.py:248 bugtracker/forms.py:450
+#: bugtracker/forms.py:298 bugtracker/forms.py:541
 msgid "New password"
 msgstr "Новый пароль"
 
-#: bugtracker/forms.py:255 bugtracker/forms.py:460
+#: bugtracker/forms.py:310 bugtracker/forms.py:553
 msgid "New password confirmation"
 msgstr "Подтверждение пароля"
 
-#: bugtracker/forms.py:298 bugtracker/forms.py:335
+#: bugtracker/forms.py:352 bugtracker/forms.py:402
 msgid "name"
 msgstr "Название"
 
-#: bugtracker/forms.py:299 bugtracker/forms.py:336
+#: bugtracker/forms.py:353 bugtracker/forms.py:403
 msgid "key"
 msgstr "Ключ"
 
-#: bugtracker/forms.py:313
+#: bugtracker/forms.py:382
 msgid "Project name must have only letters"
 msgstr "Название проекта должно содержать только буквы"
 
-#: bugtracker/forms.py:322
+#: bugtracker/forms.py:390
 msgid "Key must have only letters"
 msgstr "Ключ должен содержать только буквы"
 
-#: bugtracker/forms.py:337 bugtracker/forms.py:376 bugtracker/forms.py:410
+#: bugtracker/forms.py:404 bugtracker/forms.py:451 bugtracker/forms.py:491
 msgid "type"
 msgstr "тип"
 
-#: bugtracker/forms.py:345 templates/base/modals/create-project.html:23
+#: bugtracker/forms.py:416 templates/base/modals/create-project.html:23
 #: templates/project-settings.html:37
 msgid "Favorite"
 msgstr "Избранное"
 
-#: bugtracker/forms.py:354
+#: bugtracker/forms.py:428
 msgid "That project already exists"
 msgstr "Этот проект уже существует"
 
-#: bugtracker/forms.py:364
+#: bugtracker/forms.py:437
 msgid "Project with that key already exists"
 msgstr "Проект с этим ключом уже существует"
 
-#: bugtracker/forms.py:377 bugtracker/forms.py:411
+#: bugtracker/forms.py:452 bugtracker/forms.py:492
 msgid "priority"
 msgstr "приоритет"
 
-#: bugtracker/forms.py:378 bugtracker/forms.py:412
+#: bugtracker/forms.py:453 bugtracker/forms.py:493
 msgid "title"
 msgstr "название"
 
-#: bugtracker/forms.py:379 bugtracker/forms.py:413
+#: bugtracker/forms.py:454 bugtracker/forms.py:494
 msgid "description"
 msgstr "описание"
 
-#: bugtracker/forms.py:396
+#: bugtracker/forms.py:476
 msgid "Issue with that title already exists"
 msgstr "Задача с этим названием уже существует"
 
-#: bugtracker/forms.py:409
+#: bugtracker/forms.py:490
 msgid "status"
 msgstr "статус"
 
-#: bugtracker/forms.py:433
+#: bugtracker/forms.py:522
 msgid "email"
 msgstr "почта"
 
-#: bugtracker/models.py:21
+#: bugtracker/models.py:23
 msgid "Name field must contain at least 3 letters"
 msgstr "Поле названия должно содержать не менее 3 букв"
 
-#: bugtracker/models.py:23
+#: bugtracker/models.py:30
 msgid "Key field must contain at least 3 letters"
 msgstr "Поле ключа должно содержать не менее 3 букв"
 
-#: bugtracker/models.py:40
+#: bugtracker/models.py:52
 msgid "Bug"
 msgstr "Баг"
 
-#: bugtracker/models.py:41
+#: bugtracker/models.py:53
 msgid "Feature"
 msgstr "Фича"
 
-#: bugtracker/models.py:45
+#: bugtracker/models.py:57
 msgid "Lowest"
 msgstr "Низший"
 
-#: bugtracker/models.py:46
+#: bugtracker/models.py:58
 msgid "Low"
 msgstr "Низкий"
 
-#: bugtracker/models.py:47
+#: bugtracker/models.py:59
 msgid "Medium"
 msgstr "Средний"
 
-#: bugtracker/models.py:48
+#: bugtracker/models.py:60
 msgid "High"
 msgstr "Высокий"
 
-#: bugtracker/models.py:49
+#: bugtracker/models.py:61
 msgid "Highest"
 msgstr "Высочайший"
 
-#: bugtracker/models.py:53
+#: bugtracker/models.py:65
 msgid "To do"
 msgstr "Сделать"
 
-#: bugtracker/models.py:54
+#: bugtracker/models.py:66
 msgid "In progress"
 msgstr "В процессе"
 
-#: bugtracker/models.py:55
+#: bugtracker/models.py:67
 msgid "Done"
 msgstr "Сделано"
 
-#: bugtracker/views.py:33
+#: bugtracker/views.py:75
 msgid "Moscow"
 msgstr "Москва"
 
-#: bugtracker/views.py:34
+#: bugtracker/views.py:76
 msgid "Vladivostok"
 msgstr "Владивосток"
 
-#: bugtracker/views.py:72
+#: bugtracker/views.py:122
 msgid "Project created!"
 msgstr "Проект создан!"
 
-#: bugtracker/views.py:139
+#: bugtracker/views.py:200
 msgid "Issue created!"
 msgstr "Задача создана!"
 
-#: bugtracker/views.py:161
+#: bugtracker/views.py:218
 msgid "Status:"
 msgstr "Статус:"
 
-#: bugtracker/views.py:271
+#: bugtracker/views.py:355 bugtracker/views.py:581
 msgid "Your password was successfully updated!"
 msgstr "Ваш пароль был успешно обновлён!"
 
-#: bugtracker/views.py:306
+#: bugtracker/views.py:391
 msgid "Please, give a data for search"
 msgstr "Пожалуйста, предоставьте данные для поиска"
 
-#: bugtracker/views.py:309
-msgid "Please, give just one word to search"
-msgstr "Пожалуйста, предоставьте только одно слово для поиска"
+#: bugtracker/views.py:397
+msgid "Please, don't use the '/' character in the search query"
+msgstr "Пожалуйста, не используйте символ '/' в поисковом запросе"
 
-#: bugtracker/views.py:312
-msgid "Please, don't use special symbols in search"
-msgstr "Пожалуйста, не используйте специальные символы при поиске"
-
-#: bugtracker/views.py:366
+#: bugtracker/views.py:464
 msgid "Invalid username and/or password"
 msgstr "Неверный логин и/или пароль"
 
-#: bugtracker/views.py:388
+#: bugtracker/views.py:486
 msgid "Activation link has been sent to your email"
 msgstr "Ссылка для активации была отправлена на ваш электронный адрес"
 
-#: bugtracker/views.py:407
+#: bugtracker/views.py:506
 msgid ""
 "Almost done! Check your email to confirm it and complete the registration!"
 msgstr ""
 "Почти готово! Проверьте свою электронную почту, чтобы подтвердить её и "
 "завершить регистрацию!"
 
-#: bugtracker/views.py:428
+#: bugtracker/views.py:529
 msgid "Email is confirmed, you can log in now!"
 msgstr ""
 "Адрес электронной почты подтвержден, вы можете войти в приложение прямо "
 "сейчас!"
 
-#: bugtracker/views.py:432
+#: bugtracker/views.py:533
 msgid "Email confirmation is failed!"
 msgstr "Ошибка с подтверждением почты!"
 
-#: bugtracker/views.py:489
+#: bugtracker/views.py:605
 msgid "Project deleted!"
 msgstr "Проект удалён!"
 
-#: bugtracker/views.py:500
+#: bugtracker/views.py:616
 msgid "Issue deleted!"
 msgstr "Задача удалена!"
 
-#: bugtracker/views.py:511
+#: bugtracker/views.py:627
 msgid "Account deleted!"
 msgstr "Аккаунт удалён!"
 
-#: templates/accounts.html:5 templates/accounts.html:13
-#: templates/base/base.html:76
+#: templates/accounts.html:5 templates/accounts.html:14
+#: templates/base/base.html:80
 msgid "Account details"
 msgstr "Данные аккаунта"
 
-#: templates/accounts.html:36 templates/base/modals/change-password.html:8
+#: templates/accounts.html:37 templates/base/modals/change-password.html:8
 #: templates/base/modals/change-password.html:42
 msgid "Change password"
 msgstr "Изменить пароль"
 
-#: templates/accounts.html:45
+#: templates/accounts.html:46
 msgid "Delete account"
 msgstr "Удалить аккаунт"
 
-#: templates/accounts.html:50
+#: templates/accounts.html:51
 msgid "Update"
 msgstr "Обновить"
 
-#: templates/base/base.html:55
+#: templates/base/base.html:52
 msgid "Search"
 msgstr "Поиск"
 
-#: templates/base/base.html:78
+#: templates/base/base.html:82
 msgid "Sign out"
 msgstr "Выйти"
 
-#: templates/base/breadcrumb.html:9 templates/projects.html:4
-#: templates/projects.html:15 templates/search-results.html:23
+#: templates/base/breadcrumb.html:9 templates/projects.html:6
+#: templates/projects.html:16 templates/search-results.html:23
 msgid "Projects"
 msgstr "Проекты"
 
@@ -383,11 +379,11 @@ msgstr ""
 msgid "Do you really want to delete project?"
 msgstr "Вы действительно хотите удалить проект?"
 
-#: templates/base/sidebar.html:14 templates/boards.html:5
+#: templates/base/sidebar.html:23 templates/boards.html:6
 msgid "Board"
 msgstr "Доска"
 
-#: templates/base/sidebar.html:22 templates/project-settings.html:5
+#: templates/base/sidebar.html:35 templates/project-settings.html:5
 #: templates/project-settings.html:16
 msgid "Project settings"
 msgstr "Настройки проекта"
@@ -400,39 +396,39 @@ msgstr "Создать задачу"
 msgid "board"
 msgstr "доска"
 
-#: templates/boards.html:64
+#: templates/boards.html:72
 msgid "TO DO"
 msgstr "СДЕЛАТЬ"
 
-#: templates/boards.html:90
+#: templates/boards.html:98
 msgid "IN PROGRESS"
 msgstr "В ПРОЦЕССЕ"
 
-#: templates/boards.html:115
+#: templates/boards.html:123
 msgid "DONE"
 msgstr "СДЕЛАНО"
 
-#: templates/boards.html:181
+#: templates/boards.html:189
 msgid "Status"
 msgstr "Статус"
 
-#: templates/boards.html:182
+#: templates/boards.html:190
 msgid "Priority"
 msgstr "Приоритет"
 
-#: templates/boards.html:183 templates/projects.html:36
+#: templates/boards.html:191 templates/projects.html:43
 msgid "Type"
 msgstr "Тип"
 
-#: templates/boards.html:184
+#: templates/boards.html:192
 msgid "Generated"
 msgstr "Создана"
 
-#: templates/boards.html:185
+#: templates/boards.html:193
 msgid "Updated"
 msgstr "Обновлёна"
 
-#: templates/boards.html:191
+#: templates/boards.html:203
 msgid "Configure"
 msgstr "Изменить"
 
@@ -477,12 +473,12 @@ msgid "Create an account"
 msgstr "Создать аккаунт"
 
 #: templates/password/password-reset-confirm.html:5
-#: templates/password/password-reset-confirm.html:16
-#: templates/password/password-reset-confirm.html:39
+#: templates/password/password-reset-confirm.html:18
+#: templates/password/password-reset-confirm.html:41
 msgid "Set a new password"
 msgstr "Установить новый пароль"
 
-#: templates/password/password-reset-confirm.html:22
+#: templates/password/password-reset-confirm.html:24
 msgid ""
 "\n"
 "\t\t\t\t\t\t\t\"Your password must have:         <br>\n"
@@ -540,19 +536,19 @@ msgstr "Вернуться на страницу входа"
 msgid "Delete project"
 msgstr "Удалить проект"
 
-#: templates/projects.html:24
+#: templates/projects.html:25
 msgid "Create new project"
 msgstr "Создать новый проект"
 
-#: templates/projects.html:34
+#: templates/projects.html:41
 msgid "Name"
 msgstr "Название"
 
-#: templates/projects.html:35
+#: templates/projects.html:42
 msgid "Key"
 msgstr "Ключ"
 
-#: templates/projects.html:37
+#: templates/projects.html:44
 msgid "Created"
 msgstr "Создан"
 

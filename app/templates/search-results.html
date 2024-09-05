@@ -11,7 +11,7 @@
 				{% translate ", unfortunately, the search did not give any results" as end_fail %}
 				{% translate ", the results are listed below:" as end_success %}
 
-				{% if not result_projects and not results_issues %}
+				{% if not results_projects and not results_issues %}
 					<h4>{{ start }} "{{ query }}"{{ end_fail }}</h4>
 				{% else %}
 					<h4>{{ start }} "{{ query }}"{{ end_success }}</h4>
@@ -31,7 +31,7 @@
 
 				<ul class="list-group mt-4">
 					{% if results_issues %}
-					{% translate "Issues" %}:
+						{% translate "Issues" %}:
 						{% for issue in results_issues %}
 							<li class="ms-5">
 								<a href="{% url 'issue-details' issue.project_id issue.id %}">{{ issue }}</a>

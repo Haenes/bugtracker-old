@@ -620,13 +620,6 @@ class SearchTestCase(TestCase):
         response = self.client.get(reverse("search"))
         self.assertRedirects(response, "/login/?next=/search/")
 
-    def test_call_view_logged_in(self):
-        self.client.force_login(self.user)
-
-        response = self.client.get(reverse("search"))
-
-        self.assertEqual(response.status_code, 302)
-
     def test_search_success(self):
         self.client.force_login(self.user)
         response = self.client.get(reverse("search"), {"q": "Issue"})
@@ -651,26 +644,23 @@ class SearchTestCase(TestCase):
         data = {"q": "Hi there! I'm testing you."}
 
         response = self.client.get(reverse("search"), data)
-        messages = list(get_messages(response.wsgi_request))
 
-        self.assertRedirects(response, "/")
-        self.assertEqual(len(messages), 1)
-        self.assertEqual(
-            str(messages[0]),
-            "Please, give just one word to search"
+        self.assertRedirects(
+            response,
+            reverse("search-results", args=["Hi there! I'm testing you."])
             )
 
-    def test_search_special_symbols(self):
+    def test_search_slash(self):
         self.client.force_login(self.user)
 
-        response = self.client.get(reverse("search"), {"q": "!"})
+        response = self.client.get(reverse("search"), {"q": "/"})
         messages = list(get_messages(response.wsgi_request))
 
         self.assertRedirects(response, "/")
         self.assertEqual(len(messages), 1)
         self.assertEqual(
             str(messages[0]),
-            "Please, don't use special symbols in search"
+            "Please, don't use the '/'  character in the search query"
             )
 
 

@@ -24,7 +24,7 @@ urlpatterns = [
          ),
 
     path("search/", views.search, name="search"),
-    path("search-results/<slug:q>/", views.search_results,
+    path("search-results/<q>/", views.search_results,
          name="search-results"
          ),
 

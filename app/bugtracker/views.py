@@ -10,6 +10,7 @@ from django.contrib.auth import (
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
@@ -389,13 +390,10 @@ def search(request):
         if len(q) == 0:
             messages.error(request, _("Please, give a data for search"))
             return redirect(request.META.get("HTTP_REFERER", "/"))
-        elif " " in q:
-            messages.error(request, _("Please, give just one word to search"))
-            return redirect(request.META.get("HTTP_REFERER", "/"))
-        elif not validate_string(q):
+        elif "/" in q:
             messages.error(
                 request,
-                _("Please, don't use special symbols in search")
+                _("Please, don't use the '/' character in the search query")
                 )
             return redirect(request.META.get("HTTP_REFERER", "/"))
 
@@ -407,29 +405,34 @@ def search(request):
 @login_required(login_url="/login/")
 def search_results(request, q):
 
-    query = q
+    if request.LANGUAGE_CODE == "ru":
+        config = "russian"
+    else:
+        config = "english"
+
+    query = SearchQuery(q, config=config, search_type="websearch")
     user_id = request.user.id
 
-    if query is not None:
-        lookups_projects = (
-            Q(id__icontains=query) | Q(name__icontains=query) |
-            Q(key__icontains=query) | Q(type__icontains=query)
-            )
-        lookups_issues = (
-            Q(id__icontains=query) | Q(title__icontains=query) |
-            Q(description__icontains=query) | Q(type__icontains=query) |
-            Q(priority__icontains=query) | Q(status__icontains=query)
-            )
+    project_vector = SearchVector("name", "key", "type", config=config)
+    issue_vector = SearchVector(
+        "title", "description", "type", "priority", "status",
+        config=config
+        )
 
-        results_projects = Project.objects.filter(lookups_projects).distinct()
-        results_issues = Issue.objects.filter(lookups_issues).distinct()
+    results_projects = Project.objects.annotate(
+        search=project_vector
+        ).filter(search=query)
 
-        context = {
-            "query": query,
-            "results_projects": results_projects,
-            "results_issues": results_issues,
-            "user_id": user_id
-            }
+    results_issues = Issue.objects.annotate(
+        search=issue_vector
+        ).filter(search=query)
+
+    context = {
+        "query": q,
+        "results_projects": results_projects,
+        "results_issues": results_issues,
+        "user_id": user_id
+        }
 
     return render(request, "search-results.html", context)
 
