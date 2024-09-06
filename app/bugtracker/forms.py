@@ -1,4 +1,5 @@
 import re
+from typing import Any
 
 from django import forms
 from django.contrib.auth.models import User
@@ -13,9 +14,11 @@ from django.forms import (
     Textarea,
     TextInput
     )
+from django.template import loader
 from django.utils.translation import gettext_lazy as _
 
 from bugtracker.models import Project, Issue
+from .tasks import send_email
 
 
 def validate_string(string: str) -> bool:
@@ -531,6 +534,32 @@ class UserForgotPasswordForm(PasswordResetForm):
                 }
             )
         )
+
+    # A rewritten method for sending mail through a Celery task
+    def send_mail(
+            self,
+            subject_template_name: str,
+            email_template_name: str,
+            context: dict[str, Any],
+            from_email: str | None,
+            user_email: str,
+            html_email_template_name: str | None
+            ) -> None:
+
+        user = (context["user"].id)
+        context["user"] = user
+
+        subject = loader.render_to_string(subject_template_name, context)
+        subject = "".join(subject.splitlines())
+
+        body = loader.render_to_string(email_template_name, context)
+
+        send_email.delay(
+            subject=subject,
+            body=body,
+            context=context,
+            to_email=[user_email],
+            )
 
 
 class UserSetNewPasswordForm(UserPasswordChangeForm):

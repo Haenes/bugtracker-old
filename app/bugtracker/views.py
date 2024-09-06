@@ -10,12 +10,11 @@ from django.contrib.auth import (
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+from django.contrib.postgres.search import SearchQuery, SearchVector
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.contrib.sites.shortcuts import get_current_site
-from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -27,7 +26,6 @@ from django.utils.translation import gettext as _
 from .tasks import send_email
 from .models import Issue, Project
 from .forms import (
-    validate_string,
     RegisterForm,
     LoginForm,
     UserForm,
@@ -491,7 +489,7 @@ def register(request):
             else:
                 page = "register-activate-en.html"
 
-            message = render_to_string(page, {
+            body = render_to_string(page, {
                 "user": user,
                 "domain": current_site.domain,
                 "uid": uid,
@@ -499,7 +497,7 @@ def register(request):
                 })
 
             to_email = register_form.cleaned_data.get("email")
-            send_email.delay(mail_subject, message, [to_email])
+            send_email.delay(mail_subject, body, [to_email])
             messages.success(
                 request,
                 _("Almost done! Check your email "
