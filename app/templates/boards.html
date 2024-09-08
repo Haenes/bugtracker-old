@@ -189,8 +189,8 @@
 										<div class="p-2 fw-normal" id="status{{ issue.id }}">{% translate "Status" %}: {{ status }}</div>
 										<div class="p-2 fw-normal">{% translate "Priority" %}: {{ priority }}</div>
 										<div class="p-2 fw-normal">{% translate "Type" %}: {{ type }}</div>
-										<div class="p-2 fw-normal">{% translate "Generated" %}: {{ issue.created }}</div>
-										<div class="p-2 fw-normal">{% translate "Updated" %}: {{ issue.updated }}</div>
+										<div class="p-2 fw-normal">{% translate "Generated" %}: {{ issue.created|date:"d.m.Y H:i:s" }}</div>
+										<div class="p-2 fw-normal" id="updated{{ issue.id }}">{% translate "Updated" %}: {{ issue.updated|date:"d.m.Y H:i:s" }}</div>
 										<hr>
 										<div class="align-self-end">
 											<a href="{% url 'issue-details' project_id issue.id %}"

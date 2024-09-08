@@ -4,7 +4,7 @@ services:
     build: .
     entrypoint: sh ./entrypoint.sh
     volumes:
-      - static:/app/static
+      - static:/media/static
     env_file:
       - .env
     depends_on:
@@ -47,7 +47,7 @@ services:
     ports:
       - '80:80'
     volumes:
-      - static:/static
+      - static:/media/static
     depends_on:
       - web
     restart: always

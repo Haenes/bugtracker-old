@@ -109,8 +109,12 @@ containers.forEach(container => {
 				return response.json();
 			})
 			.then(data => {                                                                 // Work with received data from views.py (boards view)
-				const issue_modal_status = document.getElementById("status" + data["id"])   // Take an issue modal status text
-				issue_modal_status.innerHTML = data["status"] + " " + data["source"];       // And change it to new (where now card is)
+				const issue_modal_status = document.getElementById("status" + data["id"])    // Take an issue modal status text
+				const issue_modal_updated = document.getElementById("updated" + data["id"])  // Take an issue modal updated text
+				const date = new Date(data["updated_time"]).toLocaleString()
+
+				issue_modal_status.innerHTML = data["status"] + " " + data["source"];        // And update them
+				issue_modal_updated.innerHTML = data["updated"] + " " + date;
 			})
 		}
 		else {

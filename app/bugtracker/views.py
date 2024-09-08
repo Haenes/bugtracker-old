@@ -19,6 +19,7 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.views.decorators.http import condition
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.translation import gettext as _
@@ -211,13 +212,20 @@ def boards(request, project_id):
 
         if issue.status != target:
             issue.status = target
-            issue.save()
+            issue.save(update_fields=["status", "updated"])
 
             status = _("Status:")
+            updated = _("Updated:")
+            updated_time = timezone.localtime(issue.updated)
 
             return JsonResponse(
-                {"id": issue.id, "status": status, "source": _(issue.status)}
-                )
+                {
+                    "id": issue.id,
+                    "status": status,
+                    "updated": updated,
+                    "source": _(issue.status),
+                    "updated_time": updated_time
+                })
 
     else:
         issue_modal_form = IssueModalForm(

@@ -159,8 +159,8 @@ USE_TZ = True
 
 TIME_ZONE = 'UTC'
 
-STATIC_ROOT = '/app/static/'
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = '/media/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',

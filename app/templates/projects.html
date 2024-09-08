@@ -80,7 +80,7 @@
 									
 							<td>{{ project.key }}</td>
 							<td>{{ project.type }}</td>
-							<td>{{ project.created }}</td> 
+							<td>{{ project.created|date:"d.m.Y H:i:s" }}</td> 
 						</tr>
 					{% endfor %}
 				</tbody>
