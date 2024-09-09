@@ -505,7 +505,7 @@ def register(request):
                 })
 
             to_email = register_form.cleaned_data.get("email")
-            send_email.delay(mail_subject, body, [to_email])
+            send_email.delay_on_commit(mail_subject, body, [to_email])
             messages.success(
                 request,
                 _("Almost done! Check your email "

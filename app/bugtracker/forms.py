@@ -554,7 +554,7 @@ class UserForgotPasswordForm(PasswordResetForm):
 
         body = loader.render_to_string(email_template_name, context)
 
-        send_email.delay(
+        send_email.delay_on_commit(
             subject=subject,
             body=body,
             context=context,
