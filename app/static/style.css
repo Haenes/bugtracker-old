@@ -1795,6 +1795,13 @@ textarea.form-control-lg {
   --bs-alert-link-color: var(--bs-success-text-emphasis);
 }
 
+.alert-info {
+  --bs-alert-color: var(--bs-info-text-emphasis);
+  --bs-alert-bg: var(--bs-info-bg-subtle);
+  --bs-alert-border-color: var(--bs-info-border-subtle);
+  --bs-alert-link-color: var(--bs-info-text-emphasis);
+}
+
 .alert-danger {
   --bs-alert-color: var(--bs-danger-text-emphasis);
   --bs-alert-bg: var(--bs-danger-bg-subtle);
@@ -2532,6 +2539,10 @@ textarea.form-control-lg {
 
 .top-0 {
   top: 0 !important;
+}
+
+.top-10 {
+  top: 10% !important;
 }
 
 .top-50 {

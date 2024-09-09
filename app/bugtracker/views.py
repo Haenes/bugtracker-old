@@ -79,6 +79,11 @@ def settings(request):
     if request.method == "POST":
         if "timezone" in request.POST:
             request.session["django_timezone"] = request.POST["timezone"]
+            messages.info(
+                request,
+                _("Use the 'Shift+F5' combination on the projects "
+                  "and issues pages to avoid incorrect display!"
+                  ))
             return redirect("settings")
     else:
         return render(request, "settings.html", context=context)
