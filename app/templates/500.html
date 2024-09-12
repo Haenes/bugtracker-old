@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %} 500 Error {% endblock %}
+{% block navbar %}{% endblock %}
+
+{% block main %}
+    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+        <h1 class="display-1">500</h1>
+        <p class="text-center">{% translate "Internal server error, please try again later." %}</p>
+        <p class="text-center">{% translate "We are already working on fixing it!" %}</p>
+        <a href="{% url 'projects' %}">
+            <button type="button" class="btn btn-outline-light">{% translate "Back to Home" %}</button>
+        </a>
+    </div>
+{% endblock main %}

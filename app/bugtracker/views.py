@@ -1,5 +1,6 @@
 import os
 import json
+
 from dotenv import load_dotenv
 
 from django.contrib import messages
@@ -15,7 +16,7 @@ from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.contrib.sites.shortcuts import get_current_site
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.http import JsonResponse
 from django.views.decorators.http import condition
@@ -45,18 +46,24 @@ load_dotenv()
 
 def last_modified_issue_of_project(request, project_id):
     try:
-        return Issue.objects.filter(
-            project_id=project_id
-            ).only("updated").latest("updated").updated
+        return (
+            Issue.objects.
+            filter(project_id=project_id).
+            only("updated").
+            latest("updated").updated
+            )
     except ObjectDoesNotExist:
         return None
 
 
 def last_created_project(request):
     try:
-        return Project.objects.filter(
-            author_id=request.user.id
-            ).only("created").latest("created").created
+        return (
+            Project.objects.
+            filter(author_id=request.user.id).
+            only("created").
+            latest("created").created
+            )
     except ObjectDoesNotExist:
         return None
 
@@ -96,9 +103,9 @@ def projects(request):
     user_id = request.user.id
     projects_list = cache.get_or_set(
         f"projects_list_{user_id}",
-        Project.objects.filter(author_id=user_id).only(
-            "id", "name", "key", "type", "starred", "created"
-            )
+        Project.objects.
+        filter(author_id=user_id).
+        only("id", "name", "key", "type", "starred", "created")
         )
 
     paginator = Paginator(projects_list, 9)
@@ -158,13 +165,17 @@ def projects(request):
 def boards(request, project_id):
 
     user_id = request.user.id
-    project = Project.objects.only("name", "key", "starred").get(id=project_id)
+    project = get_object_or_404(
+        Project.objects.only("name", "key", "starred"),
+        id=project_id, author_id=user_id
+        )
     all_issues = cache.get_or_set(
         f"all_issues_{project_id}",
-        Issue.objects.filter(project_id=project_id).only(
-            "id", "key", "title", "description", "type",
-            "priority", "status", "created", "updated"
-            )
+        Issue.objects.
+        filter(project_id=project_id, author_id=user_id).
+        only("id", "key", "title", "description", "type",
+             "priority", "status", "created", "updated"
+             )
         )
 
     context = {
@@ -184,9 +195,10 @@ def boards(request, project_id):
         # to set the key for the next one
             try:
                 latest_key = (
-                    Issue.objects.filter(project_id=project_id).only(
-                        "key"
-                        ).latest("key").key
+                    Issue.objects.
+                    filter(project_id=project_id).
+                    only("key").
+                    latest("key").key
                     )
             except ObjectDoesNotExist:
                 latest_key = 0
@@ -246,10 +258,15 @@ def boards(request, project_id):
 def issue_details(request, project_id, issue_id):
 
     user_id = request.user.id
-    project_name = Project.objects.only("name").get(id=project_id)
-    issue = Issue.objects.only(
-        "status", "type", "priority", "title", "description"
-        ).get(id=issue_id)
+    project_name = get_object_or_404(
+        Project.objects.only("name"),
+        id=project_id, author_id=user_id
+        )
+    issue = get_object_or_404(
+        Issue.objects.
+        only("status", "type", "priority", "title", "description"),
+        id=issue_id, project_id=project_id, author_id=user_id
+        )
 
     context = {
         "user_id": user_id,
@@ -297,7 +314,10 @@ def issue_details(request, project_id, issue_id):
 def project_settings(request, project_id):
 
     user_id = request.user.id
-    project = Project.objects.only("name", "key", "starred").get(id=project_id)
+    project = get_object_or_404(
+        Project.objects.only("name", "key", "starred"),
+        id=project_id, author_id=user_id
+        )
 
     context = {
         "project": project,
@@ -333,11 +353,12 @@ def project_settings(request, project_id):
 @login_required(login_url="/login/")
 def accounts(request, user_id):
 
-    user = User.objects.only(
-        "first_name", "last_name", "username", "email"
-        ).get(id=user_id)
-
-    context = {"user": user, "user_id": user_id}
+    real_user_id = request.user.id
+    user = get_object_or_404(
+        User.objects.only("first_name", "last_name", "username", "email"),
+        id=real_user_id
+    )
+    context = {"user": user, "user_id": real_user_id}
 
     if request.method == "POST":
 
@@ -372,7 +393,7 @@ def accounts(request, user_id):
                 if password_change_form.errors[field]:
                     messages.error(request, password_change_form.errors[field])
 
-        return redirect("accounts", user_id)
+        return redirect("accounts", real_user_id)
 
     else:
         user_form = UserForm(
@@ -430,13 +451,17 @@ def search_results(request, q):
         config=config
         )
 
-    results_projects = Project.objects.annotate(
-        search=project_vector
-        ).filter(search=query)
+    results_projects = (
+        Project.objects.
+        annotate(search=project_vector).
+        filter(search=query, author_id=user_id)
+        )
 
-    results_issues = Issue.objects.annotate(
-        search=issue_vector
-        ).filter(search=query)
+    results_issues = (
+        Issue.objects.
+        annotate(search=issue_vector).
+        filter(search=query, author_id=user_id)
+        )
 
     context = {
         "query": q,

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %} 404 Error {% endblock %}
+{% block navbar %}{% endblock %}
+
+{% block main %}
+    <div class="d-flex flex-column min-vh-100 justify-content-center align-items-center">
+        <h1 class="display-1">404</h1>
+        <p>{% translate "Ooops something went wrong" %}</p>
+        <a href="{% url 'projects' %}">
+            <button type="button" class="btn btn-outline-light">{% translate "Back to Home" %}</button>
+        </a>
+    </div>
+{% endblock main %}
