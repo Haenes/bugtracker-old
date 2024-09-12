@@ -83,6 +83,7 @@ TEMPLATES = [
             BASE_DIR / 'templates',
             BASE_DIR / 'templates/base',
             BASE_DIR / 'templates/base/modals',
+            BASE_DIR / 'templates/errors',
             BASE_DIR / 'templates/password',
             BASE_DIR / 'templates/registration',
         ],

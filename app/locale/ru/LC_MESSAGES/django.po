@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-12 11:05+0000\n"
+"POT-Creation-Date: 2024-09-12 12:57+0000\n"
 "PO-Revision-Date: 2024-09-05 11:27+ZONE\n"
 "Last-Translator: Haenes <Physeex@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -272,25 +272,30 @@ msgstr ""
 msgid "Email confirmation is failed!"
 msgstr "Ошибка с подтверждением почты!"
 
-#: app/bugtracker/views.py:640
+#: app/bugtracker/views.py:643
 msgid "Project deleted!"
 msgstr "Проект удалён!"
 
-#: app/bugtracker/views.py:651
+#: app/bugtracker/views.py:657
 msgid "Issue deleted!"
 msgstr "Задача удалена!"
 
-#: app/bugtracker/views.py:662
+#: app/bugtracker/views.py:671
 msgid "Account deleted!"
 msgstr "Аккаунт удалён!"
+
+#: app/templates/400.html:11
+msgid "You have sent a bad request"
+msgstr "Вы отправили неверный запрос"
+
+#: app/templates/400.html:13 app/templates/404.html:13
+#: app/templates/500.html:14
+msgid "Back to Home"
+msgstr "Вернуться Домой"
 
 #: app/templates/404.html:11
 msgid "Ooops something went wrong"
 msgstr "Упс-с, что-то пошло не так"
-
-#: app/templates/404.html:13 app/templates/500.html:14
-msgid "Back to Home"
-msgstr "Вернуться Домой"
 
 #: app/templates/500.html:11
 msgid "Internal server error, please try again later."

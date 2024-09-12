@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.postgres.search import SearchQuery, SearchVector
 from django.core.cache import cache
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, BadRequest
 from django.core.paginator import Paginator
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render, redirect, get_object_or_404
@@ -634,7 +634,10 @@ def password_reset_confirm(request, uidb64, token):
 @login_required(login_url="/login/")
 def delete_project(request, project_id):
 
-    project = Project.objects.get(id=project_id)
+    try:
+        project = Project.objects.get(id=project_id, author_id=request.user.id)
+    except ObjectDoesNotExist:
+        raise BadRequest("Attempt to delete someone else's project")
     project.delete()
 
     messages.success(request, _("Project deleted!"))
@@ -645,7 +648,10 @@ def delete_project(request, project_id):
 @login_required(login_url="/login/")
 def delete_issue(request, project_id, issue_id):
 
-    issue = Issue.objects.get(id=issue_id)
+    try:
+        issue = Issue.objects.get(id=issue_id, author_id=request.user.id)
+    except ObjectDoesNotExist:
+        raise BadRequest("Attempt to delete someone else's issue")
     issue.delete()
 
     messages.success(request, _("Issue deleted!"))
@@ -655,6 +661,9 @@ def delete_issue(request, project_id, issue_id):
 
 @login_required(login_url="/login/")
 def delete_account(request, user_id):
+
+    if user_id != request.user.id:
+        raise BadRequest("Attempt to delete someone else's account")
 
     user = User.objects.get(id=user_id)
     user.delete()
