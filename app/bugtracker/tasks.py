@@ -1,8 +1,13 @@
+import logging
+
 from typing import Any
 from celery import shared_task
 
 from django.core.mail import EmailMessage
 from django.template import loader
+
+
+logger = logging.getLogger(__name__)
 
 
 @shared_task
@@ -32,5 +37,4 @@ def send_email(
     try:
         email_message.send()
     except Exception:
-        # TODO: Don't be ashamed, add a logger...
-        print("Failed to send email to the: {to_email[0]}!")
+        logger.exception(msg="Failed to send email to the: {to_email[0]}!")

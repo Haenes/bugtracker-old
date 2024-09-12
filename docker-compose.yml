@@ -4,6 +4,7 @@ services:
     build: .
     entrypoint: sh ./entrypoint.sh
     volumes:
+      - ./logs:/var/log
       - static:/media/static
     env_file:
       - .env
@@ -79,6 +80,7 @@ services:
 
 
 volumes:
+  logs:
   static:
   db:
   redis:

@@ -1,10 +1,10 @@
 .git
+.github
 .gitignore
-venv/
-**/*__pycache__/
+**/*__pycache__
+logs
+deploy
 Dockerfile
 .dockerignore
 docker-compose.yml
-INSTALL.md
-LICENSE.md
-README.md
+*.md

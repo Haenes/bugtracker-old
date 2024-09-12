@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 from pathlib import Path
 
@@ -96,6 +97,44 @@ TEMPLATES = [
         },
     },
 ]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "precise": {
+            "format": "{levelname} [{asctime}] {module} {message}",
+            "datefmt": "%d-%m-%Y %H:%M:%S",
+            "style": "{"
+            }
+        },
+    "filters": {
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+            },
+        },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "filters": ["require_debug_true"],
+            },
+        "file": {
+            "level": "WARNING",
+            "class": "logging.FileHandler",
+            "filename": "/var/log/errors.log",
+            "formatter": "precise"
+            },
+        },
+    "loggers": {
+        "django": {
+            "handlers": ["console"]
+        },
+        "": {
+            "handlers": ["file"]
+            },
+        },
+    }
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
