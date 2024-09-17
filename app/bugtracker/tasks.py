@@ -15,13 +15,16 @@ def send_email(
         subject: str,
         body: str,
         to_email: list[str],
+        fail_silently=True,
         context: dict[str, Any] = None,
-        html_email_template_name=None
+        html_email_template_name=None,
+        html_message=None
         ):
 
-    """ The task to send an email to the user,
+    """ The task to send an email
 
-    when registering or resetting the password.
+    To the user when registering or resetting the password.
+    Or to the admin when a server error occurs.
     """
 
     if html_email_template_name is not None:
@@ -35,6 +38,6 @@ def send_email(
         email_message = EmailMessage(subject, body, to=to_email)
 
     try:
-        email_message.send()
+        email_message.send(fail_silently=fail_silently)
     except Exception:
         logger.exception(msg="Failed to send email to the: {to_email[0]}!")

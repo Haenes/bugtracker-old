@@ -124,7 +124,12 @@ LOGGING = {
             "level": "WARNING",
             "class": "logging.FileHandler",
             "filename": "/var/log/errors.log",
-            "formatter": "precise"
+            "formatter": "precise",
+            },
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "app.log.CustomAdminEmail",
+            "include_html": False,
             },
         },
     "loggers": {
@@ -132,7 +137,7 @@ LOGGING = {
             "handlers": ["console"]
         },
         "": {
-            "handlers": ["file"]
+            "handlers": ["file", "mail_admins"]
             },
         },
     }
@@ -151,6 +156,7 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
+ADMINS = [(os.environ.get('ADMIN_NAME'), EMAIL_ADMIN)]
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
 
