@@ -3,7 +3,7 @@
 cd app
 
 echo "----------- Collect static files -----------"
-python manage.py collectstatic --no-input
+python manage.py collectstatic --no-input --clear --dry-run
 
 echo "----------- Apply migration -----------"
 python manage.py makemigrations && python manage.py migrate --no-input

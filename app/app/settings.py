@@ -104,40 +104,21 @@ LOGGING = {
     "disable_existing_loggers": False,
     "formatters": {
         "precise": {
-            "format": "{levelname} [{asctime}] {module} {message}",
+            "format": "[{levelname}] [{asctime}] {module} [{message}]",
             "datefmt": "%d-%m-%Y %H:%M:%S",
             "style": "{"
             }
-        },
-    "filters": {
-        "require_debug_true": {
-            "()": "django.utils.log.RequireDebugTrue",
-            },
         },
     "handlers": {
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
-            "filters": ["require_debug_true"],
-            },
-        "file": {
-            "level": "WARNING",
-            "class": "logging.FileHandler",
-            "filename": "/var/log/errors.log",
-            "formatter": "precise",
-            },
-        "mail_admins": {
-            "level": "ERROR",
-            "class": "app.log.CustomAdminEmail",
-            "include_html": False,
+            "formatter": "precise"
             },
         },
     "loggers": {
         "django": {
             "handlers": ["console"]
-        },
-        "": {
-            "handlers": ["file", "mail_admins"]
             },
         },
     }
@@ -159,6 +140,7 @@ EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
 ADMINS = [(os.environ.get('ADMIN_NAME'), EMAIL_ADMIN)]
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 DATABASES = {
     "default": {

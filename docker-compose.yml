@@ -4,7 +4,6 @@ services:
     build: .
     entrypoint: sh ./entrypoint.sh
     volumes:
-      - ./logs:/var/log
       - static:/media/static
     env_file:
       - .env
@@ -30,7 +29,7 @@ services:
 
   db:
     container_name: db
-    image: postgres:16.3-alpine
+    image: postgres:16.4-alpine3.20
     env_file:
       - .env
     volumes:
@@ -70,7 +69,7 @@ services:
 
   rabbitmq:
     container_name: rabbitmq
-    image: rabbitmq:3.13.2-alpine
+    build: deploy/rabbitmq
     healthcheck:
       test: ["CMD-SHELL", "rabbitmq-diagnostics -q status"]
       interval: 1s
@@ -80,7 +79,6 @@ services:
 
 
 volumes:
-  logs:
   static:
   db:
   redis:
