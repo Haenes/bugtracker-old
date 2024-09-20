@@ -16,7 +16,10 @@ jobs:
       
       - name: Configure Redis config
         run: sed -i 's/Testing/${{ secrets.REDIS_PASSWORD }}/' deploy/redis/redis.conf
-      
+
+      - name: Configure RabbitMQ config
+        run: sed -i 's/Testing/${{ secrets.RABBITMQ_PASSWORD }}/' deploy/rabbitmq/rabbitmq.conf
+
       - name: Configure .env
         run: |
           cat << EOF > .env
@@ -32,6 +35,7 @@ jobs:
           EMAIL_HOST_USER = ${{ secrets.EMAIL_HOST_USER }}
           EMAIL_HOST_PASSWORD = ${{ secrets.EMAIL_HOST_PASSWORD }}
           EMAIL_ADMIN = ${{ secrets.EMAIL_ADMIN }}
+          ADMIN_NAME = ${{ secrets.ADMIN_NAME }}
           CELERY_BROKER_URL = ${{ secrets.CELERY_BROKER_URL }}
           EOF
 
