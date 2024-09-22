@@ -15,10 +15,11 @@ RUN addgroup nonroot && \
     adduser \
         --disabled-password \
         --ingroup nonroot \
-        --no-create-home \
         user && \
-    chown -R user \
-        /usr/local/lib/python3.12/site-packages/django/contrib/auth/migrations
+    chown -R user:nonroot \
+        /usr/local/lib/python3.12/site-packages/django/contrib/auth/migrations && \
+    mkdir /home/user/static/ && \
+    chown -R user:nonroot /home/user/static/
 
 USER user
 

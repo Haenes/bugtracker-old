@@ -4,7 +4,7 @@ services:
     build: .
     entrypoint: sh ./entrypoint.sh
     volumes:
-      - static:/media/static
+      - static:/home/user/static
     env_file:
       - .env
     deploy:
@@ -116,5 +116,8 @@ services:
 
 volumes:
   static:
+    name: "static-files"
   db:
+    name: "db-data"
   redis:
+    name: "redis-data"
