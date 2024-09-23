@@ -20,6 +20,14 @@ jobs:
       - name: Configure RabbitMQ config
         run: sed -i 's/Testing/${{ secrets.RABBITMQ_PASSWORD }}/' deploy/rabbitmq/rabbitmq.conf
 
+      - name: Configure entrypoint.sh script
+        run: |
+          sed -i '16 s/test/${{ secrets.SUPERUSER_USERNAME }}/' entrypoint.sh
+          sed -i '17 s/Test123#/${{ secrets.SUPERUSER_PASSWORD }}/' entrypoint.sh
+          sed -i '18 s/test@test.test/${{ secrets.SUPERUSER_EMAIL }}/' entrypoint.sh
+          sed -i '$d' entrypoint.sh
+          sed -i '$a ${{ secrets.ENTRYPOINT_SERVER_START }}' entrypoint.sh
+
       - name: Configure .env
         run: |
           cat << EOF > .env
