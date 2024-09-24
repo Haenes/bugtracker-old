@@ -11,12 +11,10 @@
 DJANGO_SECRET = "SECRETKEY"
 
 # This is necessary for the mail service
-# to send emails to users and admins in the following situations:
-# confirmation of registration, password reset and server error.
+# to send emails to users in the following situations:
+# confirmation of registration and password reset.
 EMAIL_HOST_USER = "EMAIL"
 EMAIL_HOST_PASSWORD = "PASSWORD"
-EMAIL_ADMIN = "EMAIL"
-ADMIN_NAME = "Name"
 
 POSTGRES_PASSWORD = "Testing123#"
 POSTGRES_USER = "test"
