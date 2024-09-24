@@ -50,12 +50,12 @@ REST_FRAMEWORK = {
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
-redis_user = os.environ.get("REDIS_USER")
-redis_password = os.environ.get("REDIS_PASSWORD")
+REDIS_USER = os.environ.get("REDIS_USER")
+REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD")
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': f'redis://{redis_user}:{redis_password}@redis/1',
+        'LOCATION': f'redis://{REDIS_USER}:{REDIS_PASSWORD}@redis/1',
         'TIMEOUT': 60 * 10,
     }
 }
@@ -133,11 +133,7 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-
-SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-EMAIL_ADMIN = os.environ.get('EMAIL_ADMIN')
-ADMINS = [(os.environ.get('ADMIN_NAME'), EMAIL_ADMIN)]
 
 CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL")
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
@@ -184,7 +180,6 @@ LOCALE_PATHS = [
 ]
 
 USE_TZ = True
-
 TIME_ZONE = 'UTC'
 
 STATIC_URL = '/static/'
