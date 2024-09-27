@@ -1,6 +1,6 @@
-name: deliver
+name: deploy
 
-run-name: Deliver the app to the VPS
+run-name: Deploy the app to the VPS
 
 on: workflow_dispatch
 
@@ -59,3 +59,14 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           source: "*"
           target: bugtracker/
+
+      - name: Stop all running containers then update them and start again
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd bugtracker &&
+            docker compose down &&
+            docker compose up --build -d
