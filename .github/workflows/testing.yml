@@ -14,30 +14,11 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Configure Redis config
-        run: sed -i 's/Testing/${{ secrets.REDIS_PASSWORD }}/' deploy/redis/redis.conf
-  
-      - name: Configure RabbitMQ config
-        run: sed -i 's/Testing/${{ secrets.RABBITMQ_PASSWORD }}/' deploy/rabbitmq/rabbitmq.conf
 
       - name: Configure .env file
         run: |
           cat << EOF > .env
-          DJANGO_SECRET = ${{ secrets.DJANGO_SECRET }}
-          POSTGRES_DB =  ${{ secrets.POSTGRES_DB }}
-          POSTGRES_HOST = ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PASSWORD = ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_PORT = ${{ secrets.POSTGRES_PORT }}
-          POSTGRES_USER = ${{ secrets.POSTGRES_USER }}
-          PGDATA = ${{ secrets.PGDATA }}
-          REDIS_USER = ${{ secrets.REDIS_USER }}
-          REDIS_PASSWORD = ${{ secrets.REDIS_PASSWORD }}
-          EMAIL_HOST_USER = ${{ secrets.EMAIL_HOST_USER }}
-          EMAIL_HOST_PASSWORD = ${{ secrets.EMAIL_HOST_PASSWORD }}
-          EMAIL_ADMIN = ${{ secrets.EMAIL_ADMIN }}
-          ADMIN_NAME = ${{ secrets.ADMIN_NAME }}
-          CELERY_BROKER_URL = ${{ secrets.CELERY_BROKER_URL }}
+          ${{ secrets.TEST_ENV }}
           EOF
 
       - name: Start containers

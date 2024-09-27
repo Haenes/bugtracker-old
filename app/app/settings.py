@@ -9,11 +9,32 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET')
+if os.environ.get('PROD') == "1":
+    SECRET_KEY = os.environ.get('DJANGO_SECRET')
 
-DEBUG = False
+    DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['secret1']
+
+    CSRF_COOKIE_SECURE = True
+    CSRF_TRUSTED_ORIGIN = ['secret2']
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+    SESSION_COOKIE_SECURE = True
+
+    EMAIL_PORT = 'secret3'
+    EMAIL_USER_SSL = True
+else:
+    SECRET_KEY = os.environ.get('DJANGO_SECRET')
+
+    DEBUG = True
+
+    ALLOWED_HOSTS = ['*']
+
+    EMAIL_PORT = '587'
+    EMAIL_USE_TLS = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -128,8 +149,6 @@ WSGI_APPLICATION = 'app.wsgi.application'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '587'
-EMAIL_USE_TLS = True
 
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')

@@ -13,39 +13,43 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
-      
-      - name: Configure Redis config
+
+      - name: Configure redis.conf
         run: sed -i 's/Testing/${{ secrets.REDIS_PASSWORD }}/' deploy/redis/redis.conf
 
-      - name: Configure RabbitMQ config
+      - name: Configure rabbitmq.conf
         run: sed -i 's/Testing/${{ secrets.RABBITMQ_PASSWORD }}/' deploy/rabbitmq/rabbitmq.conf
 
-      - name: Configure entrypoint.sh script
+      - name: Configure entrypoint.sh
         run: |
-          sed -i '16 s/test/${{ secrets.SUPERUSER_USERNAME }}/' entrypoint.sh
-          sed -i '17 s/Test123#/${{ secrets.SUPERUSER_PASSWORD }}/' entrypoint.sh
-          sed -i '18 s/test@test.test/${{ secrets.SUPERUSER_EMAIL }}/' entrypoint.sh
-          sed -i '$d' entrypoint.sh
-          sed -i '$a ${{ secrets.ENTRYPOINT_SERVER_START }}' entrypoint.sh
+          cat << "EOF" > entrypoint.sh
+          ${{ secrets.ENTRYPOINT }} 
+          EOF
+
+      - name: Configure nginx.conf
+        run: |
+          cat << "EOF" > deploy/nginx/nginx.conf
+          ${{ secrets.NGINX_CONFIG }} 
+          EOF
 
       - name: Configure .env
         run: |
           cat << EOF > .env
-          DJANGO_SECRET = ${{ secrets.DJANGO_SECRET }}
-          POSTGRES_DB =  ${{ secrets.POSTGRES_DB }}
-          POSTGRES_HOST = ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PASSWORD = ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_PORT = ${{ secrets.POSTGRES_PORT }}
-          POSTGRES_USER = ${{ secrets.POSTGRES_USER }}
-          PGDATA = ${{ secrets.PGDATA }}
-          REDIS_USER = ${{ secrets.REDIS_USER }}
-          REDIS_PASSWORD = ${{ secrets.REDIS_PASSWORD }}
-          EMAIL_HOST_USER = ${{ secrets.EMAIL_HOST_USER }}
-          EMAIL_HOST_PASSWORD = ${{ secrets.EMAIL_HOST_PASSWORD }}
-          EMAIL_ADMIN = ${{ secrets.EMAIL_ADMIN }}
-          ADMIN_NAME = ${{ secrets.ADMIN_NAME }}
-          CELERY_BROKER_URL = ${{ secrets.CELERY_BROKER_URL }}
+          ${{ secrets.PROD_ENV }}
           EOF
+
+      - name: Configure docker-compose
+        run: |
+          cat << "EOF" > docker-compose.yml
+          ${{ secrets.DOCKER_COMPOSE }} 
+          EOF
+
+      - name: Configure settings.py
+        run: |
+          cd app/app/app
+          sed -i "s/secret1/${{ secrets.SETTINGS_ALLOWED_HOSTS }}/" settings.py &&
+          sed -i 's/secret2/${{ secrets.SETTINGS_CSRF_TRUSTED_ORIGIN }}/' settings.py &&
+          sed -i 's/secret3/${{ secrets.SETTINGS_EMAIL_PORT }}/' settings.py
 
       - name: Copy repo to the VPS
         uses: appleboy/scp-action@v0.1.7
