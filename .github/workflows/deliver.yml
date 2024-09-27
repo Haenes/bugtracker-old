@@ -46,7 +46,7 @@ jobs:
 
       - name: Configure settings.py
         run: |
-          cd app/app/app
+          cd app/app/app &&
           sed -i "s/secret1/${{ secrets.SETTINGS_ALLOWED_HOSTS }}/" settings.py &&
           sed -i 's/secret2/${{ secrets.SETTINGS_CSRF_TRUSTED_ORIGIN }}/' settings.py &&
           sed -i 's/secret3/${{ secrets.SETTINGS_EMAIL_PORT }}/' settings.py
