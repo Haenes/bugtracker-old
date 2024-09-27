@@ -46,10 +46,9 @@ jobs:
 
       - name: Configure settings.py
         run: |
-          cd app/app/app &&
-          sed -i "s/secret1/${{ secrets.SETTINGS_ALLOWED_HOSTS }}/" settings.py &&
-          sed -i 's/secret2/${{ secrets.SETTINGS_CSRF_TRUSTED_ORIGIN }}/' settings.py &&
-          sed -i 's/secret3/${{ secrets.SETTINGS_EMAIL_PORT }}/' settings.py
+          sed -i "s/secret1/${{ secrets.SETTINGS_ALLOWED_HOSTS }}/" app/app/app/settings.py &&
+          sed -i 's/secret2/${{ secrets.SETTINGS_CSRF_TRUSTED_ORIGIN }}/' app/app/app/settings.py &&
+          sed -i 's/secret3/${{ secrets.SETTINGS_EMAIL_PORT }}/' app/app/app/settings.py
 
       - name: Copy repo to the VPS
         uses: appleboy/scp-action@v0.1.7
