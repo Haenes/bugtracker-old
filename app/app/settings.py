@@ -17,7 +17,7 @@ if os.environ.get('PROD') == "1":
     ALLOWED_HOSTS = ['secret1']
 
     CSRF_COOKIE_SECURE = True
-    CSRF_TRUSTED_ORIGIN = ['secret2']
+    CSRF_TRUSTED_ORIGINS = ['secret2']
     SECURE_HSTS_PRELOAD = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
