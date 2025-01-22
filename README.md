@@ -2,7 +2,7 @@
 ![release](https://img.shields.io/github/v/release/Haenes/bugtracker)
 ![license](https://img.shields.io/github/license/Haenes/bugtracker)
 
-
+# This is the old version, the [new version](https://github.com/Haenes/bugtracker)
 
 # BugTracker
 This is the light version of bug tracker, that have:
